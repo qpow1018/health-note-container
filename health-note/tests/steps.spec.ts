@@ -1,9 +1,16 @@
 import { test, expect } from './authFixture';
 
-test('일반 브라우저에서는 걸음 카드를 표시하지 않는다', async ({ page }) => {
+test('개발 브라우저는 미리보기를 자동 표시하고 초기화는 화면에만 반영한다', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: '헬스노트', exact: true })).toBeVisible();
-  await expect(page.getByRole('heading', { name: '오늘 걸음', exact: true })).toHaveCount(0);
+  const card = page.getByRole('region', { name: '오늘 걸음' });
+  await expect(card.locator('strong')).toHaveText('4,567');
+  await expect(card).toContainText('개발용 미리보기');
+  await card.getByRole('button', { name: '오늘 기록 초기화' }).click();
+  await page.getByRole('dialog').getByRole('button', { name: '초기화', exact: true }).click();
+  await expect(card.locator('strong')).toHaveText('0');
+  await page.reload();
+  await expect(card.locator('strong')).toHaveText('4,567');
+  await page.screenshot({ path: '/tmp/health-note-steps-preview.png', fullPage: true });
 });
 
 test('자동 기록 누적값과 초기화를 표시하고 켜기·끄기 버튼은 제공하지 않는다', async ({ page }) => {
@@ -28,6 +35,7 @@ test('자동 기록 누적값과 초기화를 표시하고 켜기·끄기 버튼
   const card = page.getByRole('region', { name: '오늘 걸음' });
   await expect(card.getByRole('button', { name: /자동 기록 (켜기|끄기)/ })).toHaveCount(0);
   await expect(card).toContainText('1,234');
+  await expect(card).not.toContainText('개발용 미리보기');
   await expect(card.getByRole('status')).toHaveText('자동으로 기록 중이에요.');
   await page.screenshot({ path: '/tmp/health-note-steps-card.png', fullPage: true });
   await card.getByRole('button', { name: '오늘 기록 초기화' }).click();

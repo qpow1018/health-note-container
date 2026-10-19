@@ -22,11 +22,15 @@ const STATUS_TEXT = {
 };
 
 export default function StepCard({ today }: { today: string }) {
-  const [snapshot, setSnapshot] = useState<TStepSnapshot | null>(null);
+  const isPreview = import.meta.env.DEV && !(window as TNativeWindow).ReactNativeWebView;
+  const [snapshot, setSnapshot] = useState<TStepSnapshot | null>(() =>
+    isPreview ? { date: today, steps: 4567, status: 'tracking' } : null,
+  );
   const [isResetOpen, setIsResetOpen] = useState(false);
   const [isPending, setIsPending] = useState(false);
 
   useEffect(() => {
+    if (isPreview) return;
     const receive = (event: Event) => {
       const data: unknown = (event as CustomEvent).detail;
       if (!isSnapshot(data)) return;
@@ -45,7 +49,7 @@ export default function StepCard({ today }: { today: string }) {
       document.removeEventListener('visibilitychange', refresh);
       window.clearInterval(interval);
     };
-  }, []);
+  }, [isPreview]);
 
   if (!snapshot) return null;
   const isTracking = snapshot.status === 'tracking';
@@ -82,13 +86,20 @@ export default function StepCard({ today }: { today: string }) {
         onClose={() => setIsResetOpen(false)}
         onConfirm={() => {
           setIsResetOpen(false);
+          if (isPreview) {
+            setSnapshot({ date: today, steps: 0, status: 'tracking' });
+            return;
+          }
           setIsPending(true);
           requestSteps('reset');
         }}
       />
       {isSupported && (
         <p className={styles['note']}>
-          {isTracking ? '휴대폰을 가지고 걸어 주세요. ' : ''}이 휴대폰에만 저장돼요.
+          {isPreview && '개발용 미리보기 · 실제 걸음 기록이 아니에요.'}
+          {!isPreview && (
+            <>{isTracking ? '휴대폰을 가지고 걸어 주세요. ' : ''}이 휴대폰에만 저장돼요.</>
+          )}
         </p>
       )}
     </section>
