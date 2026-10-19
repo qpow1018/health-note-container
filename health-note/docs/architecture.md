@@ -11,6 +11,8 @@ React 19·TypeScript·Vite 기반 모바일 웹앱이며 React Router와 SCSS Mo
 - [useAuthSession.ts](../src/features/auth/useAuthSession.ts): 세션 복원과 인증 이벤트 구독을 처리한다. 사용자 변경 시 현재 사용자 정보를 갱신하고 공유 QueryClient의 캐시를 비운다.
 - [QueryProvider.tsx](../src/lib/query/QueryProvider.tsx): 캐시 초기화에 사용하는 것과 동일한 QueryClient를 제공한다.
 
+닉네임 편집은 `features/profile/NicknameForm.tsx`, 저장 요청은 `api/auth`가 담당한다. Supabase Auth의 `user_metadata.nickname`을 사용하고 `USER_UPDATED` 이벤트를 기존 세션 구독에서 받아 사용자 정보에 반영한다. 별도 프로필 테이블이나 Query 캐시는 추가하지 않는다.
+
 현재 인증 구현은 사용자별 재마운트와 캐시 초기화를 함께 사용해 이전 계정의 데이터·편집 상태가 이어지지 않도록 한다. 보안 경계는 클라이언트의 화면 차단이 아니라 DB의 사용자 소유 RLS다.
 
 ## 책임과 위치

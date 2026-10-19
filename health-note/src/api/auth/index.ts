@@ -21,3 +21,8 @@ export async function getGoogleSignInUrl(redirectTo: string) {
 export async function signOut() {
   return getSupabase().auth.signOut({ scope: 'local' });
 }
+
+export async function updateNickname(nickname: string) {
+  const { error } = await getSupabase().auth.updateUser({ data: { nickname } });
+  if (error) throw error;
+}

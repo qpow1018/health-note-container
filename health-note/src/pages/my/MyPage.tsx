@@ -4,6 +4,7 @@ import { AuthUserContext } from '@/features/auth/AuthUserContext';
 
 import Header from '@/components/common/header/Header';
 import LogoutButton from '@/features/auth/LogoutButton';
+import NicknameForm from '@/features/profile/NicknameForm';
 
 import styles from './MyPage.module.scss';
 
@@ -15,6 +16,7 @@ export default function MyPage() {
     <section className={styles['my-page']}>
       <Header title="마이페이지" showBack={false} />
       <div className={styles['content']}>
+        <NicknameForm />
         <h2>로그인 계정</h2>
         <dl className={styles['account']}>
           <div>
