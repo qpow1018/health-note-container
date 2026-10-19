@@ -39,6 +39,6 @@ description: Apply Health Note app conventions when writing, modifying, or revie
 
 ## 완료 전 검토와 검증
 
-- 제품 코드 변경은 [공통 지침의 구현과 사용자 검토](../../../../AGENTS.md#구현과-사용자-검토)에 따라 요구사항 누락·잘못된 동작·책임·불필요한 복잡도·요청 밖 변경을 검토한다. 이번 변경이 만든 결함을 수정하고 영향받는 부분을 다시 검토·검증한다.
+- 제품 코드 변경은 완료 보고 전에 [self-review-health-note-changes](../../../../.agents/skills/self-review-health-note-changes/SKILL.md)를 적용한다. 검증 중 코드를 수정하면 영향을 받는 부분을 다시 검토·검증한다.
 - [test-feature-behavior](../../../../.agents/skills/test-feature-behavior/SKILL.md)와 앱 지침에 따라 변경을 확인할 최소한의 의미 있는 검증을 선택한다. 별도 읽기 전용 리뷰에서는 테스트나 제품 코드 수정을 자동 실행하지 않는다.
 - 모의 이벤트 테스트, JS 번들, 네이티브 빌드, 설치·실기기 동작 확인을 구분한다. 기기가 없어 확인하지 못한 권한·앱 복귀·백그라운드·터치 동작은 미확인으로 보고한다.

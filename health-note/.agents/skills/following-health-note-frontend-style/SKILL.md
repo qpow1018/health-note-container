@@ -89,3 +89,8 @@ description: Apply Health Note conventions when writing, reviewing, or refactori
 - viewport 기준 fixed 요소는 같은 너비와 중앙 정렬을 함께 적용한다.
 - safe area·키보드·좁은 화면·긴 텍스트를 고려한다.
 - 크기·간격 토큰은 시작값이며 실제 화면을 보며 조정한다.
+
+## 완료 전 검토와 검증
+
+- 제품 코드 변경은 완료 보고 전에 [self-review-health-note-changes](../../../../.agents/skills/self-review-health-note-changes/SKILL.md)를 적용하고, [test-feature-behavior](../../../../.agents/skills/test-feature-behavior/SKILL.md)와 프로젝트 지침에 따라 필요한 검증을 수행한다. 검증 중 코드를 수정하면 영향을 받는 부분을 다시 검토·검증한다.
+- 별도 읽기 전용 리뷰에서는 코드 수정이나 테스트를 자동 실행하지 않는다.

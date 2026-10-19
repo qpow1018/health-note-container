@@ -42,3 +42,8 @@ description: Apply Health Note boundaries when writing, reviewing, or refactorin
 - RPC는 SECURITY INVOKER를 우선하고 인증·소유권·트랜잭션을 보존한다. 권한 오류를 피하려고 SECURITY DEFINER로 바꾸지 않는다.
 - TypeScript 변경은 lint·typecheck, 환경·빌드 설정 변경은 build도 확인한다. API 변경은 관련 요청·실패 경계와 해당 기능에 정의된 충돌 동작을 적절한 테스트 수단으로 검증한다.
 - 정책·제약·RPC 변경은 로컬 Supabase에서 npm run db:test로 검증한다. 모의 응답 기반 테스트 통과를 실제 DB 권한이나 Google OAuth 성공으로 보고하지 않는다.
+
+## 완료 전 검토와 검증
+
+- 제품 코드 변경은 완료 보고 전에 [self-review-health-note-changes](../../../../.agents/skills/self-review-health-note-changes/SKILL.md)를 적용하고, [test-feature-behavior](../../../../.agents/skills/test-feature-behavior/SKILL.md)와 프로젝트 지침에 따라 필요한 검증을 수행한다. 검증 중 코드를 수정하면 영향을 받는 부분을 다시 검토·검증한다.
+- 별도 읽기 전용 리뷰에서는 코드 수정이나 테스트를 자동 실행하지 않는다.
