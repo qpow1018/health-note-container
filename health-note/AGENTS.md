@@ -32,19 +32,6 @@
 - `src/lib/query/`: 공유 QueryClient와 QueryProvider. 인증 사용자 변경 시에도 Provider와 동일한 인스턴스의 캐시를 초기화한다.
 - API는 queries·feature·Query 캐시를 참조하지 않는다. queries는 feature·page를 참조하지 않고 서버 상태 관리에 집중한다. 자세한 배치·동작 규칙은 각 스킬을 따른다.
 
-## 구현 작업의 스킬 적용
-
-- 기능 구현·제품 코드 수정 요청에는 아래 두 스킬을 읽고 해당 단계에서 자동 적용한다. 별도의 호출이나 승인을 기다리지 않는다.
-  - [review-feature-implementation](/Users/choewonjin/.codex/skills/review-feature-implementation/SKILL.md)
-  - [test-feature-behavior](/Users/choewonjin/.codex/skills/test-feature-behavior/SKILL.md)
-- 작성 전: 기존 구조와 책임을 확인하고, 사용자 합의·요구사항을 근거로 기대 동작과 검증 방법을 정한다.
-- 작성 후: review-feature-implementation으로 요구사항 반영, 책임과 위치, 단순성, 불필요한 변경을 검토한다. 이어서 test-feature-behavior로 변경에 맞는 최소한의 의미 있는 검증을 선택하고 실행한다.
-- 구현 중 요청 범위 안에서 만든 결함은 수정하고 다시 검증한다. 테스트만 요청받았거나 요청 범위 밖의 결함을 발견한 경우에는 제품 코드를 임의 수정하지 않고 보고한다.
-- 완료 시 변경 이유, 검토 결과, 검증 결과와 미확인 범위를 작업 규모에 맞게 간결하게 설명한다. 스킬 적용을 이유로 매번 테스트 파일을 추가하거나 긴 보고서를 작성하지 않는다.
-- 설명·리뷰만 요청한 경우에는 해당 스킬의 적용 조건에 따라 검토하며, 테스트를 자동 실행하지 않는다. 테스트만 요청한 경우에는 test-feature-behavior를 적용한다.
-- 계획·논의·문서만 변경하는 작업에는 위 구현·검증 절차를 일괄 적용하지 않는다.
-- 커밋 요청에는 스테이징할 최종 diff를 검토하고, 기존 검증 결과가 현재 코드에도 유효한지 확인한다. 이후 변경이나 검증 공백이 있을 때만 필요한 검사를 추가하며 E2E를 일괄 실행하지 않는다.
-
 ## 독립적인 판단과 의견 수정
 
 - 사용자가 반박하거나 대안을 제시하면, 기존 의견과 같은 기준으로 검토한다.
