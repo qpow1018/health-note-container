@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { QueryClient } from '@tanstack/react-query';
 
 import * as api from '@/api/routine';
-import type { TRoutine, TRoutineValues } from '@/api/routine/type';
+import type { TRoutine, TRoutineValues, TRoutineProgress } from '@/api/routine/type';
 import { getUserKey } from '@/lib/auth/currentUser';
 
 export const ROUTINES_QUERY_KEY = ['routines'] as const;
@@ -99,6 +99,7 @@ const routineQuery = {
 
   useSetExerciseCompleted() {
     const queryClient = useQueryClient();
+    const owner = getUserKey('owner');
     return useMutation({
       mutationFn: ({
         routineId,
@@ -111,10 +112,17 @@ const routineQuery = {
         exerciseId: string;
         isCompleted: boolean;
       }) => api.setExerciseCompleted(routineId, date, exerciseId, isCompleted),
-      onSuccess: () => {
-        return queryClient.invalidateQueries({
-          queryKey: ROUTINE_PROGRESS_QUERY_KEY,
+      onSuccess: async (_, { routineId, date, exerciseId, isCompleted }) => {
+        const queryKey = [...ROUTINE_PROGRESS_QUERY_KEY, owner, date];
+        await queryClient.cancelQueries({ queryKey, exact: true });
+        queryClient.setQueryData<TRoutineProgress[]>(queryKey, (previous) => {
+          if (!previous) return previous;
+          const remaining = previous.filter(
+            (item) => item.routineId !== routineId || item.exerciseId !== exerciseId,
+          );
+          return isCompleted ? [...remaining, { routineId, exerciseId }] : remaining;
         });
+        return queryClient.invalidateQueries({ queryKey, exact: true });
       },
     });
   },

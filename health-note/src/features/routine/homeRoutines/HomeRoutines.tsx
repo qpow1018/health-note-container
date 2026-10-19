@@ -20,7 +20,10 @@ import { MdChevronRight } from 'react-icons/md';
 
 export default function HomeRoutines({ today }: { today: string }) {
   const { mutateAsync: setExerciseCompleted } = routineQuery.useSetExerciseCompleted();
-  const [isSaving, setIsSaving] = useState(false);
+  const [pendingChanges, setPendingChanges] = useState<
+    { routineId: string; exerciseId: string; date: string; isCompleted: boolean }[]
+  >([]);
+  const isSaving = pendingChanges.length > 0;
   const {
     data: progress = [],
     isError: isProgressError,
@@ -57,12 +60,19 @@ export default function HomeRoutines({ today }: { today: string }) {
     exerciseId: string,
     isCompleted: boolean,
   ) {
-    if (isSaving) return;
+    if (
+      pendingChanges.some(
+        (item) =>
+          item.routineId === routineId && item.exerciseId === exerciseId && item.date === today,
+      )
+    )
+      return;
     if (today !== getTodayDate()) {
       toast.error('날짜가 바뀌었어요. 오늘의 루틴을 다시 확인해 주세요.');
       return;
     }
-    setIsSaving(true);
+    const change = { routineId, exerciseId, date: today, isCompleted };
+    setPendingChanges((items) => [...items, change]);
     try {
       await setExerciseCompleted({ routineId, date: today, exerciseId, isCompleted });
     } catch {
@@ -73,7 +83,7 @@ export default function HomeRoutines({ today }: { today: string }) {
         },
       );
     } finally {
-      setIsSaving(false);
+      setPendingChanges((items) => items.filter((item) => item !== change));
     }
   }
 
@@ -108,10 +118,19 @@ export default function HomeRoutines({ today }: { today: string }) {
               const available = routine.exerciseIds.filter((id) =>
                 exercises.some((exercise) => exercise.id === id),
               );
-              const checked = progress
-                .filter((item) => item.routineId === routine.id)
-                .map((item) => item.exerciseId);
-              const count = available.filter((id) => checked.includes(id)).length;
+              const pending = pendingChanges.filter(
+                (item) => item.routineId === routine.id && item.date === today,
+              );
+              const checked = new Set(
+                progress
+                  .filter((item) => item.routineId === routine.id)
+                  .map((item) => item.exerciseId),
+              );
+              for (const change of pending) {
+                if (change.isCompleted) checked.add(change.exerciseId);
+                else checked.delete(change.exerciseId);
+              }
+              const count = available.filter((id) => checked.has(id)).length;
               const isComplete = available.length > 0 && count === available.length;
               return (
                 <li key={routine.id}>
@@ -137,7 +156,8 @@ export default function HomeRoutines({ today }: { today: string }) {
                     <ol className={styles['exercises']}>
                       {routine.exerciseIds.map((id) => {
                         const exercise = exercises.find((item) => item.id === id);
-                        const isChecked = checked.includes(id);
+                        const isSavingExercise = pending.some((item) => item.exerciseId === id);
+                        const isChecked = checked.has(id);
                         return (
                           <li key={id} className={isChecked ? styles['completed'] : undefined}>
                             {exercise && (
@@ -153,7 +173,7 @@ export default function HomeRoutines({ today }: { today: string }) {
                                   type="checkbox"
                                   aria-label={`${exercise.name} 완료`}
                                   checked={isChecked}
-                                  disabled={isSaving}
+                                  disabled={isSavingExercise}
                                   onChange={(event) =>
                                     handleExerciseCompleted(routine.id, id, event.target.checked)
                                   }

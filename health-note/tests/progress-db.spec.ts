@@ -59,7 +59,8 @@ test('응답 대기 중에는 중복 저장을 막고 실패한 체크는 수동
   });
   let writes = 0;
   await page.route('**/rest/v1/routine_progress?**', async (route) => {
-    if (route.request().method() !== 'POST') return route.fallback();
+    if (route.request().method() !== 'POST' || route.request().postDataJSON().exercise_id !== 'a')
+      return route.fallback();
     writes++;
     await pending;
     await route.fulfill({ status: 503, json: { message: 'Unavailable' } });
@@ -68,14 +69,23 @@ test('응답 대기 중에는 중복 저장을 막고 실패한 체크는 수동
   const checkbox = page.getByRole('checkbox', { name: '스쿼트 완료' });
   await checkbox.click();
   await expect(checkbox).toBeDisabled();
+  await expect(checkbox).toBeChecked();
+  await expect(page.getByRole('progressbar')).toHaveAttribute('value', '1');
+  const walking = page.getByRole('checkbox', { name: '걷기 완료' });
+  await expect(walking).toBeEnabled();
   await checkbox.press('Space');
+  await walking.click();
+  await expect(walking).toBeEnabled();
+  await expect(walking).toBeChecked();
   release();
   await expect(page.getByRole('alert')).toContainText('완료 상태를 저장하지 못했어요.');
   await expect(checkbox).not.toBeChecked();
   expect(writes).toBe(1);
+  await expect(walking).toBeChecked();
   await page.unroute('**/rest/v1/routine_progress?**');
   await checkbox.click();
   await expect(checkbox).toBeChecked();
+  await expect(checkbox).toBeEnabled();
   await page.reload();
   await expect(checkbox).toBeChecked();
 });
@@ -138,7 +148,9 @@ test('별도 브라우저의 체크를 재조회하며 서로 다른 운동을 �
     await expect(page.getByRole('checkbox', { name: '스쿼트 완료' })).toBeChecked();
     await other.getByRole('checkbox', { name: '걷기 완료' }).click();
     await expect(other.getByRole('checkbox', { name: '걷기 완료' })).toBeChecked();
-    await page.evaluate(() => window.dispatchEvent(new Event('focus')));
+    await expect(other.getByRole('checkbox', { name: '걷기 완료' })).toBeEnabled();
+    await expect(page.getByRole('checkbox', { name: '스쿼트 완료' })).toBeEnabled();
+    await page.reload();
     await expect(page.getByRole('checkbox', { name: '걷기 완료' })).toBeChecked();
     await expect(page.getByRole('progressbar')).toHaveAttribute(
       'aria-valuetext',
@@ -147,7 +159,8 @@ test('별도 브라우저의 체크를 재조회하며 서로 다른 운동을 �
     await page.screenshot({ path: 'test-results/progress-db-mobile.png', fullPage: true });
     await other.getByRole('checkbox', { name: '걷기 완료' }).click();
     await expect(other.getByRole('checkbox', { name: '걷기 완료' })).not.toBeChecked();
-    await page.evaluate(() => window.dispatchEvent(new Event('pageshow')));
+    await expect(other.getByRole('checkbox', { name: '걷기 완료' })).toBeEnabled();
+    await page.reload();
     await expect(page.getByRole('checkbox', { name: '걷기 완료' })).not.toBeChecked();
     await expect(page.getByRole('checkbox', { name: '스쿼트 완료' })).toBeChecked();
   } finally {

@@ -155,6 +155,7 @@ test('긴 운동 이름과 여러 루틴, 행 클릭과 키보드 체크', async
     .click();
   const checkbox = firstRoutine.getByRole('checkbox').first();
   await expect(checkbox).toBeChecked();
+  await expect(checkbox).toBeEnabled();
   await checkbox.focus();
   await page.keyboard.press('Space');
   await expect(checkbox).not.toBeChecked();
