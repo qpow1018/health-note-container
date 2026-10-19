@@ -1,0 +1,35 @@
+.my-page {
+  .content {
+    padding: $page-padding max($page-padding, env(safe-area-inset-right))
+      max($page-padding, env(safe-area-inset-bottom)) max($page-padding, env(safe-area-inset-left));
+  }
+
+  h2 {
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .account {
+    margin-top: 24px;
+
+    div + div {
+      margin-top: 24px;
+    }
+
+    dt {
+      color: $text-secondary;
+      font-size: $font-size-caption;
+    }
+
+    dd {
+      margin: 8px 0 0;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  .logout {
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid $border-soft;
+  }
+}

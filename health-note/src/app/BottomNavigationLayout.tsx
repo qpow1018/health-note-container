@@ -2,7 +2,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 
 import styles from './BottomNavigationLayout.module.scss';
 
-import { MdCalendarMonth, MdFitnessCenter, MdHome } from 'react-icons/md';
+import { MdCalendarMonth, MdFitnessCenter, MdHome, MdPerson } from 'react-icons/md';
 
 export default function BottomNavigationLayout() {
   return (
@@ -21,6 +21,10 @@ export default function BottomNavigationLayout() {
         <NavLink to="/exercise">
           <MdFitnessCenter size={22} aria-hidden="true" />
           <span>운동</span>
+        </NavLink>
+        <NavLink to="/my">
+          <MdPerson size={22} aria-hidden="true" />
+          <span>마이</span>
         </NavLink>
       </nav>
     </div>

@@ -7,6 +7,7 @@ import BottomNavigationLayout from './BottomNavigationLayout';
 import AuthBoundary from './AuthBoundary';
 
 import HomePage from '@/pages/home/HomePage';
+import MyPage from '@/pages/my/MyPage';
 import NotFoundPage from '@/pages/notFound/NotFoundPage';
 import RoutinePage from '@/pages/routine/RoutinePage';
 import RoutineDetailPage from '@/pages/routine/RoutineDetailPage';
@@ -32,6 +33,7 @@ export default function App() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/routine" element={<RoutinePage />} />
                 <Route path="/exercise" element={<ExerciseListPage />} />
+                <Route path="/my" element={<MyPage />} />
               </Route>
 
               <Route path="/routine/:routineId" element={<RoutineDetailPage />} />

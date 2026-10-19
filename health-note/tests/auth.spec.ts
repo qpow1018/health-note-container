@@ -7,7 +7,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('미로그인 사용자는 상세·수정 주소에서도 로그인 화면만 본다', async ({ page }) => {
-  for (const path of ['/', '/exercise/new', '/routine/example/edit']) {
+  for (const path of ['/', '/my', '/exercise/new', '/routine/example/edit']) {
     await page.goto(path);
     await expect(page.getByRole('button', { name: 'Google로 계속하기' })).toBeVisible();
     await expect(page.getByRole('navigation')).toHaveCount(0);
@@ -24,7 +24,7 @@ test('세션 복원·새로고침·로그아웃 후 뒤로가기와 재접속', 
   await expect(page.getByRole('heading', { name: '내 운동 관리' })).toBeVisible();
   await page.reload();
   await expect(page.getByRole('heading', { name: '내 운동 관리' })).toBeVisible();
-  await page.getByRole('link', { name: '홈', exact: true }).click();
+  await page.getByRole('link', { name: '마이', exact: true }).click();
   await page.getByRole('button', { name: '로그아웃', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Google로 계속하기' })).toBeVisible();
   await expect(page.getByRole('navigation')).toHaveCount(0);
@@ -109,7 +109,7 @@ test('PKCE 복귀 코드 교환에 성공하면 홈으로 진입한다', async (
     AUTH_STORAGE_KEY,
   );
   await page.goto('/?code=test-code');
-  await expect(page.getByRole('button', { name: '로그아웃', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '헬스노트' })).toBeVisible();
   await expect(page.getByRole('navigation', { name: '주요 메뉴' })).toBeVisible();
   expect(new URL(page.url()).searchParams.has('code')).toBe(false);
 });
@@ -121,6 +121,7 @@ test('로그아웃 서버 실패에도 기기 세션을 제거하고 기록은 �
   );
   await page.goto('/');
   await page.evaluate(() => localStorage.setItem('health-note.exercises.v1:test-user', '[]'));
+  await page.getByRole('link', { name: '마이', exact: true }).click();
   const button = page.getByRole('button', { name: '로그아웃', exact: true });
   await button.click();
   await expect(page.getByRole('alert')).toContainText('로그아웃을 서버에서 확인하지 못했어요.');
@@ -151,7 +152,7 @@ test('만료된 세션의 갱신 거부 시 보호 화면을 표시하지 않는
 
 test('다른 탭에서 로그아웃하면 열린 수정 화면도 즉시 닫힌다', async ({ page, context }) => {
   await seedSession(page);
-  await page.goto('/');
+  await page.goto('/my');
   await expect(page.getByRole('button', { name: '로그아웃', exact: true })).toBeVisible();
   const otherPage = await context.newPage();
   await mockAuth(otherPage);

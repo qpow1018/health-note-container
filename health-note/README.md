@@ -72,7 +72,7 @@ VITE_SUPABASE_PUBLISHABLE_KEY=your_local_publishable_key
 2. `supabase/.env.example`을 저장소 루트의 `.env`로 복사하고 Client ID와 Secret을 입력합니다. `.env`는 Git에서 제외되며, 이 값에는 `VITE_` 접두사를 붙이지 않습니다.
 3. 이미 로컬 Supabase를 실행 중이라면 `npm run db:stop` 후 `npm run db:start`로 재시작합니다. 처음 실행한다면 자격 증명을 저장한 뒤 [로컬 실행](#로컬-실행)을 진행합니다.
 
-앱은 PKCE 방식으로 구글 로그인을 시작하고 현재 origin의 `/`로 복귀합니다. `localhost:5173`, `127.0.0.1:5173`, E2E용 `127.0.0.1:4173`가 로컬 복귀 주소입니다. 운영에서는 Supabase 대시보드의 URL Configuration에도 실제 운영 origin의 `/`를 등록합니다. 로그인 취소·실패는 로그인 화면에서 안내하고 다시 시도할 수 있습니다. 홈 오른쪽의 로그아웃은 현재 세션만 종료합니다.
+앱은 PKCE 방식으로 구글 로그인을 시작하고 현재 origin의 `/`로 복귀합니다. `localhost:5173`, `127.0.0.1:5173`, E2E용 `127.0.0.1:4173`가 로컬 복귀 주소입니다. 운영에서는 Supabase 대시보드의 URL Configuration에도 실제 운영 origin의 `/`를 등록합니다. 로그인 취소·실패는 로그인 화면에서 안내하고 다시 시도할 수 있습니다. 하단 메뉴 맨 오른쪽의 마이에서 로그인 계정의 이메일과 로그인 방식을 확인할 수 있습니다. 마이페이지의 로그아웃은 현재 세션만 종료합니다.
 
 ### 운영 설정
 

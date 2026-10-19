@@ -1,9 +1,12 @@
 .logout-button {
-  min-height: 44px;
-  margin-left: auto;
-  padding-inline: 8px;
+  width: 100%;
+  min-height: $control-height;
+  padding: 8px 16px;
+  border: 1px solid $border;
+  border-radius: $border-radius;
+  background: transparent;
   color: $text-secondary;
-  font-size: 12px;
+  font-size: $font-size-body;
   &:disabled {
     opacity: 0.5;
   }

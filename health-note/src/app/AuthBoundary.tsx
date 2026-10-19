@@ -1,7 +1,7 @@
-import { Fragment } from 'react';
 import type { ReactNode } from 'react';
 
 import { useAuthSession } from '@/features/auth/useAuthSession';
+import { AuthUserContext } from '@/features/auth/AuthUserContext';
 
 import LoginPage from '@/pages/login/LoginPage';
 
@@ -20,5 +20,9 @@ export default function AuthBoundary({ children }: { children: ReactNode }) {
 
   if (!session) return <LoginPage initialError={error} />;
 
-  return <Fragment key={session.user.id}>{children}</Fragment>;
+  return (
+    <AuthUserContext key={session.user.id} value={session.user}>
+      {children}
+    </AuthUserContext>
+  );
 }
