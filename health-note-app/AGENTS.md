@@ -2,6 +2,8 @@
 
 Expo·React Native·TypeScript로 Health Note 웹의 WebView와 네이티브 연동을 제공한다. npm과 package-lock.json을 사용한다. [공통 작업 지침](../AGENTS.md)을 함께 따른다.
 
+- React Native·Expo 코드, WebView 연결, 네이티브 모듈, 권한·백그라운드 동작 작성·수정·리뷰에는 [following-health-note-app-boundaries](.agents/skills/following-health-note-app-boundaries/SKILL.md)를 적용한다.
+
 ## 역할과 경계
 
 - 앱은 WebView 표시, 로딩·연결 오류 안내, 시스템 인증 브라우저와 앱 복귀, 외부 URL 처리, Android 뒤로가기와 안전 영역을 담당한다.
