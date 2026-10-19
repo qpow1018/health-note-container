@@ -1,6 +1,7 @@
 # Health Note
 
 - React 19 + TypeScript + Vite 모바일 웹 프로젝트이며 npm과 package-lock.json을 사용한다.
+- 구체적인 기능·화면 변경의 기획 상담, 빠진 결정 검토, 구현 지시 정리에는 [planning-health-note-changes](.agents/skills/planning-health-note-changes/SKILL.md)를 적용한다. 기획 대화만으로 제품 코드를 수정하지 않는다.
 - React UI·feature 로직·TanStack Query·SCSS 작성·수정·리뷰에는 [following-health-note-frontend-style](.agents/skills/following-health-note-frontend-style/SKILL.md)을 적용한다.
 - API·Supabase 인증 인프라·DB 계약·RLS·마이그레이션·환경 변수 작성·수정·리뷰에는 [following-health-note-backend-boundaries](.agents/skills/following-health-note-backend-boundaries/SKILL.md)을 적용한다. 두 영역에 걸친 작업은 각 책임에 해당하는 지침을 함께 적용한다.
 - Google 로그인 후 운동·루틴·날짜별 완료 기록을 계정별 Supabase DB에 저장한다. 로컬 개발은 Docker Supabase, 운영은 클라우드 Supabase를 사용한다. 네이티브 연동은 해당 구현 요청에 맞춰 추가한다.
