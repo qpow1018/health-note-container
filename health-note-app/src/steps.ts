@@ -5,6 +5,8 @@ type TStepSnapshot = {
   date: string;
   steps: number;
   status: 'unsupported' | 'permission' | 'tracking' | 'stopped' | 'error';
+  activity?: unknown;
+  locationStatus?: string;
 };
 type TStepModule = {
   snapshot(): Promise<TStepSnapshot>;
@@ -66,4 +68,31 @@ export function createStepsScript(snapshot: TStepSnapshot, origin: string) {
   return `if (location.origin === ${JSON.stringify(origin)}) {
     window.dispatchEvent(new CustomEvent('health-note-steps', { detail: ${JSON.stringify(snapshot)} }));
   } true;`;
+}
+
+
+export async function requestActivityLocation() {
+  if (!steps) return;
+  const coarse = PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION;
+  const fine = PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION;
+  if (!await PermissionsAndroid.check(fine)) {
+    const result = await PermissionsAndroid.requestMultiple([coarse, fine]);
+    if (result[fine] !== PermissionsAndroid.RESULTS.GRANTED) {
+      Alert.alert('정확한 위치 권한이 필요해요', '허용하지 않아도 걸음 기록은 계속돼요. 거리와 속도는 정확한 위치 권한이 있어야 측정할 수 있어요.', [
+        { text: '나중에', style: 'cancel' },
+        { text: '설정 열기', onPress: () => { void Linking.openSettings(); } },
+      ]);
+      return;
+    }
+  }
+  if (Number(Platform.Version) >= 29 && !await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION)) {
+    if (Number(Platform.Version) === 29) {
+      await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION);
+    } else {
+      Alert.alert('자동 거리 측정 허용', '화면이 꺼져 있어도 걷기·달리기를 감지해 위치를 수집합니다. 앱 설정의 위치 권한에서 ‘항상 허용’을 선택해 주세요. 위치 좌표는 서버에 보내지 않으며 휴대폰에는 시간별 거리와 활동 기록만 저장해요.', [
+        { text: '나중에', style: 'cancel' },
+        { text: '설정 열기', onPress: () => { void Linking.openSettings(); } },
+      ]);
+    }
+  }
 }

@@ -6,6 +6,7 @@ import ToastContainer from '@/components/common/toast/ToastContainer';
 import BottomNavigationLayout from './BottomNavigationLayout';
 import AuthBoundary from './AuthBoundary';
 
+import ActivityPage from '@/pages/activity/ActivityPage';
 import HomePage from '@/pages/home/HomePage';
 import MyPage from '@/pages/my/MyPage';
 import NotFoundPage from '@/pages/notFound/NotFoundPage';
@@ -36,6 +37,7 @@ export default function App() {
                 <Route path="/my" element={<MyPage />} />
               </Route>
 
+              <Route path="/activity" element={<ActivityPage />} />
               <Route path="/routine/:routineId" element={<RoutineDetailPage />} />
               <Route path="/routine/:routineId/edit" element={<RoutineEditPage />} />
               <Route path="/routine/order" element={<RoutineOrderPage />} />

@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 const ts = require('typescript');
 
-function loadSteps({ status = 'permission', permission = 'granted', granted = false } = {}) {
+function loadSteps({ status = 'permission', permission = 'granted', granted = false, locationGranted = false } = {}) {
   const calls = [];
   const native = {
     snapshot: async () => ({ date: '2026-10-19', steps: 10, status }),
@@ -21,9 +21,10 @@ function loadSteps({ status = 'permission', permission = 'granted', granted = fa
       if (name === 'react-native') return {
         Platform: { OS: 'android', Version: 37 },
         PermissionsAndroid: {
-          PERMISSIONS: { ACTIVITY_RECOGNITION: 'activity', POST_NOTIFICATIONS: 'notifications' },
+          PERMISSIONS: { ACTIVITY_RECOGNITION: 'activity', POST_NOTIFICATIONS: 'notifications', ACCESS_COARSE_LOCATION: 'coarse', ACCESS_FINE_LOCATION: 'fine', ACCESS_BACKGROUND_LOCATION: 'background' },
           RESULTS: { GRANTED: 'granted', NEVER_ASK_AGAIN: 'never' },
-          check: async () => granted,
+          check: async (name) => ['fine', 'background'].includes(name) ? locationGranted : granted,
+          requestMultiple: async (names) => { calls.push(...names); return { fine: permission, coarse: permission }; },
           request: async (name) => { calls.push(name); return permission; },
         },
         Alert: { alert: () => calls.push('alert') }, Linking: { openSettings() {} },
@@ -100,4 +101,21 @@ test('초기화는 권한을 요청하거나 측정 설정을 바꾸지 않는�
   await api.resetSteps();
   assert.deepEqual(calls, ['reset']);
   assert.equal((await api.readSteps()).status, 'tracking');
+});
+
+
+test('정확한 위치 거절 시 서비스 설정을 바꾸지 않고 안내한다', async () => {
+  const { api, calls } = loadSteps({ permission: 'denied' });
+  await api.requestActivityLocation();
+  assert.deepEqual(calls, ['coarse', 'fine', 'alert']);
+});
+test('화면 밖 위치 측정에는 별도 항상 허용 안내를 제공한다', async () => {
+  const { api, calls } = loadSteps();
+  await api.requestActivityLocation();
+  assert.deepEqual(calls, ['coarse', 'fine', 'alert']);
+});
+test('위치 권한이 이미 있으면 다시 요청하지 않는다', async () => {
+  const { api, calls } = loadSteps({ locationGranted: true });
+  await api.requestActivityLocation();
+  assert.deepEqual(calls, []);
 });

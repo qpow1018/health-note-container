@@ -8,4 +8,7 @@ android {
   namespace 'expo.modules.healthnotesteps'
   defaultConfig { versionCode 1; versionName '1.0.0' }
 }
-dependencies { testImplementation 'junit:junit:4.13.2' }
+dependencies {
+  implementation 'com.google.android.gms:play-services-location:21.4.0'
+  testImplementation 'junit:junit:4.13.2'
+}

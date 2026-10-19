@@ -26,7 +26,11 @@ class HealthNoteStepsModule : Module() {
         else -> "stopped"
       }
       val date = store.date()
-      mapOf("date" to date, "steps" to store.steps(date).toDouble(), "status" to status)
+      mapOf("date" to date, "steps" to store.steps(date).toDouble(), "status" to status,
+        "activity" to ActivityStore(context).snapshot(date),
+        "locationStatus" to StepTrackingService.locationStatus(context),
+        "recognitionReady" to StepTrackingService.recognitionReady,
+        "hasStepDetector" to ((context.getSystemService(Context.SENSOR_SERVICE) as SensorManager).getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) != null))
     }
     AsyncFunction("start") {
       check(StepTrackingService.hasPermission(context)) { "Activity permission required" }

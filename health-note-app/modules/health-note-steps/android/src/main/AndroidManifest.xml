@@ -4,9 +4,14 @@
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE_HEALTH" />
   <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
   <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
   <uses-feature android:name="android.hardware.sensor.stepcounter" android:required="false" />
   <application android:fullBackupContent="@xml/health_note_steps_backup_rules" android:dataExtractionRules="@xml/health_note_steps_extraction_rules">
-    <service android:name=".StepTrackingService" android:exported="false" android:foregroundServiceType="health" android:stopWithTask="false" />
+    <service android:name=".StepTrackingService" android:exported="false" android:foregroundServiceType="health|location" android:stopWithTask="false" />
+    <receiver android:name=".ActivityReceiver" android:exported="false" />
     <receiver android:name=".StepBootReceiver" android:exported="false">
       <intent-filter><action android:name="android.intent.action.BOOT_COMPLETED" /></intent-filter>
     </receiver>

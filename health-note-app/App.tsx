@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, AppState, BackHandler, Button, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
-import { initializeSteps, resetSteps, createStepsScript, readSteps } from './src/steps';
+import { initializeSteps, resetSteps, requestActivityLocation, createStepsScript, readSteps } from './src/steps';
 import { historyScript } from './src/historyScript';
 import { AUTH_CALLBACK_URL, createAuthReturnScript, createGoogleAuthRequest, getGoogleAuthReturnUrl } from './src/googleAuth';
 
@@ -69,9 +69,10 @@ export default function App() {
     }
   }
 
-  async function handleSteps(action: 'snapshot' | 'reset') {
+  async function handleSteps(action: 'snapshot' | 'reset' | 'location-permission') {
     try {
       if (action === 'reset') await resetSteps();
+      if (action === 'location-permission') await requestActivityLocation();
     } catch {
       Alert.alert('걸음 기록을 변경하지 못했어요', '권한과 기기 상태를 확인하고 다시 시도해 주세요.');
     }
@@ -147,7 +148,7 @@ export default function App() {
                   if (new URL(nativeEvent.url).origin !== webUrl.origin) return;
                   const message = JSON.parse(nativeEvent.data);
                   if (message.type === 'health-note-steps' &&
-                      ['snapshot', 'reset'].includes(message.action)) {
+                      ['snapshot', 'reset', 'location-permission'].includes(message.action)) {
                     void handleSteps(message.action);
                     return;
                   }
