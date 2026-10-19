@@ -1,0 +1,38 @@
+.layout {
+  padding-bottom: calc(56px + env(safe-area-inset-bottom));
+
+  .navigation {
+    @include app-width;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    padding: 0 env(safe-area-inset-right) env(safe-area-inset-bottom)
+      env(safe-area-inset-left);
+    border-top: 1px solid $border-soft;
+    background: $bg;
+
+    a {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      min-height: 56px;
+      color: $text-secondary;
+      font-size: 11px;
+      text-decoration: none;
+
+      &[aria-current='page'] {
+        color: $mint-accent;
+      }
+
+      &:focus-visible {
+        outline: 2px solid $mint-accent;
+        outline-offset: -4px;
+      }
+    }
+  }
+}

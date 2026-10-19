@@ -1,0 +1,52 @@
+.radio {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: $control-height;
+  color: $text-primary;
+
+  .input {
+    position: absolute;
+    left: 0;
+    width: 22px;
+    height: 22px;
+    margin: 0;
+    opacity: 0;
+
+    &:checked + .icon {
+      color: $mint-accent;
+      .unchecked {
+        display: none;
+      }
+      .checked {
+        display: block;
+      }
+    }
+
+    &:focus-visible + .icon {
+      outline: 2px solid $border-focus;
+      outline-offset: 3px;
+      border-radius: 50%;
+    }
+
+    &:disabled ~ .icon,
+    &:disabled ~ .label {
+      opacity: 0.5;
+    }
+  }
+
+  .icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    color: $text-secondary;
+    .checked {
+      display: none;
+    }
+  }
+
+  .label {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+}

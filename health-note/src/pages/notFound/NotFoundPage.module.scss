@@ -1,0 +1,23 @@
+.not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  min-height: 100dvh;
+  padding: max(32px, env(safe-area-inset-top))
+    max($page-padding, env(safe-area-inset-right))
+    max(32px, env(safe-area-inset-bottom))
+    max($page-padding, env(safe-area-inset-left));
+  text-align: center;
+
+  h1 {
+    font-size: $font-size-title;
+    font-weight: 700;
+    word-break: keep-all;
+  }
+
+  a {
+    min-width: 160px;
+  }
+}

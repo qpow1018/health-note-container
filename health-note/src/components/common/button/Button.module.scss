@@ -1,0 +1,41 @@
+@mixin button-color($color, $light, $accent) {
+  &.fill-solid {
+    background: $color;
+    border-color: $color;
+    color: $text-primary;
+  }
+
+  &.fill-outline {
+    background: transparent;
+    border-color: $accent;
+    color: $light;
+  }
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: $control-height;
+  padding: 12px;
+  border: 1px solid transparent;
+  border-radius: $border-radius;
+  font-weight: 500;
+  text-decoration: none;
+
+  &.color-mint {
+    @include button-color($mint, $mint-accent, $mint);
+  }
+
+  &.color-rose {
+    @include button-color($rose, $rose-accent, $rose);
+  }
+
+  &.color-gray {
+    @include button-color($gray-600, $text-primary, $border-strong);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}

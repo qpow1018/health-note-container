@@ -1,0 +1,10 @@
+.logout-button {
+  min-height: 44px;
+  margin-left: auto;
+  padding-inline: 8px;
+  color: $text-secondary;
+  font-size: 12px;
+  &:disabled {
+    opacity: 0.5;
+  }
+}

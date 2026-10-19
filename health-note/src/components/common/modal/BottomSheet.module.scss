@@ -1,0 +1,66 @@
+.bottom-sheet {
+  @include app-width;
+  position: fixed;
+  inset: auto 0 0;
+  max-height: min(80dvh, calc(100dvh - max(24px, env(safe-area-inset-top))));
+  margin: 0 auto;
+  padding: 0;
+  border: 0;
+  border-radius: 16px 16px 0 0;
+  background: $bg;
+  color: $text-primary;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+
+  &::backdrop {
+    background: $bg-overlay;
+  }
+
+  .panel {
+    display: flex;
+    flex-direction: column;
+    max-height: min(80dvh, calc(100dvh - max(24px, env(safe-area-inset-top))));
+    padding: 0 max($page-padding, env(safe-area-inset-right))
+      max($page-padding, env(safe-area-inset-bottom)) max($page-padding, env(safe-area-inset-left));
+  }
+
+  .header {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 12px;
+    padding-block: 8px;
+
+    h2 {
+      flex: 1;
+      min-width: 0;
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    button {
+      display: inline-flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      width: $control-height;
+      height: $control-height;
+      padding: 0;
+      border: 0;
+      border-radius: $border-radius;
+      background: transparent;
+      color: inherit;
+    }
+  }
+
+  .content {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+  }
+
+  .footer {
+    flex-shrink: 0;
+    padding-top: 16px;
+  }
+}

@@ -1,0 +1,7 @@
+.app-shell {
+  @include app-width;
+  min-height: 100dvh;
+  margin-inline: auto;
+  background: $bg;
+  overflow-wrap: anywhere;
+}

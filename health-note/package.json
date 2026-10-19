@@ -1,0 +1,46 @@
+{
+  "name": "health-note",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "typecheck": "tsc -b",
+    "test:e2e": "playwright test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "db:network": "docker network create -o com.docker.network.bridge.host_binding_ipv4=127.0.0.1 health-note-local",
+    "db:start": "supabase start --network-id health-note-local",
+    "db:status": "supabase status",
+    "db:stop": "supabase stop --project-id health-note-local",
+    "db:migrate": "supabase migration up --local",
+    "db:test": "supabase test db --local --network-id health-note-local"
+  },
+  "dependencies": {
+    "@dnd-kit/dom": "^0.5.1",
+    "@dnd-kit/react": "^0.5.1",
+    "@fontsource/noto-sans-kr": "^5.3.1",
+    "@supabase/supabase-js": "2.118.0",
+    "@tanstack/react-query": "5.104.3",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-icons": "^5.7.0",
+    "react-router-dom": "^7.18.4"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.0",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "oxlint": "^1.81.0",
+    "prettier": "^3.9.10",
+    "sass": "^1.105.1",
+    "supabase": "2.121.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.3.0"
+  }
+}

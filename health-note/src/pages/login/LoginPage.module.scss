@@ -1,0 +1,66 @@
+.login-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 64px;
+  min-height: 100dvh;
+  padding: max(48px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right))
+    max(40px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
+
+  .intro {
+    img {
+      display: block;
+      margin-bottom: 16px;
+    }
+    .brand {
+      margin-bottom: 28px;
+      color: $mint-light;
+      font-size: 18px;
+      font-weight: 700;
+    }
+    h1 {
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.6;
+      letter-spacing: -0.8px;
+    }
+    .description {
+      margin-top: 16px;
+      color: $text-secondary;
+      font-size: 14px;
+    }
+  }
+  .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    [role='alert'] {
+      color: $error-light;
+      font-size: 13px;
+    }
+    .google-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      min-height: $control-height;
+      padding: 12px 16px;
+      border: 1px solid $gray-300;
+      border-radius: $border-radius;
+      background: $white;
+      color: $gray-900;
+      font-weight: 500;
+      &:disabled {
+        opacity: 0.6;
+      }
+      svg {
+        flex-shrink: 0;
+      }
+    }
+    .hint {
+      color: $text-secondary;
+      font-size: 12px;
+      text-align: center;
+    }
+  }
+}

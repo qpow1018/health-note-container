@@ -1,0 +1,61 @@
+.more-menu {
+  position: relative;
+
+  .trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: $control-height;
+    height: $control-height;
+    padding: 0;
+    border: 0;
+    border-radius: $border-radius;
+    background: transparent;
+    color: $text-primary;
+  }
+
+  .menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    z-index: 2;
+    min-width: 152px;
+    padding: 4px;
+    border: 1px solid $border;
+    border-radius: $border-radius;
+    background: $bg;
+    box-shadow: 0 8px 24px rgba($black, 0.24);
+  }
+
+  .item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: $control-height;
+    padding: 12px 16px;
+    border: 0;
+    border-radius: $border-radius;
+    background: transparent;
+    color: $text-primary;
+    text-align: left;
+    text-decoration: none;
+
+    & + .item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 12px;
+      left: 12px;
+      border-top: 1px solid $border-soft;
+    }
+
+    &:hover,
+    &:focus-visible {
+      background: $bg-light;
+    }
+    &.color-rose {
+      color: $rose-light;
+    }
+  }
+}

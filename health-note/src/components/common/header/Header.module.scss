@@ -1,0 +1,38 @@
+.header {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: calc(56px + env(safe-area-inset-top));
+  padding: env(safe-area-inset-top) max(12px, env(safe-area-inset-right)) 0
+    max(12px, env(safe-area-inset-left));
+
+  .back-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: $control-height;
+    min-height: $control-height;
+    padding: 0;
+    border: 0;
+    border-radius: $border-radius;
+    background: transparent;
+    color: $text-primary;
+  }
+
+  .title {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+}

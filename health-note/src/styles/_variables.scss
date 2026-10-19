@@ -1,0 +1,142 @@
+// Base
+$white: #fff;
+$black: #000;
+
+// Gray
+$gray-100: #f4f4f6;
+$gray-200: #e2e2e6;
+$gray-300: #c4c4cc;
+$gray-400: #8f9099;
+$gray-500: #62636c;
+$gray-600: #45464e;
+$gray-700: #34343b;
+$gray-800: #27272a;
+$gray-900: #18181b;
+
+// rose
+$rose-100: #fff1f2;
+$rose-200: #ffe4e6;
+$rose-300: #fca5a5;
+$rose-400: #fb7185;
+$rose-500: #f43f5e;
+$rose-600: #e11d48;
+$rose-700: #be123c;
+$rose-800: #9f1239;
+$rose-900: #4c0519;
+
+// Rose semantic
+$rose: $rose-600;
+$rose-light: $rose-400;
+$rose-accent: $rose-500;
+$rose-tint: rgba($rose, 0.1);
+$rose-surface: $rose-800;
+
+// Error semantic
+$error: #dc2626;
+$error-light: #fecaca;
+$error-accent: #f87171;
+$error-tint: rgba($error, 0.1);
+$error-surface: #991b1b;
+
+// mint
+$mint-100: #e6fffa;
+$mint-200: #bbf7d0;
+$mint-300: #86efac;
+$mint-400: #4ade80;
+$mint-500: #10b981;
+$mint-600: #059669;
+$mint-700: #047857;
+$mint-800: #065f46;
+$mint-900: #14532d;
+
+// Mint semantic
+$mint: $mint-600;
+$mint-light: $mint-400;
+$mint-accent: $mint-500;
+$mint-tint: rgba($mint, 0.1);
+$mint-surface: $mint-800;
+
+// Amber
+$amber-100: #fef3c7;
+$amber-200: #fde68a;
+$amber-300: #fcd34d;
+$amber-400: #fbbf24;
+$amber-500: #f59e0b;
+$amber-600: #d97706;
+$amber-700: #b45309;
+$amber-800: #92400e;
+$amber-900: #78350f;
+
+// Amber semantic
+$amber: $amber-600;
+$amber-light: $amber-400;
+$amber-accent: $amber-500;
+$amber-tint: rgba($amber, 0.1);
+$amber-surface: $amber-800;
+
+// Violet
+$violet-100: #f3e8ff;
+$violet-200: #e9d5ff;
+$violet-300: #d8b4fe;
+$violet-400: #c084fc;
+$violet-500: #a855f7;
+$violet-600: #9333ea;
+$violet-700: #7e22ce;
+$violet-800: #6b21a8;
+$violet-900: #581c87;
+
+// Violet semantic
+$violet: $violet-600;
+$violet-light: $violet-400;
+$violet-accent: $violet-500;
+$violet-tint: rgba($violet, 0.1);
+$violet-surface: $violet-800;
+
+// Azure
+$azure-100: #e0f2fe;
+$azure-200: #bae6fd;
+$azure-300: #7dd3fc;
+$azure-400: #38bdf8;
+$azure-500: #0ea5e9;
+$azure-600: #0284c7;
+$azure-700: #0369a1;
+$azure-800: #075985;
+$azure-900: #0c4a6e;
+
+// Azure semantic
+$azure: $azure-600;
+$azure-light: $azure-400;
+$azure-accent: $azure-500;
+$azure-tint: rgba($azure, 0.1);
+$azure-surface: $azure-800;
+
+// Text
+$text-primary: $gray-100;
+$text-secondary: $gray-400;
+$text-muted: $gray-500;
+
+// Border
+$border-soft: $gray-700;
+$border: $gray-600;
+$border-strong: $gray-500;
+$border-focus: $gray-400;
+
+// Background
+$bg-overlay: rgba(0, 0, 0, 0.5);
+$bg-dark: $gray-900;
+$bg: $gray-800;
+$bg-light: $gray-700;
+$bg-accent: $gray-600;
+
+$font-family: 'Noto Sans KR', sans-serif;
+$font-size-body: 15px;
+$font-size-caption: 13px;
+$font-size-title: 22px;
+$line-height-body: 1.5;
+$app-max-width: 480px;
+$page-padding: 20px;
+$control-height: 48px;
+$border-radius: 6px;
+
+$z-index-loading: 300;
+$z-index-toast: 400;

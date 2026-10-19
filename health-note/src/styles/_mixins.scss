@@ -1,0 +1,7 @@
+@use './variables' as tokens;
+
+// 콘텐츠와 viewport 기준 fixed 요소가 같은 너비를 사용한다.
+@mixin app-width {
+  width: 100%;
+  max-width: tokens.$app-max-width;
+}

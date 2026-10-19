@@ -1,0 +1,7 @@
+.exercise-create-page {
+  .content {
+    padding: 0 max($page-padding, env(safe-area-inset-right))
+      max($page-padding, env(safe-area-inset-bottom))
+      max($page-padding, env(safe-area-inset-left));
+  }
+}

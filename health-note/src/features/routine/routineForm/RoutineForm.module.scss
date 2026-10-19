@@ -1,0 +1,234 @@
+.routine-form {
+  .form {
+    margin-top: 32px;
+    padding-bottom: calc(#{$control-height} + 48px + env(safe-area-inset-bottom));
+  }
+
+  .fields {
+    min-width: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
+  }
+
+  .required {
+    color: $mint-accent;
+  }
+
+  .field {
+    min-width: 0;
+    padding: 0;
+    margin: 0 0 24px;
+    border: 0;
+
+    > label,
+    legend,
+    h2 {
+      display: block;
+      margin-bottom: 8px;
+      font-size: $font-size-body;
+      font-weight: 500;
+    }
+  }
+
+  .hint {
+    margin-block: 8px 12px;
+    color: $text-secondary;
+    font-size: $font-size-caption;
+  }
+
+  .exercise-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+    h2 {
+      margin: 0;
+      font-size: $font-size-body;
+      font-weight: 500;
+    }
+  }
+
+  .select-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    gap: 4px;
+    min-height: $control-height;
+    padding: 0 4px;
+    border: 0;
+    background: transparent;
+    color: $mint-accent;
+    font-size: $font-size-caption;
+  }
+
+  .announcement {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .exercise-box {
+    padding-inline: 12px;
+    border: 1px solid $border-soft;
+    border-radius: $border-radius;
+  }
+
+  .empty-exercises {
+    padding: 24px 12px;
+    color: $text-secondary;
+    font-size: $font-size-caption;
+    text-align: center;
+  }
+
+  .selected-list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    .selected-item {
+      display: flex;
+      align-items: center;
+      padding-block: 12px;
+      border-bottom: 1px solid $border-soft;
+      background: $bg;
+      &:last-child {
+        border-bottom: 0;
+      }
+      &.dragging {
+        background: $bg-light;
+      }
+    }
+  }
+
+  .drag-handle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: $control-height;
+    height: $control-height;
+    padding: 0;
+    border: 0;
+    border-radius: $border-radius;
+    background: transparent;
+    color: $text-secondary;
+    touch-action: none;
+    cursor: grab;
+    &[hidden] {
+      display: none;
+    }
+  }
+
+  .exercise-info {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+
+    p {
+      margin-top: 4px;
+      color: $text-secondary;
+      font-size: $font-size-caption;
+    }
+  }
+
+  .schedule-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .weekdays:not([hidden]) {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 6px;
+
+    label {
+      position: relative;
+      min-width: 0;
+
+      input {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        opacity: 0;
+
+        &:checked + span {
+          border-color: $mint;
+          background: $mint;
+          color: $text-primary;
+        }
+
+        &:focus-visible + span {
+          outline: 2px solid $border-focus;
+          outline-offset: 3px;
+        }
+
+        &:disabled + span {
+          opacity: 0.5;
+        }
+      }
+
+      span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: $control-height;
+        border: 1px solid $border;
+        border-radius: $border-radius;
+        color: $text-secondary;
+      }
+    }
+  }
+
+  .actions {
+    @include app-width;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    z-index: 1;
+    transform: translateX(-50%);
+    padding: 16px max($page-padding, env(safe-area-inset-right))
+      max(16px, env(safe-area-inset-bottom)) max($page-padding, env(safe-area-inset-left));
+    border-top: 1px solid $border-soft;
+    background: $bg;
+    button {
+      width: 100%;
+    }
+  }
+
+  .error {
+    margin-block: 12px;
+    color: $error-accent;
+  }
+
+  .confirm-button {
+    width: 100%;
+  }
+
+  .exercise-options {
+    .exercise-option {
+      display: flex;
+      gap: 12px;
+      padding-block: 16px;
+      border-bottom: 1px solid $border-soft;
+    }
+
+    .exercise-option-info {
+      display: block;
+      > span {
+        display: block;
+        margin-top: 4px;
+        color: $text-secondary;
+        font-size: $font-size-caption;
+      }
+    }
+  }
+}
