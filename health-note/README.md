@@ -130,4 +130,3 @@ E2E 테스트는 설치된 Google Chrome이 필요합니다.
 - [아키텍처](./docs/architecture.md): 책임 경계·인증·조회와 저장 흐름·캐시의 현재 구현
 - [제품 동작 정책](./docs/behavior-decisions.md): 기록 보존·삭제, 루틴 활성화와 일정 변경 규칙
 - [AGENTS.md](./AGENTS.md): 작성·리뷰·검증 기준과 프로젝트 스킬 안내
-- [에이전트 작업 hook](./docs/agent-workflow.md): 요청 시작 시 작업 절차 안내와 활성화 방법
