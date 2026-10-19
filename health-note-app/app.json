@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "Health Note",
+    "slug": "health-note-app",
+    "version": "1.0.2",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.healthnote.app"
+    },
+    "android": {
+      "predictiveBackGestureEnabled": false,
+      "package": "com.healthnote.app",
+      "versionCode": 3
+    },
+    "plugins": [
+      "expo-web-browser"
+    ],
+    "scheme": "com.healthnote.app"
+  }
+}
