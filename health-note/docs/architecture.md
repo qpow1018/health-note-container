@@ -54,3 +54,10 @@ API는 Query 캐시나 화면에 의존하지 않고, queries는 feature·page·
 브라우저 테스트는 인증과 데이터 API를 모의 응답으로 제어한다. fixture의 localStorage는 테스트 데이터 저장 수단이며 제품의 저장소가 아니다. 실제 데이터는 계정별 Supabase DB에 저장한다.
 
 DB 제약·RLS·RPC는 로컬 Supabase의 DB 테스트로 확인한다. 모의 API 테스트는 실제 Google 인증·운영 DB·Android 실기기 동작의 증거가 아니다. 실행 방법과 환경은 README를 참고한다.
+
+
+## Android 걸음 카드
+
+홈은 [StepCard](../src/features/steps/StepCard.tsx)를 오늘 루틴 위에 조립한다. Android 네이티브 모듈의 응답을 받은 경우에만 표시하며 일반 브라우저·iOS·이전 APK에는 표시하지 않는다. 센서 측정과 기기 저장은 앱이 담당하고 웹은 권한/시작/중지 요청과 결과 표시만 담당한다. 서버 상태가 아니므로 Query 캐시나 API 계층을 추가하지 않는다.
+
+홈이 보이는 동안 5초마다 최신 상태를 조회하고 문서가 다시 보일 때도 갱신한다. 날짜가 다른 이전 응답의 걸음수는 오늘 값으로 표시하지 않는다. 계정별 운동·루틴과 달리 걸음 기록은 휴대폰에 귀속되며 카드에 기기 내부 저장을 안내한다. 메시지 계약과 서비스·날짜 경계는 [앱 아키텍처](../../health-note-app/docs/architecture.md#android-자동-걸음-기록)를 참고한다.

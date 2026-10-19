@@ -12,12 +12,14 @@ function loadApp() {
   const cache = {};
   const mocks = {
     'react-native': {
+      Platform: { OS: 'ios' }, AppState: { addEventListener: () => ({ remove() {} }) },
       ActivityIndicator: 'ActivityIndicator', Alert: { alert() {} },
       BackHandler: { addEventListener: () => ({ remove() {} }) },
       Button: 'Button', Text: 'Text', View: 'View', StyleSheet: { create: (styles) => styles },
     },
     'react-native-safe-area-context': { SafeAreaProvider: 'SafeAreaProvider', SafeAreaView: 'SafeAreaView' },
     'react-native-webview': { WebView: 'WebView' },
+    'expo': { requireOptionalNativeModule: () => null },
     'expo-status-bar': { StatusBar: 'StatusBar' },
     'expo-web-browser': { openAuthSessionAsync: async () => ({ type: 'cancel' }) },
   };

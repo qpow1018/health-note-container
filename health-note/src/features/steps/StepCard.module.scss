@@ -1,0 +1,51 @@
+.step-card {
+  margin-bottom: 20px;
+  padding: 16px;
+  border: 1px solid $border-soft;
+  border-radius: $border-radius;
+  background: $bg;
+
+  .action-button {
+    min-height: 44px;
+    padding: 6px 8px;
+    border: 0;
+    background: transparent;
+    color: $mint-light;
+    font-size: 12px;
+    &:disabled {
+      opacity: 0.5;
+    }
+  }
+  .heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    h2 {
+      font-size: 15px;
+    }
+  }
+  .count {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin: 4px 0 8px;
+    strong {
+      font-size: 32px;
+      font-weight: 700;
+    }
+    span {
+      color: $text-secondary;
+      font-size: 13px;
+    }
+  }
+  .description {
+    color: $text-secondary;
+    font-size: 13px;
+  }
+  .note {
+    margin-top: 4px;
+    color: $text-secondary;
+    font-size: 12px;
+  }
+}

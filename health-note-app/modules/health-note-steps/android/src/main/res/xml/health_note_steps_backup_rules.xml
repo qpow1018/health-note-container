@@ -1,0 +1,3 @@
+<full-backup-content>
+  <exclude domain="sharedpref" path="health-note-steps.xml" />
+</full-backup-content>

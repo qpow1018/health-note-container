@@ -1,9 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import * as WebBrowser from 'expo-web-browser';
 import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Alert, BackHandler, Button, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, AppState, BackHandler, Button, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
+import { changeStepTracking, createStepsScript, readSteps } from './src/steps';
 import { historyScript } from './src/historyScript';
 import { AUTH_CALLBACK_URL, createAuthReturnScript, createGoogleAuthRequest, getGoogleAuthReturnUrl } from './src/googleAuth';
 
@@ -45,6 +46,32 @@ export default function App() {
     });
     return () => subscription.remove();
   }, [error]);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (state) => {
+      if (state === 'active') void publishSteps(true);
+    });
+    return () => subscription.remove();
+  }, []);
+
+  async function publishSteps(resume = false) {
+    if (!webUrl) return;
+    try {
+      const snapshot = await readSteps(resume);
+      if (snapshot) webView.current?.injectJavaScript(createStepsScript(snapshot, webUrl.origin));
+    } catch {
+      Alert.alert('걸음 기록을 불러오지 못했어요', '잠시 후 다시 시도해 주세요.');
+    }
+  }
+
+  async function handleSteps(action: 'snapshot' | 'start' | 'stop' | 'reset') {
+    try {
+      if (action !== 'snapshot') await changeStepTracking(action);
+    } catch {
+      Alert.alert('걸음 기록을 변경하지 못했어요', '권한과 기기 상태를 확인하고 다시 시도해 주세요.');
+    }
+    await publishSteps();
+  }
 
   async function signInWithGoogle(url: string) {
     if (!webUrl || authenticating.current) return;
@@ -114,12 +141,17 @@ export default function App() {
                 try {
                   if (new URL(nativeEvent.url).origin !== webUrl.origin) return;
                   const message = JSON.parse(nativeEvent.data);
+                  if (message.type === 'health-note-steps' &&
+                      ['snapshot', 'start', 'stop', 'reset'].includes(message.action)) {
+                    void handleSteps(message.action);
+                    return;
+                  }
                   if (message.type === 'health-note-history' &&
                       Number.isInteger(message.index) && message.index >= 0 &&
                       new URL(message.url).origin === webUrl.origin) {
                     routerIndex.current = message.index;
                   }
-                } catch { /* 이 앱의 history 메시지만 처리한다. */ }
+                } catch { /* 이 앱의 올바른 메시지만 처리한다. */ }
               }}
               onNavigationStateChange={(state) => {
                 nativeCanGoBack.current = state.canGoBack;
@@ -142,7 +174,7 @@ export default function App() {
                 loadingUrl.current = nativeEvent.url;
                 setLoading(nativeEvent.loading);
               }}
-              onLoadEnd={() => setLoading(false)}
+              onLoadEnd={() => { setLoading(false); void publishSteps(true); }}
               onError={() => setError(true)}
               onHttpError={({ nativeEvent }) => {
                 if (nativeEvent.url === loadingUrl.current) setError(true);

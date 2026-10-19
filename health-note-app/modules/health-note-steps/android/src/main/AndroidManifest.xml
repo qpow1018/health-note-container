@@ -1,0 +1,14 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+  <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_HEALTH" />
+  <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+  <uses-feature android:name="android.hardware.sensor.stepcounter" android:required="false" />
+  <application android:fullBackupContent="@xml/health_note_steps_backup_rules" android:dataExtractionRules="@xml/health_note_steps_extraction_rules">
+    <service android:name=".StepTrackingService" android:exported="false" android:foregroundServiceType="health" android:stopWithTask="false" />
+    <receiver android:name=".StepBootReceiver" android:exported="false">
+      <intent-filter><action android:name="android.intent.action.BOOT_COMPLETED" /></intent-filter>
+    </receiver>
+  </application>
+</manifest>

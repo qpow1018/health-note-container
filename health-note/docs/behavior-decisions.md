@@ -29,3 +29,15 @@
 루틴 폼은 이름·운동 선택·반복 일정의 입력 오류를 먼저 안내한다. 유효한 입력에 대해서만 운동 목록을 재조회해 선택한 운동이 여전히 존재하는지 확인하고 저장한다. 조회 실패는 운동 목록 오류 영역에서 한 번만 안내하며 입력을 유지한다. 운동 선택을 다시 열어 조회에 성공하면 저장을 재시도할 수 있다.
 
 근거: [루틴 폼](../src/features/routine/routineForm/RoutineForm.tsx). 관련 테스트: [입력 검증 순서와 조회 실패 복구](../tests/routine-refetch.spec.ts).
+
+
+## 걸음은 Android 휴대폰에서 자동 기록한다
+
+첫 범위는 오늘 걸음수와 화면 꺼짐·백그라운드 자동 기록이다. 사용자가 권한을 허용하고 자동 기록을 켜면 측정하며, 홈에서 끌 수 있다. 끄더라도 오늘 저장한 값은 유지한다. 걷기·달리기 구분, 활동 시간·칼로리, 수동 운동 시작·종료는 포함하지 않는다.
+
+첫 버전의 걸음 기록은 로그인 계정이 아닌 휴대폰 내부에 저장한다. 계정 변경으로 값을 초기화하지 않으며 서버에 동기화하지 않는다. 앱 제거·데이터 삭제 시 사라진다. 측정 전이나 중단 구간의 걸음수를 추정해 추가하지 않는다. 자정을 걸친 센서 묶음의 날짜 배분과 강제 종료·OS 제한은 [앱 문서](../../health-note-app/docs/architecture.md#android-자동-걸음-기록)의 제약을 따른다.
+
+근거: [홈 걸음 카드](../src/features/steps/StepCard.tsx), [네이티브 측정](../../health-note-app/modules/health-note-steps/android/src/main/java/expo/modules/healthnotesteps/StepTrackingService.kt). 관련 테스트: [브리지 응답을 대체한 화면 동작](../tests/steps.spec.ts), [센서 누적값 계산](../../health-note-app/modules/health-note-steps/android/src/test/java/expo/modules/healthnotesteps/StepCounterTest.kt).
+
+
+테스트용 임시 기능으로 홈 카드에 오늘 기록 초기화를 제공한다. 확인창에서 초기화하면 오늘 저장값만 0으로 만들고 센서 기준을 다시 잡는다. 자동 기록 설정·이전 날짜 기록은 유지한다. 초기화 시점 이전의 지연 센서 이벤트는 무시하고, 이후 첫 응답은 기준값으로만 사용하므로 첫 응답까지의 일부 걸음은 집계되지 않을 수 있다. 검증 후 제거할 기능이며 웹 메시지의 `reset` 요청을 앱이 처리한다.

@@ -1,4 +1,5 @@
 import { useRoutineToday } from '@/features/routine/useRoutineToday';
+import StepCard from '@/features/steps/StepCard';
 import HomeRoutines from '@/features/routine/homeRoutines/HomeRoutines';
 
 import styles from './HomePage.module.scss';
@@ -23,6 +24,7 @@ export default function HomePage() {
         </time>
       </div>
       <div className={styles['content']}>
+        <StepCard today={today} />
         <HomeRoutines today={today} />
       </div>
     </section>
