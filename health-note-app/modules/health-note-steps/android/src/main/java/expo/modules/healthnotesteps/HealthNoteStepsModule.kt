@@ -1,7 +1,6 @@
 package expo.modules.healthnotesteps
 
 import android.content.Context
-import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorManager
 import expo.modules.kotlin.modules.Module
@@ -23,17 +22,15 @@ class HealthNoteStepsModule : Module() {
         !supported -> "unsupported"
         !permitted -> "permission"
         store.failed -> "error"
-        !store.enabled -> "disabled"
         StepTrackingService.running -> "tracking"
         else -> "stopped"
       }
       val date = store.date()
-      mapOf("date" to date, "steps" to store.steps(date).toDouble(), "status" to status, "enabled" to store.enabled)
+      mapOf("date" to date, "steps" to store.steps(date).toDouble(), "status" to status)
     }
     AsyncFunction("start") {
       check(StepTrackingService.hasPermission(context)) { "Activity permission required" }
       val store = StepStore(context)
-      store.enabled = true
       store.failed = false
       try { StepTrackingService.start(context) }
       catch (error: Exception) { store.failed = true; throw error }
@@ -41,11 +38,5 @@ class HealthNoteStepsModule : Module() {
     AsyncFunction("reset") {
       StepTrackingService.resetToday(context)
     }.runOnQueue(Queues.MAIN)
-    AsyncFunction("stop") {
-      val store = StepStore(context)
-      store.enabled = false
-      store.failed = false
-      context.stopService(Intent(context, StepTrackingService::class.java))
-    }
   }
 }

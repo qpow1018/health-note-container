@@ -4,9 +4,6 @@ import android.content.Context
 
 class StepStore(context: Context) {
   private val prefs = context.getSharedPreferences("health-note-steps", Context.MODE_PRIVATE)
-  var enabled: Boolean
-    get() = prefs.getBoolean("enabled", false)
-    set(value) { prefs.edit().putBoolean("enabled", value).commit() }
   var failed: Boolean
     get() = prefs.getBoolean("failed", false)
     set(value) { prefs.edit().putBoolean("failed", value).commit() }

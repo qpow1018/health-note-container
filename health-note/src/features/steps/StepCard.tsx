@@ -8,7 +8,6 @@ type TStepSnapshot = {
   date: string;
   steps: number;
   status: 'unsupported' | 'permission' | 'disabled' | 'tracking' | 'stopped' | 'error';
-  enabled: boolean;
 };
 type TNativeWindow = Window & {
   ReactNativeWebView?: { postMessage(message: string): void };
@@ -16,10 +15,10 @@ type TNativeWindow = Window & {
 const STATUS_TEXT = {
   unsupported: '이 휴대폰은 걸음 센서를 지원하지 않아요.',
   permission: '신체 활동 권한을 허용하면 자동으로 기록해요.',
-  disabled: '자동 기록을 켜면 화면을 꺼도 걸음을 기록해요.',
+  disabled: '앱을 다시 실행하면 자동 기록을 시작해요.',
   tracking: '자동으로 기록 중이에요.',
-  stopped: '기록이 중단됐어요. 다시 켜 주세요.',
-  error: '측정을 시작하지 못했어요. 다시 시도해 주세요.',
+  stopped: '기록이 중단됐어요. 앱을 다시 실행해 주세요.',
+  error: '측정을 시작하지 못했어요. 앱을 다시 실행해 주세요.',
 };
 
 export default function StepCard({ today }: { today: string }) {
@@ -51,46 +50,16 @@ export default function StepCard({ today }: { today: string }) {
   if (!snapshot) return null;
   const isTracking = snapshot.status === 'tracking';
   const isSupported = snapshot.status !== 'unsupported';
-  const canStop = isTracking;
-
-  function handleToggle() {
-    setIsPending(true);
-    requestSteps(canStop ? 'stop' : 'start');
-  }
-
   return (
     <section className={styles['step-card']} aria-labelledby="step-card-title">
       <div className={styles['heading']}>
         <h2 id="step-card-title">오늘 걸음</h2>
-        {isSupported && (
-          <button
-            className={styles['action-button']}
-            type="button"
-            disabled={isPending}
-            onClick={handleToggle}
-          >
-            {canStop ? '자동 기록 끄기' : '자동 기록 켜기'}
-          </button>
-        )}
       </div>
       {isSupported && (
         <p className={styles['count']}>
           <strong>{(snapshot.date === today ? snapshot.steps : 0).toLocaleString('ko-KR')}</strong>
           <span>걸음</span>
         </p>
-      )}
-      {snapshot.enabled && !isTracking && isSupported && (
-        <button
-          className={styles['action-button']}
-          type="button"
-          disabled={isPending}
-          onClick={() => {
-            setIsPending(true);
-            requestSteps('stop');
-          }}
-        >
-          자동 기록 끄기
-        </button>
       )}
       <p className={styles['description']} role="status">
         {STATUS_TEXT[snapshot.status]}
@@ -108,7 +77,7 @@ export default function StepCard({ today }: { today: string }) {
       <Confirm
         isOpen={isResetOpen}
         title="오늘 기록 초기화"
-        message="오늘 걸음 기록을 지울까요? 자동 기록 설정과 이전 날짜 기록은 유지돼요."
+        message="오늘 걸음 기록을 지울까요? 자동 기록은 계속되고 이전 날짜 기록은 유지돼요."
         confirmLabel="초기화"
         onClose={() => setIsResetOpen(false)}
         onConfirm={() => {
@@ -126,7 +95,7 @@ export default function StepCard({ today }: { today: string }) {
   );
 }
 
-function requestSteps(action: 'snapshot' | 'start' | 'stop' | 'reset') {
+function requestSteps(action: 'snapshot' | 'reset') {
   (window as TNativeWindow).ReactNativeWebView?.postMessage(
     JSON.stringify({ type: 'health-note-steps', action }),
   );
@@ -142,7 +111,6 @@ function isSnapshot(value: unknown): value is TStepSnapshot {
     Number.isSafeInteger(data.steps) &&
     data.steps >= 0 &&
     typeof data.status === 'string' &&
-    Object.hasOwn(STATUS_TEXT, data.status) &&
-    typeof data.enabled === 'boolean'
+    Object.hasOwn(STATUS_TEXT, data.status)
   );
 }

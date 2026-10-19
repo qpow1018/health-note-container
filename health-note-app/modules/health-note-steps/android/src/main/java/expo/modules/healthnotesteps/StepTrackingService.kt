@@ -24,7 +24,7 @@ class StepTrackingService : Service(), SensorEventListener {
   }
 
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-    if (!store.enabled || !hasPermission(this)) {
+    if (!hasPermission(this)) {
       stopSelf()
       return START_NOT_STICKY
     }
@@ -37,7 +37,7 @@ class StepTrackingService : Service(), SensorEventListener {
       val notification = Notification.Builder(this, CHANNEL)
         .setSmallIcon(android.R.drawable.ic_menu_directions)
         .setContentTitle("Health Note가 걸음을 기록하고 있어요")
-        .setContentText("휴대폰을 가지고 걸으면 자동으로 기록해요. 앱에서 기록을 끌 수 있어요.")
+        .setContentText("휴대폰을 가지고 걸으면 자동으로 기록해요. 화면을 꺼도 자동으로 기록해요.")
         .setContentIntent(pending).setOngoing(true).build()
       if (Build.VERSION.SDK_INT >= 34) startForeground(701, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_HEALTH)
       else startForeground(701, notification)
@@ -56,7 +56,7 @@ class StepTrackingService : Service(), SensorEventListener {
   }
 
   override fun onSensorChanged(event: SensorEvent) {
-    if (!store.enabled || !hasPermission(this)) { stopSelf(); return }
+    if (!hasPermission(this)) { stopSelf(); return }
     val delta = counter.record(event.values[0].toLong(), event.timestamp)
     // Sensor time is monotonic. Use the event time, not delayed delivery time.
     val eventTime = System.currentTimeMillis() - (SystemClock.elapsedRealtimeNanos() - event.timestamp) / 1_000_000
