@@ -11,7 +11,7 @@
 
 Android 뒤로가기는 React Router의 `history.state.idx > 0`이면 `history.back()`, 그 외 WebView 문서 이력이 있으면 `goBack()`을 사용합니다. 이력이 없는 시작 화면은 BackHandler에서 false를 반환하여 OS 기본 동작에 맡깁니다. 앱 시작 URL이 상세 경로여도 최초 Router idx는 0입니다. 단순 `history.length`는 이전 브라우저 이력과 replace 이동을 구분하지 못하므로 사용하지 않습니다. 이 스크립트는 현재 웹의 BrowserRouter 구현에 의존합니다.
 
-safe area는 네이티브 SafeAreaProvider/ SafeAreaView가 네 방향 모두 담당합니다. 상태바는 밝은 화면용 dark 스타일입니다. WebView는 안전 영역 안에 배치하고 iOS 자동 콘텐츠 inset을 끕니다. 웹은 `viewport-fit=cover`가 없는 viewport와 CSS `env(safe-area-inset-*)`를 사용합니다. 안전 영역 안의 WebView에서는 웹 inset이 0인 구성을 기대하며, 웹의 기본 페이지 padding과 56px 하단 메뉴 공간은 그대로 필요합니다. CSS를 주입해 기존 여백을 지우지 않습니다. 노치·가로 회전·키보드·제스처/3버튼 내비게이션에서 실제 inset은 기기 검증이 필요합니다.
+safe area는 네이티브 SafeAreaProvider/ SafeAreaView가 좌우만 담당합니다. 상·하단 안전 패딩은 제외하며, 사용자가 실기기에서 기존 상·하단 공간 문제가 해결되었음을 확인했습니다. 상태바는 밝은 화면용 dark 스타일입니다. WebView의 iOS 자동 콘텐츠 inset은 끕니다. 웹은 `viewport-fit=cover`가 없는 viewport와 CSS `env(safe-area-inset-*)`를 사용합니다. 웹의 기본 페이지 padding과 56px 하단 메뉴 공간은 유지하며 CSS를 주입하지 않습니다. 다른 기기·OS 및 노치·제스처/3버튼 내비게이션·키보드·모달의 개별 검증 결과는 미확인입니다.
 
 기존 모달과 BottomSheet는 HTML `<dialog>.showModal()`과 `cancel` 이벤트를 사용합니다. 네이티브 모달을 중복 구현하지 않습니다. 열린 dialog에서 Android 뒤로가기가 웹 cancel을 전달하는지는 WebView/OS별 확인이 필요합니다. dialog 상태를 native history로 바꾸거나 닫기 브리지는 사용하지 않습니다.
 

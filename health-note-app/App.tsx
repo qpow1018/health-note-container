@@ -86,7 +86,7 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} edges={['left', 'right']}>
         <StatusBar style="dark" />
         {!webUrl ? (
           <View style={styles.message}>
