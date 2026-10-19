@@ -103,8 +103,27 @@
       height: 18px;
       margin: 0 0 0 4px;
       flex-shrink: 0;
-      accent-color: $mint-accent;
+      appearance: none;
+      display: grid;
+      place-content: center;
+      border: 1px solid $gray-400;
+      border-radius: 3px;
+      background: transparent;
+      opacity: 1;
       cursor: pointer;
+      &:checked {
+        border-color: $mint-accent;
+        background: $mint-accent;
+        &::after {
+          content: '';
+          width: 5px;
+          height: 9px;
+          margin-top: -2px;
+          border: solid $gray-900;
+          border-width: 0 2px 2px 0;
+          transform: rotate(45deg);
+        }
+      }
     }
   }
   .exercise-info {

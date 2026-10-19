@@ -70,6 +70,7 @@ test('응답 대기 중에는 중복 저장을 막고 실패한 체크는 수동
   await checkbox.click();
   await expect(checkbox).toBeDisabled();
   await expect(checkbox).toBeChecked();
+  await expect(checkbox).toHaveCSS('background-color', 'rgb(16, 185, 129)');
   await expect(page.getByRole('progressbar')).toHaveAttribute('value', '1');
   const walking = page.getByRole('checkbox', { name: '걷기 완료' });
   await expect(walking).toBeEnabled();
@@ -86,6 +87,7 @@ test('응답 대기 중에는 중복 저장을 막고 실패한 체크는 수동
   await checkbox.click();
   await expect(checkbox).toBeChecked();
   await expect(checkbox).toBeEnabled();
+  await expect(checkbox).toHaveCSS('background-color', 'rgb(16, 185, 129)');
   await page.reload();
   await expect(checkbox).toBeChecked();
 });
