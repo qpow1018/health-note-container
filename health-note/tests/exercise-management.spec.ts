@@ -17,7 +17,7 @@ test('운동 메뉴는 루틴을 기본 표시하고 등록한 운동 탭과 생
   await tabs.getByRole('link', { name: '등록한 운동' }).click();
   await expect(page).toHaveURL('/exercise?tab=exercises');
   await expect(page.locator('header').getByRole('link')).toHaveCount(0);
-  await page.goto('/exercise/new');
+  await page.getByRole('link', { name: '운동 추가', exact: true }).click();
   await page.getByLabel('운동 이름').fill('생활 스쿼트');
   await page.getByRole('button', { name: '저장', exact: true }).click();
   await expect(page).toHaveURL('/exercise?tab=exercises');

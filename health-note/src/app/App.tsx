@@ -17,7 +17,6 @@ import RoutineCreatePage from '@/pages/exercise/RoutineCreatePage';
 import ExercisePage from '@/pages/exercise/ExercisePage';
 import ExerciseDetailPage from '@/pages/exercise/ExerciseDetailPage';
 import ExerciseEditPage from '@/pages/exercise/ExerciseEditPage';
-import ExerciseOrderPage from '@/pages/exercise/ExerciseOrderPage';
 import ExerciseCreatePage from '@/pages/exercise/ExerciseCreatePage';
 
 import styles from './App.module.scss';
@@ -43,7 +42,6 @@ export default function App() {
               <Route path="/routine/new" element={<RoutineCreatePage />} />
               <Route path="/exercise/:exerciseId" element={<ExerciseDetailPage />} />
               <Route path="/exercise/:exerciseId/edit" element={<ExerciseEditPage />} />
-              <Route path="/exercise/order" element={<ExerciseOrderPage />} />
               <Route path="/exercise/new" element={<ExerciseCreatePage />} />
 
               <Route path="*" element={<NotFoundPage />} />

@@ -499,11 +499,11 @@ test('등록 성공 토스트는 이동 후 표시되고 최대 3개이며 자�
       .toBe(1);
     await expect(page).toHaveURL('/exercise?tab=exercises');
   }
-  await expect(page.getByRole('status')).toHaveCount(3);
+  await expect(page.getByRole('status').filter({ hasText: '운동을 등록했어요.' })).toHaveCount(3);
   await expect(
     page.getByRole('status').filter({ hasText: '운동을 등록했어요.' }).first(),
   ).toHaveText('운동을 등록했어요.');
   await page.screenshot({ path: 'test-results/exercise-toast-mobile.png', fullPage: true });
   await page.clock.runFor(3000);
-  await expect(page.getByRole('status')).toHaveCount(0);
+  await expect(page.getByRole('status').filter({ hasText: '운동을 등록했어요.' })).toHaveCount(0);
 });

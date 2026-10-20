@@ -26,7 +26,7 @@ test('목록의 버튼 배치와 정보 표현은 빈 값과 긴 이름을 처�
   await page.reload();
   await expect(page.getByText('총 4개', { exact: true })).toBeVisible();
   await expect(page.getByRole('link', { name: '운동 추가', exact: true })).toHaveCount(1);
-  await expect(page.getByRole('link', { name: '순서 변경' })).toBeVisible();
+  await expect(page.getByRole('button', { name: /순서 이동/ })).toHaveCount(4);
   await expect(page.getByRole('listitem').locator('p')).toHaveText([
     '10회 × 3세트',
     '3세트',
