@@ -1,6 +1,6 @@
-import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
-import styles from './ExerciseNavigation.module.scss';
+import Tabs from '@/components/common/tabs/Tabs';
 
 export default function ExerciseNavigation() {
   const { pathname } = useLocation();
@@ -8,13 +8,12 @@ export default function ExerciseNavigation() {
   const isExercises = pathname === '/exercise' && params.get('tab') === 'exercises';
 
   return (
-    <nav className={styles['navigation']} aria-label="운동 관리">
-      <Link to="/exercise" aria-current={!isExercises ? 'page' : undefined}>
-        루틴
-      </Link>
-      <Link to="/exercise?tab=exercises" aria-current={isExercises ? 'page' : undefined}>
-        등록한 운동
-      </Link>
-    </nav>
+    <Tabs
+      label="운동 관리"
+      items={[
+        { label: '루틴', to: '/exercise', isActive: !isExercises },
+        { label: '등록한 운동', to: '/exercise?tab=exercises', isActive: isExercises },
+      ]}
+    />
   );
 }
