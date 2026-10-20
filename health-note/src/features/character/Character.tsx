@@ -2,12 +2,19 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, useInView, useReducedMotion } from 'motion/react';
 
 import CharacterArtwork from './CharacterArtwork';
+import type { TCharacterAppearance, TCharacterStage } from './CharacterArtwork';
 
 import styles from './Character.module.scss';
 
 type TCharacterState = 'idle' | 'pressing' | 'bouncing';
 
-export default function Character() {
+export default function Character({
+  appearance,
+  stage = 1,
+}: {
+  appearance: TCharacterAppearance;
+  stage?: TCharacterStage;
+}) {
   const ref = useRef<HTMLButtonElement>(null);
   const isInView = useInView(ref);
   const shouldReduceMotion = useReducedMotion();
@@ -62,6 +69,8 @@ export default function Character() {
         }}
       >
         <CharacterArtwork
+          appearance={appearance}
+          stage={stage}
           isReacting={state !== 'idle'}
           isActive={isActive && !shouldReduceMotion}
         />

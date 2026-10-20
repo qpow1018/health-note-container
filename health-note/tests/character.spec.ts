@@ -10,7 +10,7 @@ async function readPose(button: Locator) {
   });
 }
 
-test('운동이 페이지는 대기·반복 터치·키보드 반응 후 기본 표정으로 돌아온다', async ({ page }) => {
+test(`새싹: 대기·반복 터치·키보드 반응 후 기본 표정으로 돌아온다`, async ({ page }) => {
   await page.goto('/character');
   const character = page.getByRole('button', { name: '운동이와 인사하기' });
   await expect(character.locator('svg')).toBeVisible();
@@ -29,12 +29,15 @@ test('운동이 페이지는 대기·반복 터치·키보드 반응 후 기본 
   await expect.poll(async () => (await readPose(character)).height).toBeLessThan(-5);
   await expect(character.locator('svg')).toHaveAttribute('data-reacting', 'false');
   await page.getByRole('heading', { name: '운동이', exact: true }).click();
-  await page.screenshot({ path: 'test-results/character-mobile.png', fullPage: true });
+  await page.screenshot({
+    path: 'test-results/character-sprout-mobile.png',
+    fullPage: true,
+  });
   await page.getByRole('link', { name: '마이', exact: true }).click();
   await expect(character).toHaveCount(0);
 });
 
-test('동작 줄이기와 320px 화면에서도 운동이와 메뉴가 표시된다', async ({ page }) => {
+test(`새싹: 동작 줄이기와 320px 화면에서도 운동이와 메뉴가 표시된다`, async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.setViewportSize({ width: 320, height: 568 });
   await page.goto('/character');
@@ -68,4 +71,33 @@ test('바텀 메뉴에서 운동이로 이동하고 새로고침과 뒤로가기
   await expect(page.getByRole('button', { name: '운동이와 인사하기' })).toBeVisible();
   await page.goBack();
   await expect(page).toHaveURL('/');
+});
+
+test('새싹을 표시하고 후보 선택 메뉴는 노출하지 않는다', async ({ page }) => {
+  await page.goto('/character');
+  await expect(
+    page.getByRole('button', { name: '운동이와 인사하기' }).locator('svg'),
+  ).toHaveAttribute('data-appearance', 'sprout');
+  await expect(page.getByRole('heading', { name: '새싹', exact: true })).toBeVisible();
+  await expect(page.getByRole('group', { name: '운동이 외형 선택' })).toHaveCount(0);
+});
+
+test('여섯 성장 모습을 선택해 비교하고 각 단계에서 인사할 수 있다', async ({ page }) => {
+  await page.goto('/character');
+  const choices = page.getByRole('group', { name: '성장 모습 선택' });
+  await expect(choices.getByRole('button')).toHaveCount(6);
+  const character = page.getByRole('button', { name: '운동이와 인사하기' });
+  for (let stage = 1; stage <= 6; stage++) {
+    const choice = choices.getByRole('button', { name: new RegExp(`^${stage}단계`) });
+    await choice.click();
+    await expect(choice).toHaveAttribute('aria-pressed', 'true');
+    await expect(character.locator('svg')).toHaveAttribute('data-stage', String(stage));
+    await expect(character.locator('svg')).toHaveAttribute('data-reacting', 'false');
+    await character.click();
+    await expect(character.locator('svg')).toHaveAttribute('data-reacting', 'false');
+  }
+  await page.getByRole('heading', { name: '운동이', exact: true }).click();
+  await page.screenshot({ path: 'test-results/character-stage-six.png', fullPage: true });
+  await page.reload();
+  await expect(character.locator('svg')).toHaveAttribute('data-stage', '1');
 });
