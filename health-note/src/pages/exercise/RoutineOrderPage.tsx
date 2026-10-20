@@ -7,7 +7,7 @@ import { isSortable, useSortable } from '@dnd-kit/react/sortable';
 
 import routineQuery from '@/queries/routineQuery';
 import type { TRoutine } from '@/api/routine/type';
-import { ROUTINES_LOAD_ERROR } from '@/features/exercise/routineMessages';
+import { ROUTINES_LOAD_ERROR } from '@/features/exercise/constants/routineMessages';
 import toast from '@/utils/toast';
 
 import Button from '@/components/common/button/Button';

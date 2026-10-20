@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { getTodayDate } from './routineSchedule';
+import { getTodayDate } from '@/features/exercise/utils/routineSchedule';
 
 export function useRoutineToday(): string {
   const [today, setToday] = useState(getTodayDate);

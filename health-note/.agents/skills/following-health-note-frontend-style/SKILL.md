@@ -20,6 +20,15 @@ description: Apply Health Note conventions when writing, reviewing, or refactori
 - 폴더명은 lower camel case, 컴포넌트 파일명은 PascalCase.
 - 같은 폴더나 하위 폴더 import는 ./를 허용한다. ../ 대신 src/ 기준 @/를 사용한다.
 
+### Feature 내부 배치
+
+- 모든 `src/features/<domain>/`에 같은 배치 기준을 적용한다. 도메인 폴더 바로 아래에는 컴포넌트와 해당 스타일을 둔다.
+- 순수 계산·검증·값 가공은 `utils/`, 도메인 React 훅은 `hooks/`, 안내 문구·상수는 `constants/`, 기능 실행 명령은 `actions/`로 구분한다. 실제 파일이 필요한 폴더만 만든다.
+- `actions/`를 서버 상태 관리의 대체 위치로 사용하지 않는다. API 요청은 `src/api/`, 조회·mutation과 캐시 갱신은 `src/queries/`의 기존 책임 기준을 따른다.
+- 컴포넌트와 스타일 한 쌍을 담기 위해 컴포넌트별 폴더를 만들지 않는다. 내부 파일이 늘어나 별도 묶음이 필요하면 책임과 탐색 이점을 근거로 판단한다.
+- 페이지는 URL 해석과 공통 헤더·탭·본문 레이아웃을 조립하고, 도메인 목록 컴포넌트는 목록 조회·로딩·오류·빈 상태와 항목 표시를 담당한다. 단순한 페이지 JSX까지 의무적으로 feature로 분리하지 않는다.
+- 새 작성과 관련 코드 수정에 이 기준을 적용한다. 구조를 맞추기 위해 요청 범위 밖의 기존 feature를 일괄 재배치하지 않는다.
+
 ## Import
 
 - import는 외부 라이브러리 → 내부 로직 → UI 컴포넌트 → 스타일 → 아이콘·이미지 등 시각 리소스 순으로 배치한다.

@@ -10,7 +10,6 @@ import ActivityPage from '@/pages/activity/ActivityPage';
 import HomePage from '@/pages/home/HomePage';
 import MyPage from '@/pages/my/MyPage';
 import NotFoundPage from '@/pages/notFound/NotFoundPage';
-import RoutinePage from '@/pages/exercise/RoutinePage';
 import RoutineDetailPage from '@/pages/exercise/RoutineDetailPage';
 import RoutineEditPage from '@/pages/exercise/RoutineEditPage';
 import RoutineOrderPage from '@/pages/exercise/RoutineOrderPage';
@@ -32,7 +31,7 @@ export default function App() {
             <Routes>
               <Route element={<BottomNavigationLayout />}>
                 <Route path="/" element={<HomePage />} />
-                <Route path="/routine" element={<RoutinePage />} />
+                <Route path="/routine" element={<ExercisePage />} />
                 <Route path="/exercise" element={<ExercisePage />} />
                 <Route path="/my" element={<MyPage />} />
               </Route>

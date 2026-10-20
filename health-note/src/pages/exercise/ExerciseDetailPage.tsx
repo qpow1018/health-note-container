@@ -3,8 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import toast from '@/utils/toast';
 import exerciseQuery from '@/queries/exerciseQuery';
-import { EXERCISE_LOAD_ERROR } from '@/features/exercise/messages';
-import { getYoutubeVideoId, isYoutubeUrl } from '@/features/exercise/youtubeUrl';
+import { EXERCISE_LOAD_ERROR } from '@/features/exercise/constants/messages';
+import { getYoutubeVideoId, isYoutubeUrl } from '@/features/exercise/utils/youtubeUrl';
 import type { TExercise } from '@/api/exercise/type';
 
 import Header from '@/components/common/header/Header';

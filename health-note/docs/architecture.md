@@ -84,6 +84,8 @@ DB 제약·RLS·RPC는 로컬 Supabase의 DB 테스트로 확인한다. 모의 A
 
 ## 운동 관리 통합
 
-운동과 루틴의 페이지는 `pages/exercise/`, 화면 기능은 `features/exercise/`에서 관리한다. 루틴 페이지도 같은 폴더에 두며 파일명으로 구분한다. API와 Query는 기존 exercise·routine 도메인 구분을 유지한다. `components/common/tabs/Tabs`는 항목·주소·선택 상태를 받아 링크 탭을 표시하고, `features/exercise/ExerciseNavigation`은 운동 관리 URL에 따른 선택 상태를 결정한다. 운동 관리 내비게이션은 루틴과 등록한 운동 목록 사이를 이동하며, 운동 상세·생성·정렬에서 목록으로 돌아오면 등록한 운동 탭을 표시한다.
+운동과 루틴의 페이지는 `pages/exercise/`, 화면 기능은 `features/exercise/`에서 관리한다. 루틴 페이지도 같은 폴더에 두며 파일명으로 구분한다. API와 Query는 기존 exercise·routine 도메인 구분을 유지한다. `components/common/tabs/Tabs`는 항목·주소·선택 상태를 받아 링크 탭을 표시하고, `pages/exercise/ExercisePage`는 URL에 따른 선택 상태, 공통 헤더·탭·추가 버튼과 본문 여백을 담당한다. `features/exercise/ExerciseList`와 `RoutineList`는 각 목록의 조회·로딩·오류·빈 상태·항목 표시를 담당한다. 운동 관리 내비게이션은 루틴과 등록한 운동 목록 사이를 이동하며, 운동 상세·생성·정렬에서 목록으로 돌아오면 등록한 운동 탭을 표시한다.
 
 이번 통합은 관리 진입점과 코드 위치 변경이다. 기존 루틴 일정·활성화·오늘 완료 흐름은 플랜 구현 전까지 유지한다. 루틴 내 새 운동 생성과 플랜으로 일정 이전은 아직 구현하지 않았다.
+
+운동 관리 컴포넌트와 스타일은 `features/exercise/` 바로 아래에 있다. 일정·URL 계산과 저장 값 준비는 `utils/`, 오늘 날짜 훅은 `hooks/`, 안내 문구는 `constants/`에 있다. 기존 미루기 명령은 `actions/postponeRoutine.ts`로 이동했으며 조회·저장·캐시 갱신 동작은 유지했다. 이 명령의 기존 구현이 API·Query 책임 규칙의 새로운 예외를 뜻하지는 않는다. 모든 feature의 작성·배치 기준은 [프론트엔드 스킬](../.agents/skills/following-health-note-frontend-style/SKILL.md)의 'Feature 내부 배치'를 따른다. API·Query 계약은 이번 구조 변경에서 유지한다.

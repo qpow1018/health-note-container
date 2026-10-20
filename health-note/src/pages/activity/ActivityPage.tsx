@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useRoutineToday } from '@/features/exercise/useRoutineToday';
+import { useRoutineToday } from '@/features/exercise/hooks/useRoutineToday';
 import { useActivitySnapshot } from '@/features/steps/useActivitySnapshot';
 import { distance, duration, speed } from '@/features/steps/activity';
 

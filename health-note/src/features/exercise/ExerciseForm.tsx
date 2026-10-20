@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { SubmitEvent } from 'react';
 
-import { isYoutubeUrl } from '@/features/exercise/youtubeUrl';
+import { isYoutubeUrl } from '@/features/exercise/utils/youtubeUrl';
 import type { TExerciseValues } from '@/api/exercise/type';
 import { MAX_EXERCISE_SETS } from '@/api/exercise/type';
 

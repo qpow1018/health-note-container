@@ -2,15 +2,15 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import routineQuery from '@/queries/routineQuery';
-import { ROUTINE_LOAD_ERROR } from '@/features/exercise/routineMessages';
-import { prepareRoutineValues } from '@/features/exercise/routineActions';
+import { ROUTINE_LOAD_ERROR } from '@/features/exercise/constants/routineMessages';
+import { prepareRoutineValues } from '@/features/exercise/utils/prepareRoutineValues';
 import type { TRoutine, TRoutineValues } from '@/api/routine/type';
 import toast from '@/utils/toast';
 
 import Header from '@/components/common/header/Header';
 import BoxLoading from '@/components/common/loading/BoxLoading';
 import ButtonLink from '@/components/common/button/ButtonLink';
-import RoutineForm from '@/features/exercise/routineForm/RoutineForm';
+import RoutineForm from '@/features/exercise/RoutineForm';
 
 import styles from './RoutineEditPage.module.scss';
 

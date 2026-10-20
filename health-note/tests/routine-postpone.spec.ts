@@ -86,7 +86,7 @@ test('오래된 예정일은 다시 미루지 않고 현재 날짜를 기준으�
 
 async function postpone(page: Page, date: string) {
   return page.evaluate(async (date) => {
-    const modulePath = '/src/features/exercise/routineActions.ts';
+    const modulePath = '/src/features/exercise/actions/postponeRoutine.ts';
     const { postponeRoutine } = await import(modulePath);
     try {
       await postponeRoutine('r', date);

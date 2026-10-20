@@ -1,5 +1,5 @@
 import { expect, test } from './authFixture';
-import { getYoutubeVideoId } from '../src/features/exercise/youtubeUrl';
+import { getYoutubeVideoId } from '../src/features/exercise/utils/youtubeUrl';
 
 const ID = 'M7lc1UVf-VE';
 

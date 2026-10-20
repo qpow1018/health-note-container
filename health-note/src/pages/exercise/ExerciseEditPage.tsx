@@ -2,12 +2,12 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import toast from '@/utils/toast';
 import exerciseQuery from '@/queries/exerciseQuery';
-import { EXERCISE_LOAD_ERROR } from '@/features/exercise/messages';
+import { EXERCISE_LOAD_ERROR } from '@/features/exercise/constants/messages';
 import type { TExerciseValues } from '@/api/exercise/type';
 
 import Header from '@/components/common/header/Header';
 import BoxLoading from '@/components/common/loading/BoxLoading';
-import ExerciseForm from '@/features/exercise/exerciseForm/ExerciseForm';
+import ExerciseForm from '@/features/exercise/ExerciseForm';
 
 import styles from './ExerciseEditPage.module.scss';
 

@@ -5,7 +5,7 @@ import exerciseQuery from '@/queries/exerciseQuery';
 import type { TExerciseValues } from '@/api/exercise/type';
 
 import Header from '@/components/common/header/Header';
-import ExerciseForm from '@/features/exercise/exerciseForm/ExerciseForm';
+import ExerciseForm from '@/features/exercise/ExerciseForm';
 
 import styles from './ExerciseCreatePage.module.scss';
 

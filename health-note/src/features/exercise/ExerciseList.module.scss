@@ -1,19 +1,4 @@
-.routine-page {
-  .content {
-    padding: 0 max($page-padding, env(safe-area-inset-right))
-      max($page-padding, env(safe-area-inset-bottom)) max($page-padding, env(safe-area-inset-left));
-  }
-
-  .add-button {
-    gap: 4px;
-    font-size: $font-size-caption;
-  }
-
-  .add-button {
-    min-height: 40px;
-    padding-block: 8px;
-  }
-
+.exercise-list {
   .empty {
     padding-block: 48px;
   }
@@ -77,10 +62,6 @@
       margin-top: 4px;
       color: $text-secondary;
       font-size: $font-size-caption;
-    }
-
-    .active-status {
-      color: $mint-accent;
     }
 
     .chevron {

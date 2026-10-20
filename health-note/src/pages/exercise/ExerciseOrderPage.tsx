@@ -6,7 +6,7 @@ import { Accessibility, PointerSensor, PointerActivationConstraints } from '@dnd
 import { isSortable, useSortable } from '@dnd-kit/react/sortable';
 
 import exerciseQuery from '@/queries/exerciseQuery';
-import { EXERCISES_LOAD_ERROR } from '@/features/exercise/messages';
+import { EXERCISES_LOAD_ERROR } from '@/features/exercise/constants/messages';
 import toast from '@/utils/toast';
 import type { TExercise } from '@/api/exercise/type';
 

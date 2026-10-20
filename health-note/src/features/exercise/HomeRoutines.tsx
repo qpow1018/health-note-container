@@ -2,15 +2,18 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import routineQuery from '@/queries/routineQuery';
-import { ROUTINES_LOAD_ERROR, ROUTINE_PROGRESS_LOAD_ERROR } from '@/features/exercise/routineMessages';
+import {
+  ROUTINES_LOAD_ERROR,
+  ROUTINE_PROGRESS_LOAD_ERROR,
+} from '@/features/exercise/constants/routineMessages';
 import exerciseQuery from '@/queries/exerciseQuery';
-import { EXERCISES_LOAD_ERROR } from '@/features/exercise/messages';
+import { EXERCISES_LOAD_ERROR } from '@/features/exercise/constants/messages';
 import toast from '@/utils/toast';
 import {
   getNextRoutineDate,
   getTodayDate,
   isRoutineScheduled,
-} from '@/features/exercise/routineSchedule';
+} from '@/features/exercise/utils/routineSchedule';
 
 import ButtonLink from '@/components/common/button/ButtonLink';
 
