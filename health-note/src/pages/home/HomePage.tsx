@@ -1,10 +1,10 @@
 import { useContext } from 'react';
 
 import { AuthUserContext } from '@/features/auth/AuthUserContext';
-import { useRoutineToday } from '@/features/routine/useRoutineToday';
+import { useRoutineToday } from '@/features/exercise/useRoutineToday';
 import Avatar from '@/features/avatar/Avatar';
 import StepCard from '@/features/steps/StepCard';
-import HomeRoutines from '@/features/routine/homeRoutines/HomeRoutines';
+import HomeRoutines from '@/features/exercise/homeRoutines/HomeRoutines';
 
 import styles from './HomePage.module.scss';
 

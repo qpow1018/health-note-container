@@ -4,7 +4,7 @@ const KEY = 'health-note.exercises.v1:test-user';
 const EXERCISE = { id: 'a', name: '걷기', amount: '30분', sets: null, youtubeLinks: [], memo: '' };
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/exercise');
+  await page.goto('/exercise?tab=exercises');
   await page.evaluate(
     ({ key, exercise }) => localStorage.setItem(key, JSON.stringify([exercise])),
     { key: KEY, exercise: EXERCISE },
@@ -52,7 +52,7 @@ test('새로고침하면 다른 탭에서 변경한 운동을 반영한다', asy
   await otherTab.goto('/exercise/new');
   await otherTab.getByLabel('운동 이름').fill('스쿼트');
   await otherTab.getByRole('button', { name: '저장', exact: true }).click();
-  await expect(otherTab).toHaveURL('/exercise');
+  await expect(otherTab).toHaveURL('/exercise?tab=exercises');
   await page.reload();
   await expect(page.getByRole('listitem')).toHaveCount(2);
   await expect(page.getByRole('link', { name: /스쿼트/ })).toBeVisible();

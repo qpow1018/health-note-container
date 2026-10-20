@@ -4,7 +4,7 @@ import {
   moveRoutineDate,
   isRoutineDate,
   getNextRoutineDate,
-} from '../src/features/routine/routineSchedule';
+} from '../src/features/exercise/routineSchedule';
 
 test('요일 반복은 일요일과 복수 요일을 구분한다', () => {
   const schedule = { type: 'weekdays', days: [0, 3] } as const;

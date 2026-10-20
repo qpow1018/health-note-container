@@ -49,14 +49,14 @@ export default function ExerciseDetailPage() {
     }
 
     toast.success('운동을 삭제했어요.');
-    navigate('/exercise', { replace: true });
+    navigate('/exercise?tab=exercises', { replace: true });
   }
 
   return (
     <section className={styles['exercise-detail-page']}>
       <Header
         title={exercise?.name ?? '운동 상세'}
-        fallbackTo="/exercise"
+        fallbackTo="/exercise?tab=exercises"
         actions={
           exercise && (
             <>

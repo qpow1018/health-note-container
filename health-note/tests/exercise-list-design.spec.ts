@@ -1,7 +1,7 @@
 import { expect, test } from './authFixture';
 
 test('목록의 버튼 배치와 정보 표현은 빈 값과 긴 이름을 처리한다', async ({ page }) => {
-  await page.goto('/exercise');
+  await page.goto('/exercise?tab=exercises');
   await expect(page.getByRole('link', { name: '운동 추가', exact: true })).toHaveCount(1);
   await expect(page.getByRole('link', { name: '순서 변경' })).toHaveCount(0);
   await page.screenshot({ path: '/tmp/health-note-list-empty.png' });

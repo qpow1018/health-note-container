@@ -65,7 +65,7 @@ test('운동 선택을 다시 열면 추가·삭제를 반영하고 폼 입력�
   await page.getByLabel('메모').fill('유지할 입력');
   const otherTab = await context.newPage();
   await mockAuth(otherTab);
-  await otherTab.goto('/exercise');
+  await otherTab.goto('/exercise?tab=exercises');
   await otherTab.evaluate(() =>
     localStorage.setItem(
       'health-note.exercises.v1:test-user',

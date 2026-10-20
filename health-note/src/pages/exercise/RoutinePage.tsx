@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
 
 import routineQuery from '@/queries/routineQuery';
-import { ROUTINES_LOAD_ERROR } from '@/features/routine/messages';
+import { ROUTINES_LOAD_ERROR } from '@/features/exercise/routineMessages';
 
 import ButtonLink from '@/components/common/button/ButtonLink';
 import Header from '@/components/common/header/Header';
+import ExerciseNavigation from '@/features/exercise/ExerciseNavigation';
 import BoxLoading from '@/components/common/loading/BoxLoading';
 
 import styles from './RoutinePage.module.scss';
@@ -17,7 +18,7 @@ export default function RoutinePage() {
   return (
     <section className={styles['routine-page']}>
       <Header
-        title="내 루틴 관리"
+        title="운동 관리"
         showBack={false}
         actions={
           <ButtonLink className={styles['add-button']} to="/routine/new">
@@ -26,6 +27,7 @@ export default function RoutinePage() {
           </ButtonLink>
         }
       />
+      <ExerciseNavigation />
       <div className={styles['content']}>
         {isPending && <BoxLoading />}
 

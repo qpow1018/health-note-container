@@ -38,7 +38,7 @@ test('핸들로 순서를 변경하고 완료하면 내용과 운동을 보존�
     ROUTINES,
   );
   await page.getByRole('button', { name: '완료' }).click();
-  await expect(page.getByRole('heading', { name: '내 루틴 관리', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '운동 관리', exact: true })).toBeVisible();
   await page.reload();
   await expect(page.getByRole('listitem').locator('h2')).toHaveText(['스쿼트', '푸시업', '걷기']);
   expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), KEY)).toEqual([
@@ -86,7 +86,7 @@ test('저장 실패는 임시 순서를 유지하고 재시도할 수 있다', a
     ROUTINES,
   );
   await page.getByRole('button', { name: '완료' }).click();
-  await expect(page.getByRole('heading', { name: '내 루틴 관리', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '운동 관리', exact: true })).toBeVisible();
 });
 
 for (const change of ['추가', '삭제', '순서']) {

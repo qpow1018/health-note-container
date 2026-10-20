@@ -19,7 +19,7 @@ test('조회 중에는 빈 목록으로 오인시키지 않고 실패 후 재시
     await pending;
     await route.fulfill({ status: 503, json: { message: 'Unavailable' } });
   });
-  await page.goto('/exercise');
+  await page.goto('/exercise?tab=exercises');
   await expect(page.getByRole('status', { name: '불러오고 있어요.' })).toBeVisible();
   await page.screenshot({ path: '/tmp/health-note-exercise-loading.png' });
   await expect(page.getByText('아직 등록한 운동이 없어요.')).toHaveCount(0);
@@ -53,13 +53,13 @@ test('저장 응답을 기다리는 동안 중복 제출을 막는다', async ({
   await expect(page.getByRole('button', { name: '링크 추가', exact: true })).toBeDisabled();
   await page.locator('form').evaluate((form: HTMLFormElement) => form.requestSubmit());
   release();
-  await expect(page).toHaveURL('/exercise');
+  await expect(page).toHaveURL('/exercise?tab=exercises');
   await expect(page.getByRole('listitem')).toHaveCount(1);
   expect(writes).toBe(1);
 });
 
 test('DB가 루틴에 포함된 운동의 삭제를 거부하면 데이터를 유지한다', async ({ page }) => {
-  await page.goto('/exercise');
+  await page.goto('/exercise?tab=exercises');
   await page.evaluate(
     ({ key, exercise }) => {
       localStorage.setItem(key, JSON.stringify([exercise]));
@@ -105,7 +105,7 @@ test('기존 브라우저 운동을 자동 업로드하거나 삭제하지 않�
     if (route.request().method() === 'POST') uploads++;
     await route.fulfill({ json: [] });
   });
-  await page.goto('/exercise');
+  await page.goto('/exercise?tab=exercises');
   await expect(page.getByText('아직 등록한 운동이 없어요.')).toBeVisible();
   expect(uploads).toBe(0);
   expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), KEY)).toEqual([
@@ -115,7 +115,7 @@ test('기존 브라우저 운동을 자동 업로드하거나 삭제하지 않�
 
 test('재조회에 실패해도 기존 목록을 유지하고 재시도로 최신 목록을 표시한다', async ({ page }) => {
   await page.clock.install();
-  await page.goto('/exercise');
+  await page.goto('/exercise?tab=exercises');
   await page.evaluate(
     ({ key, exercise }) => localStorage.setItem(key, JSON.stringify([exercise])),
     { key: KEY, exercise: EXERCISE },
@@ -145,7 +145,7 @@ test('재조회에 실패해도 기존 목록을 유지하고 재시도로 최�
 
 test('상세 재조회 실패와 재시도 중 기존 내용과 영상 프레임을 유지한다', async ({ page }) => {
   await page.clock.install();
-  await page.goto('/exercise');
+  await page.goto('/exercise?tab=exercises');
   await page.evaluate(
     ({ key, exercise }) =>
       localStorage.setItem(
@@ -178,7 +178,7 @@ test('상세 재조회 실패와 재시도 중 기존 내용과 영상 프레임
 });
 
 test('삭제 응답을 기다리는 동안 수정·삭제 메뉴를 제공하지 않는다', async ({ page }) => {
-  await page.goto('/exercise');
+  await page.goto('/exercise?tab=exercises');
   await page.evaluate(
     ({ key, exercise }) => localStorage.setItem(key, JSON.stringify([exercise])),
     { key: KEY, exercise: EXERCISE },
@@ -201,13 +201,13 @@ test('삭제 응답을 기다리는 동안 수정·삭제 메뉴를 제공하지
   await expect(page.getByRole('button', { name: '더보기', exact: true })).toHaveCount(0);
   await expect(page.getByRole('link', { name: '수정', exact: true })).toHaveCount(0);
   release();
-  await expect(page).toHaveURL('/exercise');
+  await expect(page).toHaveURL('/exercise?tab=exercises');
   await expect(page.getByText('아직 등록한 운동이 없어요.')).toBeVisible();
 });
 
 test('수정 폼은 재조회 실패와 재시도 후에도 입력과 링크를 유지한다', async ({ page }) => {
   await page.clock.install();
-  await page.goto('/exercise');
+  await page.goto('/exercise?tab=exercises');
   await page.evaluate(
     ({ key, exercise }) => localStorage.setItem(key, JSON.stringify([exercise])),
     { key: KEY, exercise: EXERCISE },

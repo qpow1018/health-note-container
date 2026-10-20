@@ -4,11 +4,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import toast from '@/utils/toast';
 import routineQuery from '@/queries/routineQuery';
 import type { TRoutineSchedule } from '@/api/routine/type';
-import { ROUTINE_LOAD_ERROR } from '@/features/routine/messages';
+import { ROUTINE_LOAD_ERROR } from '@/features/exercise/routineMessages';
 import exerciseQuery from '@/queries/exerciseQuery';
 import { EXERCISES_LOAD_ERROR } from '@/features/exercise/messages';
-import { getNextRoutineDate } from '@/features/routine/routineSchedule';
-import { useRoutineToday } from '@/features/routine/useRoutineToday';
+import { getNextRoutineDate } from '@/features/exercise/routineSchedule';
+import { useRoutineToday } from '@/features/exercise/useRoutineToday';
 
 import Header from '@/components/common/header/Header';
 import BoxLoading from '@/components/common/loading/BoxLoading';

@@ -35,7 +35,7 @@ test('영상 주소는 플레이어와 원본 링크를, 채널 주소는 링크
       body: '<html><body>Test player boundary</body></html>',
     }),
   );
-  await page.goto('/exercise');
+  await page.goto('/exercise?tab=exercises');
   const urls = [`https://youtu.be/${ID}`, 'https://youtube.com/@channel'];
   await page.evaluate(
     (urls) =>

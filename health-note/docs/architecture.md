@@ -6,7 +6,7 @@
 
 React 19·TypeScript·Vite 기반 모바일 웹앱이며 React Router와 SCSS Modules를 사용한다.
 
-- [App.tsx](../src/app/App.tsx): 공유 QueryProvider, BrowserRouter, 인증 경계와 라우트를 조립한다. 홈·운동 목록·루틴 목록·마이페이지에는 하단 내비게이션을 제공한다.
+- [App.tsx](../src/app/App.tsx): 공유 QueryProvider, BrowserRouter, 인증 경계와 라우트를 조립한다. 홈·운동 관리·마이페이지에는 하단 내비게이션을 제공한다. 운동 관리는 `/exercise`의 루틴 목록을 기본으로 하며, `?tab=exercises`에서 등록한 운동을 관리한다. 기존 `/routine` 주소도 같은 루틴 목록을 표시한다.
 - [AuthBoundary.tsx](../src/app/AuthBoundary.tsx): 세션 복원 중에는 대기 화면, 비로그인 상태에서는 로그인 화면을 표시한다. 로그인한 사용자 ID를 key로 하위 화면을 재마운트하고 AuthUserContext로 원본 사용자 정보와 표시용 닉네임을 함께 전달한다. 표시용 닉네임은 저장된 값이 비어 있지 않은 문자열이면 사용하고, 아니면 `회원`으로 계산하며 계정에 별도로 저장하지 않는다. 마이페이지는 이 정보를 표시하며 별도 인증 구독이나 사용자 조회를 만들지 않는다.
 - [useAuthSession.ts](../src/features/auth/useAuthSession.ts): 세션 복원과 인증 이벤트 구독을 처리한다. 사용자 변경 시 현재 사용자 정보를 갱신하고 공유 QueryClient의 캐시를 비운다.
 - [QueryProvider.tsx](../src/lib/query/QueryProvider.tsx): 캐시 초기화에 사용하는 것과 동일한 QueryClient를 제공한다.
@@ -81,3 +81,9 @@ DB 제약·RLS·RPC는 로컬 Supabase의 DB 테스트로 확인한다. 모의 A
 홈은 날짜 아래에 1단계 운동이와 현재 닉네임을 가로로 표시하고 기존 오늘 활동·루틴을 이어서 제공한다. 레벨·경험치·도감 메뉴는 해당 기능을 구현할 때 연결하며 임시 수치는 표시하지 않는다. 마이페이지는 계정 정보와 닉네임 변경·로그아웃 메뉴를 제공한다.
 
 `features/avatar/AvatarArtwork.tsx`와 같은 폴더 스타일이 2D SVG 외형·눈 깜빡임·대기 동작을 담당한다. `Avatar.tsx`는 Motion으로 누름·점프를 제어하고 화면 밖·숨겨진 탭에서는 반복 움직임을 멈춘다. 동작 줄이기 설정에서는 반복 움직임과 점프를 끄고 투명도로 누름을 표현한다. 비교용 페이지·걷기 옵션·미사용 PNG는 제거했으며, 성장 모델·별도 캐시·아바타 저장 구조는 추가하지 않는다. 관련 검증: [홈 아바타](../tests/avatar.spec.ts), [닉네임 편집](../tests/my.spec.ts).
+
+## 운동 관리 통합
+
+운동과 루틴의 페이지는 `pages/exercise/`, 화면 기능은 `features/exercise/`에서 관리한다. 루틴 페이지도 같은 폴더에 두며 파일명으로 구분한다. API와 Query는 기존 exercise·routine 도메인 구분을 유지한다. 공통 운동 관리 내비게이션은 루틴과 등록한 운동 목록 사이를 이동하며, 운동 상세·생성·정렬에서 목록으로 돌아오면 등록한 운동 탭을 표시한다.
+
+이번 통합은 관리 진입점과 코드 위치 변경이다. 기존 루틴 일정·활성화·오늘 완료 흐름은 플랜 구현 전까지 유지한다. 루틴 내 새 운동 생성과 플랜으로 일정 이전은 아직 구현하지 않았다.

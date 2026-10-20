@@ -5,7 +5,7 @@ import type { TRoutineValues } from '@/api/routine/type';
 import toast from '@/utils/toast';
 
 import Header from '@/components/common/header/Header';
-import RoutineForm from '@/features/routine/routineForm/RoutineForm';
+import RoutineForm from '@/features/exercise/routineForm/RoutineForm';
 
 import styles from './RoutineCreatePage.module.scss';
 

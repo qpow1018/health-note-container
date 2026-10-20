@@ -13,7 +13,7 @@ const EXERCISES = ['푸시업', '스쿼트', '걷기'].map((name, index) => ({
 }));
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/exercise');
+  await page.goto('/exercise?tab=exercises');
   await page.evaluate(({ key, items }) => localStorage.setItem(key, JSON.stringify(items)), {
     key: KEY,
     items: EXERCISES,
@@ -38,7 +38,7 @@ test('핸들로 순서를 변경하고 완료하면 내용과 루틴을 보존�
     EXERCISES,
   );
   await page.getByRole('button', { name: '완료' }).click();
-  await expect(page.getByRole('heading', { name: '내 운동 관리', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '운동 관리', exact: true })).toBeVisible();
   await page.reload();
   await expect(page.getByRole('listitem').locator('h2')).toHaveText(['스쿼트', '푸시업', '걷기']);
   expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), KEY)).toEqual([
@@ -86,7 +86,7 @@ test('저장 실패는 임시 순서를 유지하고 재시도할 수 있다', a
     EXERCISES,
   );
   await page.getByRole('button', { name: '완료' }).click();
-  await expect(page.getByRole('heading', { name: '내 운동 관리', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '운동 관리', exact: true })).toBeVisible();
 });
 
 for (const change of ['추가', '삭제', '순서']) {
@@ -199,7 +199,7 @@ test('새로고침은 미저장 순서를 폐기하고 운동이 하나면 편�
     { key: KEY, exercise: EXERCISES[0] },
   );
   await page.reload();
-  await page.goto('/exercise');
+  await page.goto('/exercise?tab=exercises');
   await expect(page.getByRole('link', { name: '순서 변경' })).toHaveCount(0);
 });
 
@@ -242,7 +242,7 @@ test('저장 응답을 기다리는 동안 정렬 핸들을 비활성화한다',
     ).toBeDisabled();
   }
   release();
-  await expect(page).toHaveURL('/exercise');
+  await expect(page).toHaveURL('/exercise?tab=exercises');
   await expect(page.getByRole('listitem').locator('h2')).toHaveText(['스쿼트', '푸시업', '걷기']);
 });
 

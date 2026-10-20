@@ -2,7 +2,7 @@ import { expect, test } from './authFixture';
 
 test('성공·안내는 3초, 오류는 5초 후 닫히며 개별 duration을 우선한다', async ({ page }) => {
   await page.clock.install();
-  await page.goto('/exercise');
+  await page.goto('/exercise?tab=exercises');
   await expect(page.getByText('아직 등록한 운동이 없어요.')).toBeVisible();
   await page.clock.pauseAt(new Date(Date.now() + 1000));
   await page.evaluate(async () => {

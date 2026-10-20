@@ -20,10 +20,10 @@ test('미로그인 사용자는 상세·수정 주소에서도 로그인 화면�
 
 test('세션 복원·새로고침·로그아웃 후 뒤로가기와 재접속', async ({ page }) => {
   await seedSession(page);
-  await page.goto('/exercise');
-  await expect(page.getByRole('heading', { name: '내 운동 관리' })).toBeVisible();
+  await page.goto('/exercise?tab=exercises');
+  await expect(page.getByRole('heading', { name: '운동 관리' })).toBeVisible();
   await page.reload();
-  await expect(page.getByRole('heading', { name: '내 운동 관리' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '운동 관리' })).toBeVisible();
   await page.getByRole('link', { name: '마이', exact: true }).click();
   await page.getByRole('button', { name: '로그아웃', exact: true }).click();
   await page.getByRole('dialog').getByRole('button', { name: '로그아웃', exact: true }).click();
@@ -42,7 +42,7 @@ test('계정별 기록을 분리하고 기존 비로그인 기록을 가져오�
   await page.addInitScript((items) => {
     localStorage.setItem('health-note.exercises.v1', JSON.stringify(items));
   }, legacy);
-  await page.goto('/exercise');
+  await page.goto('/exercise?tab=exercises');
   await expect(page.getByText('아직 등록한 운동이 없어요.')).toBeVisible();
   await page.getByRole('link', { name: '운동 추가', exact: true }).click();
   await page.getByLabel('운동 이름').fill('A 계정 운동');
@@ -147,7 +147,7 @@ test('만료된 세션의 갱신 거부 시 보호 화면을 표시하지 않는
       json: { error_code: 'refresh_token_not_found', msg: 'Invalid refresh token' },
     }),
   );
-  await page.goto('/exercise');
+  await page.goto('/exercise?tab=exercises');
   await expect(page.getByRole('button', { name: 'Google로 계속하기' })).toBeVisible();
   await expect(page.getByRole('navigation')).toHaveCount(0);
 });
@@ -182,12 +182,12 @@ test('세션 갱신을 기다리는 동안 로그인·보호 화면을 먼저 �
     await refresh;
     await route.fulfill({ json: createSession() });
   });
-  await page.goto('/exercise');
+  await page.goto('/exercise?tab=exercises');
   await expect(page.getByRole('status')).toHaveText('로그인 상태를 확인하고 있어요.');
   await expect(page.getByRole('navigation')).toHaveCount(0);
   await expect(page.getByRole('button', { name: 'Google로 계속하기' })).toHaveCount(0);
   releaseRefresh();
-  await expect(page.getByRole('heading', { name: '내 운동 관리' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '운동 관리' })).toBeVisible();
 });
 
 test('로그아웃 확인창의 취소·Escape는 세션과 포커스를 유지한다', async ({ page }) => {

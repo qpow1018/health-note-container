@@ -46,7 +46,10 @@ export default function ExerciseOrderPage() {
 
   return (
     <section className={styles['order-page']}>
-      <Header title="운동 순서 변경" onBack={() => navigate('/exercise', { replace: true })} />
+      <Header
+        title="운동 순서 변경"
+        onBack={() => navigate('/exercise?tab=exercises', { replace: true })}
+      />
       <div className={styles['content']}>
         {isPending && <BoxLoading />}
         {isError && <ExerciseOrderLoadError onRetry={() => void refetch()} />}
@@ -89,7 +92,7 @@ function ExerciseOrderContent({ initialExercises }: { initialExercises: TExercis
       setIsSaving(false);
     }
     toast.success('운동 순서를 변경했어요.');
-    navigate('/exercise', { replace: true });
+    navigate('/exercise?tab=exercises', { replace: true });
   }
 
   function handleMove(from: number, to: number) {

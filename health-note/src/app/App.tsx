@@ -10,12 +10,12 @@ import ActivityPage from '@/pages/activity/ActivityPage';
 import HomePage from '@/pages/home/HomePage';
 import MyPage from '@/pages/my/MyPage';
 import NotFoundPage from '@/pages/notFound/NotFoundPage';
-import RoutinePage from '@/pages/routine/RoutinePage';
-import RoutineDetailPage from '@/pages/routine/RoutineDetailPage';
-import RoutineEditPage from '@/pages/routine/RoutineEditPage';
-import RoutineOrderPage from '@/pages/routine/RoutineOrderPage';
-import RoutineCreatePage from '@/pages/routine/RoutineCreatePage';
-import ExerciseListPage from '@/pages/exercise/ExerciseListPage';
+import RoutinePage from '@/pages/exercise/RoutinePage';
+import RoutineDetailPage from '@/pages/exercise/RoutineDetailPage';
+import RoutineEditPage from '@/pages/exercise/RoutineEditPage';
+import RoutineOrderPage from '@/pages/exercise/RoutineOrderPage';
+import RoutineCreatePage from '@/pages/exercise/RoutineCreatePage';
+import ExercisePage from '@/pages/exercise/ExercisePage';
 import ExerciseDetailPage from '@/pages/exercise/ExerciseDetailPage';
 import ExerciseEditPage from '@/pages/exercise/ExerciseEditPage';
 import ExerciseOrderPage from '@/pages/exercise/ExerciseOrderPage';
@@ -33,7 +33,7 @@ export default function App() {
               <Route element={<BottomNavigationLayout />}>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/routine" element={<RoutinePage />} />
-                <Route path="/exercise" element={<ExerciseListPage />} />
+                <Route path="/exercise" element={<ExercisePage />} />
                 <Route path="/my" element={<MyPage />} />
               </Route>
 

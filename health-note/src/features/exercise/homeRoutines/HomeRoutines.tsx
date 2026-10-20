@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import routineQuery from '@/queries/routineQuery';
-import { ROUTINES_LOAD_ERROR, ROUTINE_PROGRESS_LOAD_ERROR } from '@/features/routine/messages';
+import { ROUTINES_LOAD_ERROR, ROUTINE_PROGRESS_LOAD_ERROR } from '@/features/exercise/routineMessages';
 import exerciseQuery from '@/queries/exerciseQuery';
 import { EXERCISES_LOAD_ERROR } from '@/features/exercise/messages';
 import toast from '@/utils/toast';
@@ -10,7 +10,7 @@ import {
   getNextRoutineDate,
   getTodayDate,
   isRoutineScheduled,
-} from '@/features/routine/routineSchedule';
+} from '@/features/exercise/routineSchedule';
 
 import ButtonLink from '@/components/common/button/ButtonLink';
 

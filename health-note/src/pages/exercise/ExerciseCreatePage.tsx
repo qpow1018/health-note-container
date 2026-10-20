@@ -23,12 +23,12 @@ export default function ExerciseCreatePage() {
       return;
     }
     toast.success('운동을 등록했어요.');
-    navigate('/exercise');
+    navigate('/exercise?tab=exercises');
   }
 
   return (
     <section className={styles['exercise-create-page']}>
-      <Header title="운동 등록" fallbackTo="/exercise" />
+      <Header title="운동 등록" fallbackTo="/exercise?tab=exercises" />
       <div className={styles['content']}>
         <ExerciseForm onSave={handleSave} />
       </div>

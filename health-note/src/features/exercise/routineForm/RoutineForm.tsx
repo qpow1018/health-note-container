@@ -9,7 +9,7 @@ import { isSortable, useSortable } from '@dnd-kit/react/sortable';
 import exerciseQuery from '@/queries/exerciseQuery';
 import { EXERCISES_LOAD_ERROR } from '@/features/exercise/messages';
 import type { TExercise } from '@/api/exercise/type';
-import { getTodayDate } from '@/features/routine/routineSchedule';
+import { getTodayDate } from '@/features/exercise/routineSchedule';
 import type { TRoutineValues, TRoutineSchedule } from '@/api/routine/type';
 
 import BottomSheet from '@/components/common/modal/BottomSheet';

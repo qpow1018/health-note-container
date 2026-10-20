@@ -5,6 +5,7 @@ import { EXERCISES_LOAD_ERROR } from '@/features/exercise/messages';
 
 import ButtonLink from '@/components/common/button/ButtonLink';
 import Header from '@/components/common/header/Header';
+import ExerciseNavigation from '@/features/exercise/ExerciseNavigation';
 import BoxLoading from '@/components/common/loading/BoxLoading';
 
 import styles from './ExerciseListPage.module.scss';
@@ -17,7 +18,7 @@ export default function ExerciseListPage() {
   return (
     <section className={styles['exercise-page']}>
       <Header
-        title="내 운동 관리"
+        title="운동 관리"
         showBack={false}
         actions={
           <ButtonLink className={styles['add-button']} to="/exercise/new">
@@ -27,6 +28,7 @@ export default function ExerciseListPage() {
         }
       />
 
+      <ExerciseNavigation />
       <div className={styles['content']}>
         {isPending && <BoxLoading />}
 

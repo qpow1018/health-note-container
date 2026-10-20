@@ -73,7 +73,7 @@ function MissingExercise() {
   return (
     <div className={styles['missing']}>
       <p>운동을 찾을 수 없어요.</p>
-      <Link to="/exercise">목록으로</Link>
+      <Link to="/exercise?tab=exercises">목록으로</Link>
     </div>
   );
 }
