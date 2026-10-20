@@ -2,12 +2,12 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { QueryClient } from '@tanstack/react-query';
 
 import * as api from '@/api/routine';
-import type { TRoutine, TRoutineValues } from '@/api/routine/type';
+import type { TRoutineValues } from '@/api/routine/type';
 import { getUserKey } from '@/lib/auth/currentUser';
 
 export const ROUTINES_QUERY_KEY = ['routines'] as const;
 
-export function invalidateRoutines(queryClient: QueryClient) {
+function invalidateRoutines(queryClient: QueryClient) {
   return queryClient.invalidateQueries({ queryKey: ROUTINES_QUERY_KEY });
 }
 
@@ -35,12 +35,12 @@ const routineQuery = {
       mutationFn: ({
         id,
         values,
-        expectedRoutine,
+        expectedVersion,
       }: {
         id: string;
         values: TRoutineValues;
-        expectedRoutine: TRoutine;
-      }) => api.updateRoutine(id, values, expectedRoutine),
+        expectedVersion: number;
+      }) => api.updateRoutine(id, values, expectedVersion),
       onSuccess: (result) => {
         if (result === 'conflict') return;
         return invalidateRoutines(queryClient);

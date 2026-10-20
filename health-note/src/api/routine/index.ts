@@ -41,9 +41,9 @@ export async function createRoutine(values: TRoutineValues): Promise<void> {
 export async function updateRoutine(
   id: string,
   values: TRoutineValues,
-  expectedRoutine: TRoutine,
+  expectedVersion: number,
 ): Promise<'updated' | 'conflict'> {
-  const result = await saveRoutine(id, values, expectedRoutine.version);
+  const result = await saveRoutine(id, values, expectedVersion);
   if (result === 'conflict' && !(await getRoutines()).some((item) => item.id === id))
     throw new Error('Routine not found');
   return result;

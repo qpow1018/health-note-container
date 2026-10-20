@@ -55,7 +55,7 @@ function RoutineEditor({
       const result = await updateRoutine({
         id: routine.id,
         values,
-        expectedRoutine: routine,
+        expectedVersion: routine.version,
       });
       if (result === 'conflict') {
         await onRefresh();
