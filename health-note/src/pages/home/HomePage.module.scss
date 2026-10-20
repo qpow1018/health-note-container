@@ -33,28 +33,10 @@
     padding: 16px $page-padding 32px;
   }
 
-  .companion {
-    display: grid;
-    grid-template-columns: 104px minmax(0, 1fr);
-    align-items: center;
-    gap: 16px;
-    min-height: 128px;
+  .nickname {
     margin-bottom: 16px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid $border-soft;
-  }
-
-  .companion-info {
-    h2 {
-      font-size: 20px;
-      font-weight: 600;
-      overflow-wrap: anywhere;
-    }
-
-    p {
-      margin-top: 8px;
-      color: $text-secondary;
-      font-size: $font-size-caption;
-    }
+    font-size: 20px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
   }
 }

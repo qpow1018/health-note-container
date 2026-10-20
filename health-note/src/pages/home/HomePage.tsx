@@ -2,7 +2,6 @@ import { useContext } from 'react';
 
 import { AuthUserContext } from '@/features/auth/AuthUserContext';
 import { useTodayDate } from '@/hooks/useTodayDate';
-import Avatar from '@/features/avatar/Avatar';
 import StepCard from '@/features/steps/StepCard';
 
 import styles from './HomePage.module.scss';
@@ -28,13 +27,7 @@ export default function HomePage() {
         </time>
       </div>
       <div className={styles['content']}>
-        <div className={styles['companion']}>
-          <Avatar />
-          <div className={styles['companion-info']}>
-            <h2>{nickname}</h2>
-            <p>운동이를 눌러 인사해 보세요.</p>
-          </div>
-        </div>
+        <h2 className={styles['nickname']}>{nickname}</h2>
         <StepCard today={today} />
         <p>루틴을 만들어 두세요. 플랜과 연결하는 기능을 준비하고 있어요.</p>
       </div>

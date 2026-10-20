@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useInView, useReducedMotion } from 'motion/react';
 
-import AvatarArtwork from './AvatarArtwork';
+import CharacterArtwork from './CharacterArtwork';
 
-import styles from './Avatar.module.scss';
+import styles from './Character.module.scss';
 
-type TAvatarState = 'idle' | 'pressing' | 'bouncing';
+type TCharacterState = 'idle' | 'pressing' | 'bouncing';
 
-export default function Avatar() {
+export default function Character() {
   const ref = useRef<HTMLButtonElement>(null);
   const isInView = useInView(ref);
   const shouldReduceMotion = useReducedMotion();
-  const [state, setState] = useState<TAvatarState>('idle');
+  const [state, setState] = useState<TCharacterState>('idle');
   const [isPageVisible, setIsPageVisible] = useState(!document.hidden);
   const isActive = isInView && isPageVisible;
   const animation = isActive ? state : 'idle';
@@ -26,7 +26,7 @@ export default function Avatar() {
   }, []);
 
   return (
-    <div className={styles['avatar']}>
+    <div className={styles['character-root']}>
       <span className={styles['shadow']} aria-hidden="true" />
       <motion.button
         ref={ref}
@@ -61,7 +61,10 @@ export default function Avatar() {
             setState((current) => (current === 'bouncing' ? 'idle' : current));
         }}
       >
-        <AvatarArtwork isReacting={state !== 'idle'} isActive={isActive && !shouldReduceMotion} />
+        <CharacterArtwork
+          isReacting={state !== 'idle'}
+          isActive={isActive && !shouldReduceMotion}
+        />
       </motion.button>
     </div>
   );

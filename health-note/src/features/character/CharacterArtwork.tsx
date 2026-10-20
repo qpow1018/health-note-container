@@ -1,11 +1,11 @@
-import styles from './AvatarArtwork.module.scss';
+import styles from './CharacterArtwork.module.scss';
 
-type TAvatarArtworkProps = {
+type TCharacterArtworkProps = {
   isReacting: boolean;
   isActive: boolean;
 };
 
-export default function AvatarArtwork({ isReacting, isActive }: TAvatarArtworkProps) {
+export default function CharacterArtwork({ isReacting, isActive }: TCharacterArtworkProps) {
   return (
     <svg
       viewBox="0 0 120 120"

@@ -68,7 +68,7 @@ test('홈에서 마이로 이동해 계정을 확인하고 새로고침해도 �
   await expect(page.getByRole('heading', { name: '헬스노트' })).toBeVisible();
   await expect(page.getByRole('button', { name: '로그아웃', exact: true })).toHaveCount(0);
   const links = page.getByRole('navigation', { name: '주요 메뉴' }).getByRole('link');
-  await expect(links).toHaveText(['홈', '루틴', '운동', '마이']);
+  await expect(links).toHaveText(['홈', '운동', '운동이', '마이']);
   await links.last().click();
   await expect(page).toHaveURL('/my');
   await expect(links.last()).toHaveAttribute('aria-current', 'page');

@@ -8,6 +8,7 @@ import AuthBoundary from './AuthBoundary';
 
 import ActivityPage from '@/pages/activity/ActivityPage';
 import HomePage from '@/pages/home/HomePage';
+import CharacterPage from '@/pages/character/CharacterPage';
 import MyPage from '@/pages/my/MyPage';
 import NotFoundPage from '@/pages/notFound/NotFoundPage';
 import RoutineDetailPage from '@/pages/exercise/RoutineDetailPage';
@@ -30,6 +31,7 @@ export default function App() {
               <Route element={<BottomNavigationLayout />}>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/exercise" element={<ExercisePage />} />
+                <Route path="/character" element={<CharacterPage />} />
                 <Route path="/my" element={<MyPage />} />
               </Route>
 

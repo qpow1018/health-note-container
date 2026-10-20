@@ -1,0 +1,19 @@
+.character-page {
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 32px $page-padding;
+
+    p {
+      color: $text-secondary;
+      font-size: $font-size-caption;
+    }
+  }
+
+  .preview {
+    width: 160px;
+    max-width: 100%;
+  }
+}
