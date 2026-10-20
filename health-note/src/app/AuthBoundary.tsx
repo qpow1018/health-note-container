@@ -20,8 +20,11 @@ export default function AuthBoundary({ children }: { children: ReactNode }) {
 
   if (!session) return <LoginPage initialError={error} />;
 
+  const savedNickname = session.user.user_metadata.nickname;
+  const nickname = typeof savedNickname === 'string' && savedNickname ? savedNickname : '회원';
+
   return (
-    <AuthUserContext key={session.user.id} value={session.user}>
+    <AuthUserContext key={session.user.id} value={{ user: session.user, nickname }}>
       {children}
     </AuthUserContext>
   );

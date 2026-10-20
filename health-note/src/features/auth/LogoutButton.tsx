@@ -3,13 +3,17 @@ import { useState } from 'react';
 import { signOut } from '@/api/auth';
 import toast from '@/utils/toast';
 
+import Confirm from '@/components/common/modal/Confirm';
+
 import styles from './LogoutButton.module.scss';
 
 export default function LogoutButton() {
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isSigningOut, setIsSigningOut] = useState(false);
 
   async function handleSignOut() {
     if (isSigningOut) return;
+    setIsConfirmOpen(false);
     setIsSigningOut(true);
     try {
       const { error } = await signOut();
@@ -24,13 +28,23 @@ export default function LogoutButton() {
   }
 
   return (
-    <button
-      type="button"
-      className={styles['logout-button']}
-      disabled={isSigningOut}
-      onClick={handleSignOut}
-    >
-      {isSigningOut ? '로그아웃 중…' : '로그아웃'}
-    </button>
+    <>
+      <button
+        type="button"
+        className={styles['logout-button']}
+        disabled={isSigningOut}
+        onClick={() => setIsConfirmOpen(true)}
+      >
+        {isSigningOut ? '로그아웃 중…' : '로그아웃'}
+      </button>
+      <Confirm
+        isOpen={isConfirmOpen}
+        title="로그아웃"
+        message="로그아웃할까요?"
+        confirmLabel="로그아웃"
+        onClose={() => setIsConfirmOpen(false)}
+        onConfirm={handleSignOut}
+      />
+    </>
   );
 }

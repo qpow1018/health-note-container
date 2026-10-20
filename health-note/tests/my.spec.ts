@@ -21,7 +21,7 @@ test('닉네임 기본값·입력 제한·저장 실패 복구와 새로고침 �
   await page.getByRole('button', { name: '닉네임 변경', exact: true }).click();
   const input = page.getByRole('textbox', { name: '닉네임' });
   const save = page.getByRole('button', { name: '저장', exact: true });
-  await expect(input).toHaveValue('운동이');
+  await expect(input).toHaveValue('회원');
   for (const value of [
     '',
     '가나다라마바사아자차카',
@@ -111,12 +111,12 @@ test('닉네임 취소·Escape는 초안을 버리고 다음 편집은 저장된
   await expect(page.getByRole('dialog')).not.toBeVisible();
   await expect(open).toBeFocused();
   await open.click();
-  await expect(input).toHaveValue('운동이');
+  await expect(input).toHaveValue('회원');
   await input.fill('임시이름');
   await page.keyboard.press('Escape');
   await expect(page.getByRole('dialog')).not.toBeVisible();
   await open.click();
-  await expect(input).toHaveValue('운동이');
+  await expect(input).toHaveValue('회원');
   await page.screenshot({ path: 'test-results/nickname-modal-mobile.png', fullPage: true });
 });
 
@@ -141,4 +141,18 @@ test('저장 중 중복 제출과 팝업 닫기를 막고 성공 후 닫는다',
   await expect(page.getByRole('dialog')).toBeVisible();
   finishSave();
   await expect(page.getByRole('dialog')).not.toBeVisible();
+});
+
+test('직접 저장한 운동이 닉네임은 기본값 변경 후에도 유지한다', async ({ page }) => {
+  const session = createSession();
+  session.user.user_metadata = { nickname: '운동이' };
+  await page.addInitScript(
+    ({ key, session }) => localStorage.setItem(key, JSON.stringify(session)),
+    { key: AUTH_STORAGE_KEY, session },
+  );
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: '운동이', exact: true })).toBeVisible();
+  await page.getByRole('link', { name: '마이', exact: true }).click();
+  await page.getByRole('button', { name: '닉네임 변경', exact: true }).click();
+  await expect(page.getByRole('textbox', { name: '닉네임' })).toHaveValue('운동이');
 });

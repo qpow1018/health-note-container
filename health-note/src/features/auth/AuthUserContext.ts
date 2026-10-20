@@ -1,4 +1,9 @@
 import { createContext } from 'react';
 import type { User } from '@supabase/supabase-js';
 
-export const AuthUserContext = createContext<User | null>(null);
+type TAuthUserContext = {
+  user: User;
+  nickname: string;
+};
+
+export const AuthUserContext = createContext<TAuthUserContext | null>(null);

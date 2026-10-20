@@ -17,11 +17,8 @@ type TNicknameFormProps = {
 };
 
 export default function NicknameForm({ onClose }: TNicknameFormProps) {
-  const user = useContext(AuthUserContext);
-  const savedNickname = user?.user_metadata.nickname;
-  const [nickname, setNickname] = useState(
-    typeof savedNickname === 'string' && savedNickname ? savedNickname : '운동이',
-  );
+  const { nickname: savedNickname } = useContext(AuthUserContext)!;
+  const [nickname, setNickname] = useState(savedNickname);
   const [error, setError] = useState('');
   const [isSaving, setIsSaving] = useState(false);
 

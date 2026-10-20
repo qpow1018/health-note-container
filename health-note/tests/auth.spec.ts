@@ -26,6 +26,7 @@ test('세션 복원·새로고침·로그아웃 후 뒤로가기와 재접속', 
   await expect(page.getByRole('heading', { name: '내 운동 관리' })).toBeVisible();
   await page.getByRole('link', { name: '마이', exact: true }).click();
   await page.getByRole('button', { name: '로그아웃', exact: true }).click();
+  await page.getByRole('dialog').getByRole('button', { name: '로그아웃', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Google로 계속하기' })).toBeVisible();
   await expect(page.getByRole('navigation')).toHaveCount(0);
   await page.goBack();
@@ -124,6 +125,7 @@ test('로그아웃 서버 실패에도 기기 세션을 제거하고 기록은 �
   await page.getByRole('link', { name: '마이', exact: true }).click();
   const button = page.getByRole('button', { name: '로그아웃', exact: true });
   await button.click();
+  await page.getByRole('dialog').getByRole('button', { name: '로그아웃', exact: true }).click();
   await expect(page.getByRole('alert')).toContainText('로그아웃을 서버에서 확인하지 못했어요.');
   await expect(page.getByRole('button', { name: 'Google로 계속하기' })).toBeVisible();
   await expect(page.getByRole('navigation')).toHaveCount(0);
@@ -160,6 +162,7 @@ test('다른 탭에서 로그아웃하면 열린 수정 화면도 즉시 닫힌�
   await expect(otherPage.getByLabel('운동 이름')).toBeVisible();
   await otherPage.getByLabel('운동 이름').fill('저장하지 않은 입력');
   await page.getByRole('button', { name: '로그아웃', exact: true }).click();
+  await page.getByRole('dialog').getByRole('button', { name: '로그아웃', exact: true }).click();
   await expect(otherPage.getByRole('button', { name: 'Google로 계속하기' })).toBeVisible();
   await expect(otherPage.locator('form')).toHaveCount(0);
   await otherPage.close();
@@ -185,4 +188,28 @@ test('세션 갱신을 기다리는 동안 로그인·보호 화면을 먼저 �
   await expect(page.getByRole('button', { name: 'Google로 계속하기' })).toHaveCount(0);
   releaseRefresh();
   await expect(page.getByRole('heading', { name: '내 운동 관리' })).toBeVisible();
+});
+
+test('로그아웃 확인창의 취소·Escape는 세션과 포커스를 유지한다', async ({ page }) => {
+  await seedSession(page);
+  let requests = 0;
+  page.on('request', (request) => {
+    if (new URL(request.url()).pathname.endsWith('/logout')) requests += 1;
+  });
+  await page.goto('/my');
+  const open = page.getByRole('button', { name: '로그아웃', exact: true });
+  const dialog = page.getByRole('dialog');
+  await open.click();
+  await expect(dialog.getByText('로그아웃할까요?')).toBeVisible();
+  await expect(dialog.getByRole('button', { name: '취소' })).toBeFocused();
+  await page.screenshot({ path: 'test-results/logout-confirm-mobile.png', fullPage: true });
+  await dialog.getByRole('button', { name: '취소' }).click();
+  await expect(dialog).not.toBeVisible();
+  await expect(open).toBeFocused();
+  await open.click();
+  await page.keyboard.press('Escape');
+  await expect(dialog).not.toBeVisible();
+  await expect(open).toBeFocused();
+  expect(requests).toBe(0);
+  expect(await page.evaluate((key) => localStorage.getItem(key), AUTH_STORAGE_KEY)).not.toBeNull();
 });

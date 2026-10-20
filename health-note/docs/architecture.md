@@ -7,7 +7,7 @@
 React 19·TypeScript·Vite 기반 모바일 웹앱이며 React Router와 SCSS Modules를 사용한다.
 
 - [App.tsx](../src/app/App.tsx): 공유 QueryProvider, BrowserRouter, 인증 경계와 라우트를 조립한다. 홈·운동 목록·루틴 목록·마이페이지에는 하단 내비게이션을 제공한다.
-- [AuthBoundary.tsx](../src/app/AuthBoundary.tsx): 세션 복원 중에는 대기 화면, 비로그인 상태에서는 로그인 화면을 표시한다. 로그인한 사용자 ID를 key로 하위 화면을 재마운트하고 AuthUserContext로 현재 사용자 정보를 전달한다. 마이페이지는 이 정보를 표시하며 별도 인증 구독이나 사용자 조회를 만들지 않는다.
+- [AuthBoundary.tsx](../src/app/AuthBoundary.tsx): 세션 복원 중에는 대기 화면, 비로그인 상태에서는 로그인 화면을 표시한다. 로그인한 사용자 ID를 key로 하위 화면을 재마운트하고 AuthUserContext로 원본 사용자 정보와 표시용 닉네임을 함께 전달한다. 표시용 닉네임은 저장된 값이 비어 있지 않은 문자열이면 사용하고, 아니면 `회원`으로 계산하며 계정에 별도로 저장하지 않는다. 마이페이지는 이 정보를 표시하며 별도 인증 구독이나 사용자 조회를 만들지 않는다.
 - [useAuthSession.ts](../src/features/auth/useAuthSession.ts): 세션 복원과 인증 이벤트 구독을 처리한다. 사용자 변경 시 현재 사용자 정보를 갱신하고 공유 QueryClient의 캐시를 비운다.
 - [QueryProvider.tsx](../src/lib/query/QueryProvider.tsx): 캐시 초기화에 사용하는 것과 동일한 QueryClient를 제공한다.
 

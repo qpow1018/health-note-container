@@ -10,8 +10,7 @@ import styles from './HomePage.module.scss';
 
 export default function HomePage() {
   const today = useRoutineToday();
-  const user = useContext(AuthUserContext);
-  const nickname = user?.user_metadata.nickname;
+  const { nickname } = useContext(AuthUserContext)!;
   return (
     <section className={styles['home-page']}>
       <header className={styles['header']}>
@@ -33,7 +32,7 @@ export default function HomePage() {
         <div className={styles['companion']}>
           <Avatar />
           <div className={styles['companion-info']}>
-            <h2>{typeof nickname === 'string' && nickname ? nickname : '운동이'}</h2>
+            <h2>{nickname}</h2>
             <p>운동이를 눌러 인사해 보세요.</p>
           </div>
         </div>

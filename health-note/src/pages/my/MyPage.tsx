@@ -9,8 +9,8 @@ import NicknameForm from '@/features/profile/NicknameForm';
 import styles from './MyPage.module.scss';
 
 export default function MyPage() {
-  const user = useContext(AuthUserContext);
-  const provider = user?.app_metadata.provider;
+  const { user } = useContext(AuthUserContext)!;
+  const provider = user.app_metadata.provider;
   const [isNicknameOpen, setIsNicknameOpen] = useState(false);
   const nicknameButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -28,7 +28,7 @@ export default function MyPage() {
         <dl className={styles['account']}>
           <div>
             <dt>이메일</dt>
-            <dd>{user?.email || '이메일 정보가 없어요.'}</dd>
+            <dd>{user.email || '이메일 정보가 없어요.'}</dd>
           </div>
           <div>
             <dt>로그인 방식</dt>

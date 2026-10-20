@@ -14,7 +14,7 @@ test('홈 아바타는 대기·반복 터치·키보드 반응 후 기본 표정
   await page.goto('/');
   const avatar = page.getByRole('button', { name: '운동이와 인사하기' });
   await expect(avatar.locator('svg')).toBeVisible();
-  await expect(page.getByRole('heading', { name: '운동이', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '회원', exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: '걷기', exact: true })).toHaveCount(0);
   await avatar.hover({ force: true });
   await page.mouse.down();
