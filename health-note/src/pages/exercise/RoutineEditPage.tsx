@@ -97,7 +97,7 @@ function MissingRoutine() {
   return (
     <div className={styles['missing']}>
       <p>루틴을 찾을 수 없어요.</p>
-      <ButtonLink to="/routine" color="gray" fill="outline">
+      <ButtonLink to="/exercise" color="gray" fill="outline">
         루틴 목록으로
       </ButtonLink>
     </div>

@@ -73,14 +73,14 @@ function RoutineDetail({ routineId }: { routineId: string | undefined }) {
       return;
     }
     toast.success('루틴을 삭제했어요.');
-    navigate('/routine', { replace: true });
+    navigate('/exercise', { replace: true });
   }
 
   return (
     <section className={styles['routine-detail-page']}>
       <Header
         title={title}
-        fallbackTo="/routine"
+        fallbackTo="/exercise"
         actions={
           routine && !isSaving ? (
             <MoreMenu

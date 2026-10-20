@@ -31,17 +31,16 @@ export default function App() {
             <Routes>
               <Route element={<BottomNavigationLayout />}>
                 <Route path="/" element={<HomePage />} />
-                <Route path="/routine" element={<ExercisePage />} />
                 <Route path="/exercise" element={<ExercisePage />} />
                 <Route path="/my" element={<MyPage />} />
               </Route>
 
               <Route path="/activity" element={<ActivityPage />} />
+
               <Route path="/routine/:routineId" element={<RoutineDetailPage />} />
               <Route path="/routine/:routineId/edit" element={<RoutineEditPage />} />
               <Route path="/routine/order" element={<RoutineOrderPage />} />
               <Route path="/routine/new" element={<RoutineCreatePage />} />
-
               <Route path="/exercise/:exerciseId" element={<ExerciseDetailPage />} />
               <Route path="/exercise/:exerciseId/edit" element={<ExerciseEditPage />} />
               <Route path="/exercise/order" element={<ExerciseOrderPage />} />

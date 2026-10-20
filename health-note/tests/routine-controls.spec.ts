@@ -41,7 +41,7 @@ test('공용 입력과 요일 타일은 키보드로 선택하고 활성 일정 
   await expect(page.locator('input[name="startDate"]')).toBeDisabled();
   await expect(page.locator('input[name="intervalDays"]')).toBeDisabled();
   await page.getByRole('button', { name: '저장', exact: true }).click();
-  await expect(page).toHaveURL('/routine');
+  await expect(page).toHaveURL('/exercise');
   expect(
     await page.evaluate(
       () => JSON.parse(localStorage.getItem('health-note.routines.v1:test-user')!)[0],

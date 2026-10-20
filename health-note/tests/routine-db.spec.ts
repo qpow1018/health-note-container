@@ -20,7 +20,7 @@ test('루틴 조회 중에는 빈 목록을 표시하지 않고 오류 후 재�
     await pending;
     await route.fulfill({ status: 503, json: { message: 'Unavailable' } });
   });
-  await page.goto('/routine');
+  await page.goto('/exercise');
   await expect(page.getByRole('status')).toHaveText('루틴을 불러오고 있어요.');
   await expect(page.getByText('아직 등록한 루틴이 없어요.')).toHaveCount(0);
   await page.screenshot({ path: 'test-results/routine-db-loading-mobile.png' });
@@ -32,7 +32,7 @@ test('루틴 조회 중에는 빈 목록을 표시하지 않고 오류 후 재�
 });
 
 test('원자적 저장 API 실패는 입력을 유지하고 수동 재시도로 한 번만 등록한다', async ({ page }) => {
-  await page.goto('/routine');
+  await page.goto('/exercise');
   await page.evaluate(
     (exercise) =>
       localStorage.setItem('health-note.exercises.v1:test-user', JSON.stringify([exercise])),
@@ -58,7 +58,7 @@ test('원자적 저장 API 실패는 입력을 유지하고 수동 재시도로 
   expect(await page.evaluate((key) => localStorage.getItem(key), KEY)).toBeNull();
   await page.unroute('**/rest/v1/rpc/save_routine');
   await page.getByRole('button', { name: '저장', exact: true }).click();
-  await expect(page).toHaveURL('/routine');
+  await expect(page).toHaveURL('/exercise');
   await expect(page.getByRole('listitem')).toHaveCount(1);
   await page.getByRole('link', { name: /실패 후 보존/ }).click();
   await expect(page.getByRole('switch', { name: '루틴 활성화' })).not.toBeChecked();
@@ -66,7 +66,7 @@ test('원자적 저장 API 실패는 입력을 유지하고 수동 재시도로 
 });
 
 test('활성 상태 저장 중에는 중복 변경 요청을 막는다', async ({ page }) => {
-  await page.goto('/routine');
+  await page.goto('/exercise');
   await page.evaluate(
     ({ key, routine, exercise }) => {
       localStorage.setItem(key, JSON.stringify([routine]));
@@ -107,7 +107,7 @@ test('기존 브라우저 루틴은 DB에 자동 업로드하거나 삭제하지
     uploads++;
     await route.fulfill({ json: 'unexpected' });
   });
-  await page.goto('/routine');
+  await page.goto('/exercise');
   await expect(page.getByText('아직 등록한 루틴이 없어요.')).toBeVisible();
   expect(uploads).toBe(0);
   expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), KEY)).toEqual([

@@ -16,7 +16,7 @@ const LEGACY = {
 const OTHER = { ...LEGACY, id: 'other', name: '하체 루틴', isActive: false };
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/routine');
+  await page.goto('/exercise');
   await page.evaluate(
     ({ key, routines }) => {
       localStorage.setItem(key, JSON.stringify(routines));
@@ -72,7 +72,7 @@ test('여러 루틴을 독립적으로 활성화·비활성화하고 설정·순
     { ...OTHER, isActive: true },
   ]);
   await page.getByRole('button', { name: '뒤로가기' }).click();
-  await page.goto('/routine');
+  await page.goto('/exercise');
   await expect(page.getByRole('link', { name: /상체 루틴/ })).toContainText('비활성');
   await expect(page.getByRole('link', { name: /하체 루틴/ })).toContainText('활성');
 });

@@ -16,7 +16,7 @@ const EXERCISES = [
 ];
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/routine');
+  await page.goto('/exercise');
   await page.evaluate(
     ({ routines, exercises }) => {
       localStorage.setItem('health-note.routines.v1:test-user', JSON.stringify(routines));
@@ -109,7 +109,7 @@ test('삭제 취소는 보존하고 확인하면 해당 루틴만 삭제한다',
     .getByRole('dialog', { name: '루틴 삭제' })
     .getByRole('button', { name: '삭제', exact: true })
     .click();
-  await expect(page).toHaveURL('/routine');
+  await expect(page).toHaveURL('/exercise');
   expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), KEY)).toEqual([
     OTHER,
   ]);

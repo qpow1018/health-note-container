@@ -19,13 +19,13 @@ const ROUTINES = [
 ];
 
 test('날짜와 관계없이 전체 루틴을 표시하고 상세에서 목록으로 돌아온다', async ({ page }) => {
-  await page.goto('/routine');
+  await page.goto('/exercise');
   await page.evaluate(
     (routines) =>
       localStorage.setItem('health-note.routines.v1:test-user', JSON.stringify(routines)),
     ROUTINES,
   );
-  await page.goto('/routine?date=2026-10-15');
+  await page.goto('/exercise?date=2026-10-15');
   await expect(page.getByRole('listitem')).toHaveText([
     '요일 루틴비활성 · 운동 1개',
     '간격 루틴비활성 · 운동 1개',
@@ -43,7 +43,7 @@ test('날짜와 관계없이 전체 루틴을 표시하고 상세에서 목록�
 });
 
 test('빈 목록과 손상 데이터를 구분하고 원본을 보존한다', async ({ page }) => {
-  await page.goto('/routine');
+  await page.goto('/exercise');
   await expect(page.getByText('아직 등록한 루틴이 없어요.')).toBeVisible();
   await page.evaluate((key) => localStorage.setItem(key, '{broken'), KEY);
   await page.reload();

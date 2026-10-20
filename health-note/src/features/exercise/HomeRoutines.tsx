@@ -209,7 +209,7 @@ export default function HomeRoutines({ today }: { today: string }) {
             {routines.length > 0 && active.length === 0 && (
               <>
                 <p>활성화된 루틴이 없어요.</p>
-                <ButtonLink to="/routine">루틴 관리</ButtonLink>
+                <ButtonLink to="/exercise">루틴 관리</ButtonLink>
               </>
             )}
             {active.length > 0 && (
@@ -222,7 +222,7 @@ export default function HomeRoutines({ today }: { today: string }) {
                     {next.routine.name}
                   </p>
                 )}
-                <ButtonLink to="/routine">내 루틴 보기</ButtonLink>
+                <ButtonLink to="/exercise">내 루틴 보기</ButtonLink>
               </>
             )}
           </div>

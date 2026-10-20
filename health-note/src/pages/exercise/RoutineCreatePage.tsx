@@ -24,12 +24,12 @@ export default function RoutineCreatePage() {
       return;
     }
     toast.success('루틴을 등록했어요.');
-    navigate('/routine');
+    navigate('/exercise');
   }
 
   return (
     <section className={styles['routine-create-page']}>
-      <Header title="루틴 생성" fallbackTo="/routine" />
+      <Header title="루틴 생성" fallbackTo="/exercise" />
       <div className={styles['content']}>
         <RoutineForm onSave={handleSave} />
       </div>

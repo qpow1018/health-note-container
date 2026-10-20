@@ -13,7 +13,7 @@ const ROUTINE = {
 test.use({ timezoneId: 'Asia/Seoul' });
 test.beforeEach(async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-16T03:00:00Z') });
-  await page.goto('/routine');
+  await page.goto('/exercise');
   await page.evaluate(
     ({ key, routine }) => {
       localStorage.setItem(key, JSON.stringify([routine]));

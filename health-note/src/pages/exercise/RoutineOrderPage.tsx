@@ -47,7 +47,7 @@ export default function RoutineOrderPage() {
 
   return (
     <section className={styles['order-page']}>
-      <Header title="루틴 순서 변경" onBack={() => navigate('/routine', { replace: true })} />
+      <Header title="루틴 순서 변경" onBack={() => navigate('/exercise', { replace: true })} />
       <div className={styles['content']}>
         {isPending && <BoxLoading />}
         {isError && <RoutineOrderLoadError onRetry={() => void refetch()} />}
@@ -90,7 +90,7 @@ function RoutineOrderContent({ initialRoutines }: { initialRoutines: TRoutine[] 
       setIsSaving(false);
     }
     toast.success('루틴 순서를 변경했어요.');
-    navigate('/routine', { replace: true });
+    navigate('/exercise', { replace: true });
   }
 
   function handleMove(from: number, to: number) {

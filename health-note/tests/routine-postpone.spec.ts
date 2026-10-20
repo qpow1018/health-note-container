@@ -15,7 +15,7 @@ const OTHER = { ...ROUTINE, id: 'other', schedule: { type: 'weekdays', days: [1]
 test.use({ timezoneId: 'Asia/Seoul' });
 test.beforeEach(async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-18T01:00:00Z') });
-  await page.goto('/routine');
+  await page.goto('/exercise');
   await page.evaluate(
     (routines) => {
       localStorage.setItem('health-note.routines.v1:test-user', JSON.stringify(routines));

@@ -13,10 +13,11 @@ test('운동 메뉴는 루틴을 기본 표시하고 등록한 운동 탭과 생
     'aria-current',
     'page',
   );
-  await expect(page.getByRole('link', { name: '루틴 생성' })).toBeVisible();
+  await expect(page.locator('header').getByRole('link')).toHaveCount(0);
   await tabs.getByRole('link', { name: '등록한 운동' }).click();
   await expect(page).toHaveURL('/exercise?tab=exercises');
-  await page.getByRole('link', { name: '운동 추가' }).click();
+  await expect(page.locator('header').getByRole('link')).toHaveCount(0);
+  await page.goto('/exercise/new');
   await page.getByLabel('운동 이름').fill('생활 스쿼트');
   await page.getByRole('button', { name: '저장', exact: true }).click();
   await expect(page).toHaveURL('/exercise?tab=exercises');
@@ -27,10 +28,10 @@ test('운동 메뉴는 루틴을 기본 표시하고 등록한 운동 탭과 생
     'page',
   );
   await page.screenshot({ path: '/tmp/health-note-exercise-management.png' });
-  await page.goto('/routine');
+  await page.goto('/exercise');
   await expect(menu.getByRole('link', { name: '운동', exact: true })).toHaveAttribute(
     'aria-current',
     'page',
   );
-  await expect(page.getByRole('link', { name: '루틴 생성' })).toBeVisible();
+  await expect(page.locator('header').getByRole('link')).toHaveCount(0);
 });

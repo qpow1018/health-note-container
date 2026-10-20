@@ -14,7 +14,7 @@ const EXERCISES = [
 ];
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/routine');
+  await page.goto('/exercise');
   await page.evaluate(
     ({ routine, exercises }) => {
       localStorage.setItem('health-note.routines.v1:test-user', JSON.stringify([routine]));
@@ -66,7 +66,7 @@ test('간격 반복과 빈 메모를 표시하고 직접 진입의 뒤로가기�
   await expect(direct.getByText('2일 간격', { exact: true })).toBeVisible();
   await expect(direct.getByText('-', { exact: true })).toBeVisible();
   await direct.getByRole('button', { name: '뒤로가기' }).click();
-  await expect(direct).toHaveURL('/routine');
+  await expect(direct).toHaveURL('/exercise');
 });
 
 test('삭제된 운동의 자리를 유지하며 다른 운동과 루틴 데이터는 보존한다', async ({ page }) => {
@@ -89,7 +89,7 @@ test('없는 루틴과 손상된 루틴 저장 데이터를 구분한다', async
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('루틴을 찾을 수 없어요.');
   await expect(page.getByRole('heading', { name: '운동', exact: true })).toHaveCount(0);
   await page.getByRole('button', { name: '뒤로가기' }).click();
-  await expect(page).toHaveURL('/routine');
+  await expect(page).toHaveURL('/exercise');
   await page.evaluate(() => localStorage.setItem('health-note.routines.v1:test-user', '{broken'));
   await page.goto('/routine/routine-1');
   await expect(page.getByRole('alert')).toContainText('루틴을 불러오지 못했어요.');

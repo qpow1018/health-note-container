@@ -12,7 +12,7 @@ const ROUTINE = {
 
 test.beforeEach(async ({ page }) => {
   await page.clock.install();
-  await page.goto('/routine');
+  await page.goto('/exercise');
   await page.evaluate(
     ({ key, routine }) => {
       localStorage.setItem(

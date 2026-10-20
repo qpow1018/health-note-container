@@ -13,7 +13,7 @@ const ROUTINES = ['푸시업', '스쿼트', '걷기'].map((name, index) => ({
 }));
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/routine');
+  await page.goto('/exercise');
   await page.evaluate(({ key, items }) => localStorage.setItem(key, JSON.stringify(items)), {
     key: KEY,
     items: ROUTINES,
@@ -208,7 +208,7 @@ test('새로고침은 미저장 순서를 폐기하고 루틴이 하나면 편�
     routine: ROUTINES[0],
   });
   await page.reload();
-  await page.goto('/routine');
+  await page.goto('/exercise');
   await expect(page.getByRole('link', { name: '순서 변경' })).toHaveCount(0);
 });
 

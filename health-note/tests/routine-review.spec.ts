@@ -14,7 +14,7 @@ const EXERCISE = { id: 'a', name: '걷기', amount: '30분', sets: null };
 test.use({ timezoneId: 'Asia/Seoul' });
 test.beforeEach(async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-18T14:59:59Z') });
-  await page.goto('/routine');
+  await page.goto('/exercise');
   await page.evaluate(
     ({ routine, exercise }) => {
       localStorage.setItem('health-note.routines.v1:test-user', JSON.stringify([routine]));
@@ -32,7 +32,7 @@ test('오래 열린 수정 폼은 다른 탭의 일정과 미루기 내역을 �
   await page.getByLabel('루틴 이름').fill('내가 편집한 이름');
   const otherTab = await context.newPage();
   await mockAuth(otherTab);
-  await otherTab.goto('/routine');
+  await otherTab.goto('/exercise');
   const updated = {
     ...ROUTINE,
     schedule: { ...ROUTINE.schedule, intervalDays: 3, postponedDates: ['2026-10-17'] },

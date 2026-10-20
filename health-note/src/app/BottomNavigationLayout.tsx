@@ -6,7 +6,7 @@ import { MdFitnessCenter, MdHome, MdPerson } from 'react-icons/md';
 
 export default function BottomNavigationLayout() {
   const { pathname } = useLocation();
-  const isExercise = pathname === '/exercise' || pathname === '/routine';
+  const isExercise = pathname === '/exercise';
   return (
     <div className={styles['layout']}>
       <Outlet />

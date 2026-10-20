@@ -9,7 +9,7 @@ const ROUTINES = ['상체 루틴', '하체 루틴'].map((name, index) => ({
 }));
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/routine');
+  await page.goto('/exercise');
   await page.evaluate((routines) => {
     localStorage.setItem('health-note.routines.v1:test-user', JSON.stringify(routines));
     localStorage.setItem(
@@ -52,7 +52,7 @@ test('필드 오류를 입력과 연결하고 수정하면 해제하며 저장 �
 });
 
 test('모바일 목록·정렬·상세·삭제 모달과 좁은 화면의 긴 이름을 확인한다', async ({ page }) => {
-  await page.goto('/routine');
+  await page.goto('/exercise');
   await expect(page.getByText('총 2개')).toBeVisible();
   await page.screenshot({ path: '/tmp/health-note-routine-list.png' });
   await page.getByRole('link', { name: '순서 변경' }).click();
@@ -78,7 +78,7 @@ test('모바일 목록·정렬·상세·삭제 모달과 좁은 화면의 긴 �
     ROUTINES,
   );
   await page.setViewportSize({ width: 320, height: 640 });
-  for (const route of ['/routine', '/routine/order', '/routine/0/edit']) {
+  for (const route of ['/exercise', '/routine/order', '/routine/0/edit']) {
     await page.goto(route);
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),

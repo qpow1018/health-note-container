@@ -7,7 +7,7 @@ const EXERCISES = [
 ];
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/routine');
+  await page.goto('/exercise');
   await page.evaluate(
     (exercises) =>
       localStorage.setItem('health-note.exercises.v1:test-user', JSON.stringify(exercises)),
@@ -32,7 +32,7 @@ test('요일 루틴에 운동을 선택하고 정렬해 저장하며 새로고�
   await page.getByRole('checkbox', { name: '금', exact: true }).check();
   await page.getByLabel('메모').fill('  천천히  ');
   await page.getByRole('button', { name: '저장', exact: true }).click();
-  await expect(page).toHaveURL('/routine');
+  await expect(page).toHaveURL('/exercise');
   await page.reload();
   await expect(page.getByRole('heading', { name: '기본 루틴' })).toBeVisible();
   expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), KEY)).toMatchObject([
@@ -56,7 +56,7 @@ test('간격 반복은 시작일과 간격만 저장한다', async ({ page }) =>
   await page.getByLabel('시작일').fill('2026-10-14');
   await page.getByLabel('반복 간격').fill('3');
   await page.getByRole('button', { name: '저장', exact: true }).click();
-  await expect(page).toHaveURL('/routine');
+  await expect(page).toHaveURL('/exercise');
   expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), KEY)).toMatchObject([
     { schedule: { type: 'interval', startDate: '2026-10-14', intervalDays: 3 } },
   ]);
