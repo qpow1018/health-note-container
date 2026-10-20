@@ -26,10 +26,7 @@ test('날짜와 관계없이 전체 루틴을 표시하고 상세에서 목록�
     ROUTINES,
   );
   await page.goto('/exercise?date=2026-10-15');
-  await expect(page.getByRole('listitem')).toHaveText([
-    '요일 루틴비활성 · 운동 1개',
-    '간격 루틴비활성 · 운동 1개',
-  ]);
+  await expect(page.getByRole('listitem')).toHaveText(['요일 루틴운동 1개', '간격 루틴운동 1개']);
   await expect(page.getByLabel('날짜 선택')).toHaveCount(0);
   await expect(page.getByRole('button', { name: '전체 루틴', exact: true })).toHaveCount(0);
   await page.getByRole('link', { name: /간격 루틴/ }).click();

@@ -6,7 +6,7 @@ export async function mockRoutineApi(page: Page) {
     const request = route.request();
     const url = new URL(request.url());
     const resource = url.pathname.split('/').at(-1);
-    if (!['routines', 'save_routine', 'reorder_routines'].includes(resource ?? ''))
+    if (!['routines', 'save_routine_bundle', 'reorder_routines'].includes(resource ?? ''))
       return route.fallback();
     const owner = JSON.parse(
       Buffer.from((request.headers().authorization ?? '').split('.')[1], 'base64url').toString(),
@@ -76,26 +76,10 @@ export async function mockRoutineApi(page: Page) {
               (item.isActive !== undefined && typeof item.isActive !== 'boolean') ||
               !Array.isArray(item.exerciseIds) ||
               !item.exerciseIds.length ||
-              new Set(item.exerciseIds).size !== item.exerciseIds.length ||
-              !item.schedule
+              new Set(item.exerciseIds).size !== item.exerciseIds.length
             )
               return true;
-            const s = item.schedule;
-            if (s.type === 'weekdays')
-              return (
-                !Array.isArray(s.days) ||
-                !s.days.length ||
-                s.days.some((day) => !Number.isInteger(day) || day < 0 || day > 6) ||
-                new Set(s.days).size !== s.days.length
-              );
-            return (
-              s.type !== 'interval' ||
-              !Number.isSafeInteger(s.intervalDays) ||
-              s.intervalDays! < 1 ||
-              typeof s.startDate !== 'string' ||
-              !/^\d{4}-\d{2}-\d{2}$/.test(s.startDate) ||
-              new Date(s.startDate + 'T00:00:00Z').toISOString().slice(0, 10) !== s.startDate
-            );
+            return false;
           })
         )
           throw new Error('Invalid API fixture');
@@ -114,7 +98,7 @@ export async function mockRoutineApi(page: Page) {
           localStorage.setItem(input.key, JSON.stringify(items));
           return { data: true };
         }
-        if (input.resource === 'save_routine') {
+        if (input.resource === 'save_routine_bundle') {
           const b = input.body;
           const index = items.findIndex((item) => item.id === b.routine_id);
           if (
@@ -135,7 +119,7 @@ export async function mockRoutineApi(page: Page) {
             id: b.routine_id,
             name: b.routine_name,
             memo: b.routine_memo,
-            schedule: b.routine_schedule,
+            schedule: index < 0 ? undefined : items[index].schedule,
             exerciseIds: b.exercise_ids,
             isActive: index < 0 ? false : (items[index].isActive ?? false),
           };

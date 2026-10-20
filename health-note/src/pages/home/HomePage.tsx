@@ -1,15 +1,14 @@
 import { useContext } from 'react';
 
 import { AuthUserContext } from '@/features/auth/AuthUserContext';
-import { useRoutineToday } from '@/features/exercise/hooks/useRoutineToday';
+import { useTodayDate } from '@/hooks/useTodayDate';
 import Avatar from '@/features/avatar/Avatar';
 import StepCard from '@/features/steps/StepCard';
-import HomeRoutines from '@/features/exercise/HomeRoutines';
 
 import styles from './HomePage.module.scss';
 
 export default function HomePage() {
-  const today = useRoutineToday();
+  const today = useTodayDate();
   const { nickname } = useContext(AuthUserContext)!;
   return (
     <section className={styles['home-page']}>
@@ -37,7 +36,7 @@ export default function HomePage() {
           </div>
         </div>
         <StepCard today={today} />
-        <HomeRoutines today={today} />
+        <p>루틴을 만들어 두세요. 플랜과 연결하는 기능을 준비하고 있어요.</p>
       </div>
     </section>
   );

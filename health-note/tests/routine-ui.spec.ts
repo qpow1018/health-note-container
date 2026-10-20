@@ -39,11 +39,7 @@ test('필드 오류를 입력과 연결하고 수정하면 해제하며 저장 �
   await page.getByRole('dialog').getByRole('checkbox', { name: /걷기/ }).check();
   await page.getByRole('button', { name: /선택 완료/ }).click();
   await expect(page.getByRole('alert')).toHaveCount(0);
-  await page.getByRole('button', { name: '저장', exact: true }).click();
-  await expect(page.getByRole('group', { name: /반복 일정/ })).toHaveAccessibleDescription(
-    '반복할 요일을 하나 이상 선택해 주세요.',
-  );
-  await page.getByRole('checkbox', { name: '월', exact: true }).check();
+  await expect(page.getByText('반복 일정', { exact: true })).toHaveCount(0);
   await expect(page.getByRole('alert')).toHaveCount(0);
   await page.getByLabel('메모').scrollIntoViewIfNeeded();
   const save = (await page.getByRole('button', { name: '저장', exact: true }).boundingBox())!;
@@ -55,12 +51,7 @@ test('모바일 목록·정렬·상세·삭제 모달과 좁은 화면의 긴 �
   await page.goto('/exercise');
   await expect(page.getByText('총 2개')).toBeVisible();
   await page.screenshot({ path: '/tmp/health-note-routine-list.png' });
-  await page.getByRole('link', { name: '순서 변경' }).click();
-  await expect(page.getByRole('heading', { name: '루틴 순서 변경', exact: true })).toBeVisible();
-  await page.screenshot({ path: '/tmp/health-note-routine-order.png' });
-  await page.getByRole('button', { name: '뒤로가기' }).click();
   await page.getByRole('link', { name: /상체 루틴/ }).click();
-  await expect(page.getByRole('heading', { name: '반복 일정' })).toBeVisible();
   await page.screenshot({ path: '/tmp/health-note-routine-detail.png' });
   await page.getByRole('button', { name: '더보기' }).click();
   await page.getByRole('button', { name: '삭제', exact: true }).click();
@@ -78,7 +69,7 @@ test('모바일 목록·정렬·상세·삭제 모달과 좁은 화면의 긴 �
     ROUTINES,
   );
   await page.setViewportSize({ width: 320, height: 640 });
-  for (const route of ['/exercise', '/routine/order', '/routine/0/edit']) {
+  for (const route of ['/exercise', '/routine/0/edit']) {
     await page.goto(route);
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),

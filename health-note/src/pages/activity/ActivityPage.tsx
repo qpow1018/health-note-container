@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useRoutineToday } from '@/features/exercise/hooks/useRoutineToday';
+import { useTodayDate } from '@/hooks/useTodayDate';
 import { useActivitySnapshot } from '@/features/steps/useActivitySnapshot';
 import { distance, duration, speed } from '@/features/steps/activity';
 
@@ -23,7 +23,7 @@ const KINDS: Record<string, string> = {
 };
 
 export default function ActivityPage() {
-  const today = useRoutineToday();
+  const today = useTodayDate();
   const { snapshot, isPreview } = useActivitySnapshot(today);
   const [metric, setMetric] = useState<TMetric>('steps');
   const [hour, setHour] = useState(() => new Date().getHours());

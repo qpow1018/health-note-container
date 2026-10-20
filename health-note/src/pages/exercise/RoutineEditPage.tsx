@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import routineQuery from '@/queries/routineQuery';
 import { ROUTINE_LOAD_ERROR } from '@/features/exercise/constants/routineMessages';
-import { prepareRoutineValues } from '@/features/exercise/utils/prepareRoutineValues';
 import type { TRoutine, TRoutineValues } from '@/api/routine/type';
 import toast from '@/utils/toast';
 
@@ -55,7 +54,7 @@ function RoutineEditor({
     try {
       const result = await updateRoutine({
         id: routine.id,
-        values: prepareRoutineValues(values, routine),
+        values,
         expectedRoutine: routine,
       });
       if (result === 'conflict') {

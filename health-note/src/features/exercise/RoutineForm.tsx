@@ -9,15 +9,13 @@ import { isSortable, useSortable } from '@dnd-kit/react/sortable';
 import exerciseQuery from '@/queries/exerciseQuery';
 import { EXERCISES_LOAD_ERROR } from '@/features/exercise/constants/messages';
 import type { TExercise } from '@/api/exercise/type';
-import { getTodayDate } from '@/features/exercise/utils/routineSchedule';
-import type { TRoutineValues, TRoutineSchedule } from '@/api/routine/type';
+import type { TRoutineValues } from '@/api/routine/type';
 
 import BottomSheet from '@/components/common/modal/BottomSheet';
 import Button from '@/components/common/button/Button';
 import Textarea from '@/components/common/form/Textarea';
 import FieldError from '@/components/common/form/FieldError';
 import Input from '@/components/common/form/Input';
-import Radio from '@/components/common/form/Radio';
 import Checkbox from '@/components/common/form/Checkbox';
 
 import styles from './RoutineForm.module.scss';
@@ -43,16 +41,6 @@ const ORDER_ACCESSIBILITY = Accessibility.configure({
   },
 });
 
-const WEEKDAYS = [
-  { day: 1, label: '월' },
-  { day: 2, label: '화' },
-  { day: 3, label: '수' },
-  { day: 4, label: '목' },
-  { day: 5, label: '금' },
-  { day: 6, label: '토' },
-  { day: 0, label: '일' },
-];
-
 type TRoutineFormProps = {
   initialValues?: TRoutineValues;
   onSave: (values: TRoutineValues) => Promise<void>;
@@ -70,13 +58,8 @@ export default function RoutineForm({
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [announcement, setAnnouncement] = useState('');
-  const [scheduleType, setScheduleType] = useState<TRoutineSchedule['type']>(
-    initialValues?.schedule.type ?? 'weekdays',
-  );
   const [nameError, setNameError] = useState('');
   const [exerciseError, setExerciseError] = useState('');
-  const [scheduleError, setScheduleError] = useState('');
-  const [today] = useState(getTodayDate);
 
   async function handleOpenExercises() {
     const latest = await refetch();
@@ -140,7 +123,6 @@ export default function RoutineForm({
     const name = String(data.get('name') ?? '').trim();
     setNameError('');
     setExerciseError('');
-    setScheduleError('');
     if (!name) {
       setNameError('루틴 이름을 입력해 주세요.');
       return;
@@ -148,26 +130,6 @@ export default function RoutineForm({
     if (exerciseIds.length === 0) {
       setExerciseError('운동을 하나 이상 선택해 주세요.');
       return;
-    }
-    let schedule: TRoutineSchedule;
-    if (scheduleType === 'weekdays') {
-      const days = data.getAll('days').map(Number);
-      if (days.length === 0) {
-        setScheduleError('반복할 요일을 하나 이상 선택해 주세요.');
-        return;
-      }
-      schedule = { type: 'weekdays', days };
-    } else {
-      const intervalDays = Number(data.get('intervalDays'));
-      if (!Number.isSafeInteger(intervalDays) || intervalDays < 1) {
-        setScheduleError('간격은 1 이상의 정수로 입력해 주세요.');
-        return;
-      }
-      schedule = {
-        type: 'interval',
-        intervalDays,
-        startDate: String(data.get('startDate') ?? ''),
-      };
     }
     setIsSaving(true);
     try {
@@ -180,7 +142,6 @@ export default function RoutineForm({
       await onSave({
         name,
         exerciseIds,
-        schedule,
         memo: String(data.get('memo') ?? '').trim(),
       });
     } finally {
@@ -279,97 +240,6 @@ export default function RoutineForm({
               )}
             </div>
           </div>
-          <fieldset
-            className={styles['field']}
-            onChange={() => setScheduleError('')}
-            aria-describedby={scheduleError ? 'routine-schedule-error' : undefined}
-            aria-invalid={Boolean(scheduleError)}
-          >
-            <legend>
-              반복 일정{' '}
-              <span className={styles['required']} aria-hidden="true">
-                *
-              </span>
-            </legend>
-            {initialValues?.schedule.type === 'interval' &&
-              Boolean(initialValues.schedule.postponedDates?.length) && (
-                <p className={styles['hint']}>
-                  시작일이나 반복 간격을 변경하면 미루기 내역이 초기화돼요.
-                </p>
-              )}
-            <div className={styles['schedule-options']}>
-              <Radio
-                name="scheduleType"
-                value="weekdays"
-                checked={scheduleType === 'weekdays'}
-                onChange={() => setScheduleType('weekdays')}
-              >
-                요일 반복
-              </Radio>
-              <Radio
-                name="scheduleType"
-                value="interval"
-                checked={scheduleType === 'interval'}
-                onChange={() => setScheduleType('interval')}
-              >
-                간격 반복
-              </Radio>
-            </div>
-            <div hidden={scheduleType !== 'weekdays'} className={styles['weekdays']}>
-              {WEEKDAYS.map(({ day, label }) => (
-                <label key={day}>
-                  <input
-                    type="checkbox"
-                    name="days"
-                    value={day}
-                    defaultChecked={
-                      initialValues?.schedule.type === 'weekdays' &&
-                      initialValues.schedule.days.includes(day)
-                    }
-                    disabled={scheduleType !== 'weekdays'}
-                  />
-                  <span>{label}</span>
-                </label>
-              ))}
-            </div>
-            <div hidden={scheduleType !== 'interval'}>
-              <div className={styles['field']}>
-                <label htmlFor="routine-start">시작일</label>
-                <Input
-                  id="routine-start"
-                  name="startDate"
-                  type="date"
-                  defaultValue={
-                    initialValues?.schedule.type === 'interval'
-                      ? initialValues.schedule.startDate
-                      : today
-                  }
-                  required
-                  disabled={scheduleType !== 'interval'}
-                />
-              </div>
-              <div className={styles['field']}>
-                <label htmlFor="routine-interval">반복 간격 (일)</label>
-                <Input
-                  id="routine-interval"
-                  name="intervalDays"
-                  type="number"
-                  min="1"
-                  step="1"
-                  inputMode="numeric"
-                  defaultValue={
-                    initialValues?.schedule.type === 'interval'
-                      ? initialValues.schedule.intervalDays
-                      : 2
-                  }
-                  required
-                  disabled={scheduleType !== 'interval'}
-                />
-                <p className={styles['hint']}>2일 간격이면 시작일, 2일 후, 4일 후에 반복해요.</p>
-              </div>
-            </div>
-            <FieldError id="routine-schedule-error" message={scheduleError} />
-          </fieldset>
           <div className={styles['field']}>
             <label htmlFor="routine-memo">메모</label>
             <Textarea

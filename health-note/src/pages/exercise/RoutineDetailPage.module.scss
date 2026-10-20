@@ -5,61 +5,6 @@
     overflow-wrap: anywhere;
   }
 
-  .activation {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 24px 0;
-    border-bottom: 1px solid $border-soft;
-
-    p + p {
-      margin-top: 4px;
-      font-size: $font-size-caption;
-    }
-    .active-status {
-      color: $mint-accent;
-    }
-  }
-
-  .activation-switch {
-    display: inline-flex;
-    align-items: center;
-    flex-shrink: 0;
-    width: 52px;
-    height: $control-height;
-    padding: 0 4px;
-    border: 0;
-    border-radius: 24px;
-    background: transparent;
-    position: relative;
-
-    &::before {
-      content: '';
-      position: absolute;
-      inset: 10px 0;
-      border-radius: 16px;
-      background: $gray-600;
-    }
-
-    span {
-      position: relative;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: $text-primary;
-    }
-
-    &[aria-checked='true'] {
-      &::before {
-        background: $mint;
-      }
-      span {
-        transform: translateX(24px);
-      }
-    }
-  }
-
   .section {
     margin-top: 32px;
     h2 {
@@ -69,31 +14,6 @@
     }
   }
 
-  .schedule-summary {
-    font-size: 22px;
-    font-weight: 500;
-    color: $mint-light;
-  }
-  .next-date {
-    margin: 16px 0 0;
-    font-size: $font-size-caption;
-    dt {
-      color: $text-secondary;
-    }
-    dd {
-      margin: 4px 0 0;
-    }
-    strong {
-      font-weight: 500;
-      color: $mint-light;
-    }
-  }
-
-  .schedule-start {
-    margin-top: 8px;
-    color: $text-secondary;
-    font-size: $font-size-caption;
-  }
   .exercise-count {
     margin-left: 4px;
     color: $text-secondary;

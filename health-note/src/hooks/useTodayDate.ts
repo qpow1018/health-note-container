@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import { getTodayDate } from '@/features/exercise/utils/routineSchedule';
+import { getTodayDate } from '@/utils/date';
 
-export function useRoutineToday(): string {
+export function useTodayDate(): string {
   const [today, setToday] = useState(getTodayDate);
 
   useEffect(() => {

@@ -2,11 +2,10 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { QueryClient } from '@tanstack/react-query';
 
 import * as api from '@/api/routine';
-import type { TRoutine, TRoutineValues, TRoutineProgress } from '@/api/routine/type';
+import type { TRoutine, TRoutineValues } from '@/api/routine/type';
 import { getUserKey } from '@/lib/auth/currentUser';
 
 export const ROUTINES_QUERY_KEY = ['routines'] as const;
-export const ROUTINE_PROGRESS_QUERY_KEY = ['routine-progress'] as const;
 
 export function invalidateRoutines(queryClient: QueryClient) {
   return queryClient.invalidateQueries({ queryKey: ROUTINES_QUERY_KEY });
@@ -17,13 +16,6 @@ const routineQuery = {
     return useQuery({
       queryKey: [...ROUTINES_QUERY_KEY, getUserKey('owner')],
       queryFn: ({ signal }) => api.getRoutines(signal),
-    });
-  },
-
-  useGetRoutineProgress(date: string) {
-    return useQuery({
-      queryKey: [...ROUTINE_PROGRESS_QUERY_KEY, getUserKey('owner'), date],
-      queryFn: ({ signal }) => api.getRoutineProgress(date, signal),
     });
   },
 
@@ -74,55 +66,6 @@ const routineQuery = {
       onSuccess: (result) => {
         if (result === 'conflict') return;
         return invalidateRoutines(queryClient);
-      },
-    });
-  },
-
-  useSetRoutineActive() {
-    const queryClient = useQueryClient();
-    return useMutation({
-      mutationFn: ({
-        id,
-        isActive,
-        expectedIsActive,
-      }: {
-        id: string;
-        isActive: boolean;
-        expectedIsActive: boolean;
-      }) => api.setRoutineActive(id, isActive, expectedIsActive),
-      onSuccess: (result) => {
-        if (result === 'conflict') return;
-        return invalidateRoutines(queryClient);
-      },
-    });
-  },
-
-  useSetExerciseCompleted() {
-    const queryClient = useQueryClient();
-    const owner = getUserKey('owner');
-    return useMutation({
-      mutationFn: ({
-        routineId,
-        date,
-        exerciseId,
-        isCompleted,
-      }: {
-        routineId: string;
-        date: string;
-        exerciseId: string;
-        isCompleted: boolean;
-      }) => api.setExerciseCompleted(routineId, date, exerciseId, isCompleted),
-      onSuccess: async (_, { routineId, date, exerciseId, isCompleted }) => {
-        const queryKey = [...ROUTINE_PROGRESS_QUERY_KEY, owner, date];
-        await queryClient.cancelQueries({ queryKey, exact: true });
-        queryClient.setQueryData<TRoutineProgress[]>(queryKey, (previous) => {
-          if (!previous) return previous;
-          const remaining = previous.filter(
-            (item) => item.routineId !== routineId || item.exerciseId !== exerciseId,
-          );
-          return isCompleted ? [...remaining, { routineId, exerciseId }] : remaining;
-        });
-        return queryClient.invalidateQueries({ queryKey, exact: true });
       },
     });
   },

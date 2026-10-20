@@ -16,21 +16,15 @@
 - 루틴 자체를 삭제하면 그 루틴의 완료 기록도 삭제한다.
 - 운동 자체를 삭제하면 그 운동의 완료 기록도 삭제한다. 다만 루틴에 포함된 운동은 먼저 모든 루틴에서 연결을 제거해야 삭제할 수 있다.
 
-근거: [완료 기록 DB 계약](../supabase/migrations/20261016111342_create_routine_progress.sql), [루틴 연결 DB 계약](../supabase/migrations/20261016090226_create_routines.sql), [홈 진행률 계산](../src/features/exercise/HomeRoutines.tsx). 관련 테스트: [완료 기록 보존·삭제](../supabase/tests/progress.test.sql).
+근거: [완료 기록 DB 계약](../supabase/migrations/20261016111342_create_routine_progress.sql), [루틴 연결 DB 계약](../supabase/migrations/20261016090226_create_routines.sql), [홈 진행률 계산](../src/features/exercise/RoutineList.tsx). 관련 테스트: [완료 기록 보존·삭제](../supabase/tests/progress.test.sql).
 
-## 루틴 활성화는 일정이나 기록을 초기화하지 않는다
+## 루틴은 일정 없는 운동 묶음이다
 
-새 루틴은 비활성 상태로 시작한다. 홈의 오늘 운동 대상은 활성화된 루틴 중 오늘 일정에 해당하는 루틴이다. 관리 목록에서는 비활성 루틴도 확인할 수 있다.
+루틴은 이름·운동 구성과 순서·메모를 관리한다. 최소 운동 한 개가 필요하며, 요일·간격·활성화는 설정하지 않는다. 실행 일정은 이후 플랜에서 정한다. 플랜 연결 전까지 홈의 오늘 루틴·완료 체크는 제공하지 않고 안내를 표시한다.
 
-활성화·비활성화는 루틴의 운동 구성·일정·미루기 내역과 기존 완료 기록을 초기화하지 않는다. 다시 활성화할 때 활성화 날짜를 새로운 시작일로 삼지 않고 기존 일정으로 예정일을 계산한다.
+기존 루틴과 완료 기록은 삭제하지 않는다. DB의 기존 schedule·is_active 값은 호환성과 데이터 보존을 위해 남기지만 현재 웹은 읽거나 사용하지 않는다. 새 저장 RPC는 일정 없이 생성하고, 기존 루틴 수정 시 과거 설정을 보존한다. 운영 적용에는 새 마이그레이션 배포가 필요하다.
 
-근거: [루틴 DB 계약](../supabase/migrations/20261016090226_create_routines.sql), [활성 상태 변경](../src/api/routine/index.ts), [홈 대상 선택](../src/features/exercise/HomeRoutines.tsx), [일정 계산](../src/features/exercise/utils/routineSchedule.ts). 관련 테스트: [활성 상태](../tests/routine-active.spec.ts), [다음 예정일](../tests/routine-next-date.spec.ts).
-
-## 반복 일정 변경 시 미루기 내역을 구분한다
-
-간격 반복 루틴의 이름·메모·운동 구성만 수정하고 시작일과 반복 간격을 유지하면 기존 미루기 내역도 유지한다. 시작일이나 반복 간격을 바꾸면 미루기 내역을 초기화한다. 요일 반복으로 바꿀 때도 기존 간격 반복의 미루기 내역을 이어받지 않는다.
-
-근거: [루틴 수정 값 준비](../src/features/exercise/utils/prepareRoutineValues.ts), [폼 안내](../src/features/exercise/RoutineForm.tsx). 관련 테스트: [일정 수정과 미루기 내역](../tests/routine-postpone.spec.ts).
+근거: [루틴 폼](../src/features/exercise/RoutineForm.tsx), [저장 API](../src/api/routine/index.ts), [DB 계약](../supabase/migrations/20261020070642_routine_exercise_bundles.sql). 검증: [루틴 생성](../tests/routine.spec.ts), [DB 보존·권한](../supabase/tests/routine-bundles.test.sql).
 
 ## 루틴 저장은 입력 검증 후 운동 존재 여부를 확인한다
 

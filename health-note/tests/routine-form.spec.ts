@@ -98,7 +98,6 @@ test('핸들로 정렬하고 Escape는 순서를 복구하며 선택 변경 취�
     '운동 1',
     '운동 3',
   ]);
-  await page.getByRole('checkbox', { name: '월', exact: true }).check();
   await page.screenshot({ path: '/tmp/health-note-routine-form-refined.png', fullPage: true });
   await page.getByRole('button', { name: '저장', exact: true }).click();
   await expect(page).toHaveURL('/exercise');

@@ -33,45 +33,32 @@ test('상세에서 수정해 모든 입력과 ID·다른 루틴을 유지하고 
   await expect(page.getByLabel('루틴 이름')).toHaveValue('기존 루틴');
   await expect(page.getByLabel('메모')).toHaveValue('기존 메모');
   await expect(page.getByRole('listitem')).toHaveText(['걷기30분', '스쿼트10회 × 3세트']);
-  await expect(page.getByRole('checkbox', { name: '월', exact: true })).toBeChecked();
-  await expect(page.getByRole('checkbox', { name: '금', exact: true })).toBeChecked();
   await page.getByLabel('루틴 이름').fill('수정 루틴');
   await page.getByRole('button', { name: '스쿼트 순서 이동', exact: true }).focus();
   await page.keyboard.press('Space');
   await page.keyboard.press('ArrowUp');
   await page.keyboard.press('Space');
   await expect(page.locator('[data-dnd-dropping]')).toHaveCount(0);
-  await page.getByRole('radio', { name: '간격 반복' }).check();
-  await page.getByLabel('시작일').fill('2026-10-14');
-  await page.getByLabel('반복 간격').fill('3');
   await page.getByLabel('메모').fill('바뀐 메모');
   await expect(page.getByLabel('메모')).toHaveValue('바뀐 메모');
   await page.getByRole('button', { name: '저장', exact: true }).click();
   await expect(page).toHaveURL('/routine/r1');
-  await expect(page.getByText('3일 간격', { exact: true })).toBeVisible();
   expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), KEY)).toEqual([
     {
       ...ROUTINE,
       name: '수정 루틴',
       exerciseIds: ['squat', 'walk'],
-      schedule: { type: 'interval', startDate: '2026-10-14', intervalDays: 3 },
       memo: '바뀐 메모',
     },
     OTHER,
   ]);
   await page.getByRole('button', { name: '더보기', exact: true }).click();
   await page.getByRole('link', { name: '수정', exact: true }).click();
-  await expect(page.getByRole('radio', { name: '간격 반복' })).toBeChecked();
-  await expect(page.getByLabel('시작일')).toHaveValue('2026-10-14');
-  await expect(page.getByLabel('반복 간격')).toHaveValue('3');
-  await page.getByRole('radio', { name: '요일 반복' }).check();
-  await page.getByRole('checkbox', { name: '수', exact: true }).check();
   await page.getByRole('button', { name: /^(운동 선택|선택 변경)$/ }).click();
   await page.getByRole('dialog').getByRole('checkbox', { name: /걷기/ }).uncheck();
   await page.getByRole('button', { name: /선택 완료/ }).click();
   await page.getByRole('button', { name: '저장', exact: true }).click();
   await expect(page).toHaveURL('/routine/r1');
-  await expect(page.getByText('매주 수', { exact: true })).toBeVisible();
   await expect(page.getByRole('listitem')).toHaveText(['스쿼트10회 × 3세트']);
 });
 

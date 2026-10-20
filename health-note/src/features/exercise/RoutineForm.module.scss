@@ -137,57 +137,6 @@
     }
   }
 
-  .schedule-options {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    margin-bottom: 16px;
-  }
-
-  .weekdays:not([hidden]) {
-    display: grid;
-    grid-template-columns: repeat(7, minmax(0, 1fr));
-    gap: 6px;
-
-    label {
-      position: relative;
-      min-width: 0;
-
-      input {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        opacity: 0;
-
-        &:checked + span {
-          border-color: $mint;
-          background: $mint;
-          color: $text-primary;
-        }
-
-        &:focus-visible + span {
-          outline: 2px solid $border-focus;
-          outline-offset: 3px;
-        }
-
-        &:disabled + span {
-          opacity: 0.5;
-        }
-      }
-
-      span {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: $control-height;
-        border: 1px solid $border;
-        border-radius: $border-radius;
-        color: $text-secondary;
-      }
-    }
-  }
-
   .actions {
     @include app-width;
     position: fixed;
