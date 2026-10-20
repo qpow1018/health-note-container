@@ -1,4 +1,8 @@
+import { useContext } from 'react';
+
+import { AuthUserContext } from '@/features/auth/AuthUserContext';
 import { useRoutineToday } from '@/features/routine/useRoutineToday';
+import Avatar from '@/features/avatar/Avatar';
 import StepCard from '@/features/steps/StepCard';
 import HomeRoutines from '@/features/routine/homeRoutines/HomeRoutines';
 
@@ -6,6 +10,8 @@ import styles from './HomePage.module.scss';
 
 export default function HomePage() {
   const today = useRoutineToday();
+  const user = useContext(AuthUserContext);
+  const nickname = user?.user_metadata.nickname;
   return (
     <section className={styles['home-page']}>
       <header className={styles['header']}>
@@ -24,6 +30,13 @@ export default function HomePage() {
         </time>
       </div>
       <div className={styles['content']}>
+        <div className={styles['companion']}>
+          <Avatar />
+          <div className={styles['companion-info']}>
+            <h2>{typeof nickname === 'string' && nickname ? nickname : '운동이'}</h2>
+            <p>운동이를 눌러 인사해 보세요.</p>
+          </div>
+        </div>
         <StepCard today={today} />
         <HomeRoutines today={today} />
       </div>

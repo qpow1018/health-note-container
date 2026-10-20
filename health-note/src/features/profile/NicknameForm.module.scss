@@ -1,29 +1,20 @@
 .nickname-form {
-  margin-bottom: 32px;
-
   label {
-    font-size: 16px;
-    font-weight: 500;
+    display: block;
+    margin-bottom: 8px;
+    font-size: $font-size-body;
   }
 
   .help {
-    margin-top: 8px;
+    margin-bottom: 12px;
     color: $text-secondary;
     font-size: $font-size-caption;
   }
 
-  .controls {
+  .actions {
     display: flex;
+    justify-content: flex-end;
     gap: 8px;
-    margin-top: 12px;
-
-    input {
-      flex: 1;
-      min-width: 0;
-    }
-
-    button {
-      flex-shrink: 0;
-    }
+    margin-top: 24px;
   }
 }

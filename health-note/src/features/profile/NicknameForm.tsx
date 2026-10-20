@@ -8,10 +8,15 @@ import toast from '@/utils/toast';
 import Button from '@/components/common/button/Button';
 import Input from '@/components/common/form/Input';
 import FieldError from '@/components/common/form/FieldError';
+import Modal from '@/components/common/modal/Modal';
 
 import styles from './NicknameForm.module.scss';
 
-export default function NicknameForm() {
+type TNicknameFormProps = {
+  onClose: () => void;
+};
+
+export default function NicknameForm({ onClose }: TNicknameFormProps) {
   const user = useContext(AuthUserContext);
   const savedNickname = user?.user_metadata.nickname;
   const [nickname, setNickname] = useState(
@@ -33,6 +38,7 @@ export default function NicknameForm() {
     try {
       await updateNickname(nickname);
       toast.success('닉네임을 저장했어요.');
+      onClose();
     } catch {
       setError('닉네임을 저장하지 못했어요. 다시 시도해 주세요.');
     } finally {
@@ -41,12 +47,18 @@ export default function NicknameForm() {
   }
 
   return (
-    <form className={styles['nickname-form']} onSubmit={handleSubmit} noValidate>
-      <label htmlFor="nickname">닉네임</label>
-      <p id="nickname-help" className={styles['help']}>
-        공백 없이 한글·영문·숫자 1~10자로 설정할 수 있어요.
-      </p>
-      <div className={styles['controls']}>
+    <Modal
+      isOpen
+      title="닉네임 변경"
+      onClose={() => {
+        if (!isSaving) onClose();
+      }}
+    >
+      <form className={styles['nickname-form']} onSubmit={handleSubmit} noValidate>
+        <label htmlFor="nickname">닉네임</label>
+        <p id="nickname-help" className={styles['help']}>
+          공백 없이 한글·영문·숫자 1~10자로 설정할 수 있어요.
+        </p>
         <Input
           id="nickname"
           value={nickname}
@@ -61,11 +73,16 @@ export default function NicknameForm() {
             setError('');
           }}
         />
-        <Button type="submit" disabled={isSaving}>
-          {isSaving ? '저장 중…' : '저장'}
-        </Button>
-      </div>
-      <FieldError id="nickname-error" message={error} />
-    </form>
+        <FieldError id="nickname-error" message={error} />
+        <div className={styles['actions']}>
+          <Button color="gray" fill="outline" disabled={isSaving} onClick={onClose}>
+            취소
+          </Button>
+          <Button type="submit" disabled={isSaving}>
+            {isSaving ? '저장 중…' : '저장'}
+          </Button>
+        </div>
+      </form>
+    </Modal>
   );
 }

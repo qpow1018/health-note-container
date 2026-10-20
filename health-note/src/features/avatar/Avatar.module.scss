@@ -1,0 +1,33 @@
+.avatar {
+  position: relative;
+  width: 100%;
+
+  .shadow {
+    position: absolute;
+    left: 28%;
+    right: 28%;
+    bottom: 11%;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba($black, 0.23);
+  }
+
+  .character {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    border-radius: 20px;
+    background: transparent;
+    cursor: pointer;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transform-origin: 50% 87%;
+
+    &:focus-visible {
+      outline: 2px solid $mint-light;
+      outline-offset: 4px;
+    }
+  }
+}

@@ -27,9 +27,28 @@
     }
   }
 
-  .logout {
+  .menu {
     margin-top: 32px;
-    padding-top: 16px;
     border-top: 1px solid $border-soft;
+  }
+
+  .menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 56px;
+    padding: 12px 0;
+    border: 0;
+    border-bottom: 1px solid $border-soft;
+    background: transparent;
+    color: $text-primary;
+    text-align: left;
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: 2px solid $mint-light;
+      outline-offset: 2px;
+    }
   }
 }

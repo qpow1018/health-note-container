@@ -18,6 +18,7 @@ test('닉네임 기본값·입력 제한·저장 실패 복구와 새로고침 �
     await route.fulfill({ json: user });
   });
   await page.goto('/my');
+  await page.getByRole('button', { name: '닉네임 변경', exact: true }).click();
   const input = page.getByRole('textbox', { name: '닉네임' });
   const save = page.getByRole('button', { name: '저장', exact: true });
   await expect(input).toHaveValue('운동이');
@@ -46,12 +47,19 @@ test('닉네임 기본값·입력 제한·저장 실패 복구와 새로고침 �
   shouldFail = false;
   await save.click();
   await expect(page.getByText('닉네임을 저장했어요.', { exact: true })).toBeVisible();
+  await expect(page.getByRole('dialog')).not.toBeVisible();
+  await page.getByRole('link', { name: '홈', exact: true }).click();
+  await expect(page.getByRole('heading', { name: '가나다라마바사Ab1', exact: true })).toBeVisible();
   await page.reload();
+  await expect(page.getByRole('heading', { name: '가나다라마바사Ab1', exact: true })).toBeVisible();
+  await page.getByRole('link', { name: '마이', exact: true }).click();
+  await page.getByRole('button', { name: '닉네임 변경', exact: true }).click();
   await expect(input).toHaveValue('가나다라마바사Ab1');
   await input.fill('가');
   await save.click();
-  await expect(save).toBeEnabled();
+  await expect(page.getByRole('dialog')).not.toBeVisible();
   await page.reload();
+  await page.getByRole('button', { name: '닉네임 변경', exact: true }).click();
   await expect(input).toHaveValue('가');
 });
 
@@ -67,7 +75,8 @@ test('홈에서 마이로 이동해 계정을 확인하고 새로고침해도 �
   await expect(page.getByRole('heading', { name: '마이페이지' })).toBeVisible();
   await expect(page.getByText('test-user@example.test', { exact: true })).toBeVisible();
   await expect(page.getByText('Google', { exact: true })).toBeVisible();
-  await expect(page.getByRole('textbox', { name: '닉네임' })).toHaveValue('운동이');
+  await expect(page.getByRole('textbox', { name: '닉네임' })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: '닉네임 변경', exact: true })).toBeVisible();
   await page.reload();
   await expect(page.getByText('test-user@example.test', { exact: true })).toBeVisible();
   await page.screenshot({ path: 'test-results/my-mobile.png', fullPage: true });
@@ -87,4 +96,49 @@ test('좁은 화면에서도 긴 이메일이 가로 넘침 없이 표시된다'
   await expect(page.getByRole('heading', { name: '마이페이지' })).toBeVisible();
   await expect(page.getByText(session.user.email, { exact: true })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
+test('닉네임 취소·Escape는 초안을 버리고 다음 편집은 저장된 이름으로 시작한다', async ({
+  page,
+}) => {
+  await page.goto('/my');
+  const open = page.getByRole('button', { name: '닉네임 변경', exact: true });
+  const input = page.getByRole('textbox', { name: '닉네임' });
+  await open.click();
+  await expect(input).toBeFocused();
+  await input.fill('취소할이름');
+  await page.getByRole('button', { name: '취소', exact: true }).click();
+  await expect(page.getByRole('dialog')).not.toBeVisible();
+  await expect(open).toBeFocused();
+  await open.click();
+  await expect(input).toHaveValue('운동이');
+  await input.fill('임시이름');
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog')).not.toBeVisible();
+  await open.click();
+  await expect(input).toHaveValue('운동이');
+  await page.screenshot({ path: 'test-results/nickname-modal-mobile.png', fullPage: true });
+});
+
+test('저장 중 중복 제출과 팝업 닫기를 막고 성공 후 닫는다', async ({ page }) => {
+  let finishSave: () => void = () => {};
+  const pendingSave = new Promise<void>((resolve) => {
+    finishSave = resolve;
+  });
+  await page.route('**/auth/v1/user', async (route) => {
+    if (route.request().method() === 'PUT') await pendingSave;
+    await route.fulfill({
+      json: { ...createSession().user, user_metadata: { nickname: '새운동이' } },
+    });
+  });
+  await page.goto('/my');
+  await page.getByRole('button', { name: '닉네임 변경', exact: true }).click();
+  await page.getByRole('textbox', { name: '닉네임' }).fill('새운동이');
+  await page.getByRole('button', { name: '저장', exact: true }).click();
+  await expect(page.getByRole('button', { name: '저장 중…' })).toBeDisabled();
+  await expect(page.getByRole('button', { name: '취소', exact: true })).toBeDisabled();
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog')).toBeVisible();
+  finishSave();
+  await expect(page.getByRole('dialog')).not.toBeVisible();
 });
