@@ -130,6 +130,20 @@ export async function mockRoutineApi(page: Page) {
         }
         if (input.method === 'GET')
           return { data: items.filter((item) => !input.id || item.id === input.id).map(row) };
+        if (input.method === 'DELETE') {
+          const plans: { status: string; assignments: { routine_id: string }[] }[] = JSON.parse(
+            localStorage.getItem(input.key.replace('routines', 'plans')) ?? '[]',
+          );
+          if (
+            plans.some(
+              (plan) =>
+                plan.status === 'active' &&
+                plan.assignments.some((day) => day.routine_id === input.id),
+            )
+          ) {
+            return { data: null, isInUse: true };
+          }
+        }
         const changed: TRoutine[] = [];
         items = items.flatMap((item) => {
           if (
@@ -152,6 +166,13 @@ export async function mockRoutineApi(page: Page) {
         localStorage.setItem(input.key, JSON.stringify(items));
         return { data: changed.map(row) };
       }, input);
+      if ('isInUse' in result && result.isInUse) {
+        await route.fulfill({
+          status: 409,
+          json: { code: 'PT409', message: 'Routine is used by an active plan' },
+        });
+        return;
+      }
       if (Array.isArray(result.data) && request.headers().accept?.includes('vnd.pgrst.object')) {
         if (result.data.length !== 1)
           await route.fulfill({

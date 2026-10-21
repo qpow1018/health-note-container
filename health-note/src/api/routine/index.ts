@@ -49,15 +49,17 @@ export async function updateRoutine(
   return result;
 }
 
-export async function deleteRoutine(id: string): Promise<void> {
+export async function deleteRoutine(id: string): Promise<'deleted' | 'in-use'> {
   const { data, error } = await getSupabase()
     .from('routines')
     .delete()
     .eq('id', id)
     .select('id')
     .maybeSingle();
+  if (error?.code === 'PT409') return 'in-use';
   if (error) throw error;
   if (!data) throw new Error('Routine not found');
+  return 'deleted';
 }
 
 export async function reorderRoutines(

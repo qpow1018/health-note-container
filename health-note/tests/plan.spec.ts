@@ -54,6 +54,7 @@ test('홈 옆 플랜 메뉴에서 빈 상태를 안내하고 루틴 생성 후 �
 test('요일별 루틴과 기간으로 운동일·경험치를 계산하고 휴식으로 변경한다', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-10-21T12:00:00+09:00'));
   await page.goto('/plan');
+  await expect(page.getByRole('link', { name: '플랜 만들기' })).toBeVisible();
   await page.evaluate(
     (items) => localStorage.setItem('health-note.routines.v1:test-user', JSON.stringify(items)),
     ROUTINES,
@@ -113,8 +114,8 @@ test('요일별 루틴과 기간으로 운동일·경험치를 계산하고 휴�
   expect(initialButtonBox!.y + initialButtonBox!.height).toBeLessThanOrEqual(
     page.viewportSize()!.height,
   );
-  const notice = page.getByText(
-    '지금은 설정 내용을 확인할 수 있어요. 플랜 시작은 아직 준비 중이에요.',
+  const notice = summary.getByText(
+    '기간은 성장과 보상의 기준이에요. 기간이 지나도 계속 이어갈 수 있어요.',
   );
   await notice.scrollIntoViewIfNeeded();
   const noticeBox = await notice.boundingBox();
@@ -140,7 +141,7 @@ test('요일별 루틴과 기간으로 운동일·경험치를 계산하고 휴�
   await expect(summary).toContainText('총 운동일71일');
   await expect(summary).toContainText('최종 성장 목표9,000 XP');
   await expect(summary).toContainText('하루 전체 완료 몫약 126.76 XP');
-  await expect(page.getByRole('button', { name: '플랜 시작', exact: true })).toBeDisabled();
+  await expect(page.getByRole('button', { name: '플랜 시작', exact: true })).toBeEnabled();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
   );
@@ -174,6 +175,7 @@ test('조회 실패를 빈 목록으로 표시하지 않고 재시도한다', as
 
 test('포함 운동 조회 실패 시 재시도하고 배정은 유지한다', async ({ page }) => {
   await page.goto('/plan');
+  await expect(page.getByRole('link', { name: '플랜 만들기' })).toBeVisible();
   await page.evaluate(
     (items) => localStorage.setItem('health-note.routines.v1:test-user', JSON.stringify(items)),
     ROUTINES,

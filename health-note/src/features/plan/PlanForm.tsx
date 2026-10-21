@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import type { SubmitEvent } from 'react';
 
+import type { TPlanValues } from '@/api/plan/type';
 import type { TRoutine } from '@/api/routine/type';
 import { useTodayDate } from '@/hooks/useTodayDate';
 import { getPlanSchedule } from './utils/planSchedule';
@@ -8,12 +10,16 @@ import Radio from '@/components/common/form/Radio';
 import Button from '@/components/common/button/Button';
 import PlanRoutinePicker from './PlanRoutinePicker';
 import BottomSheet from '@/components/common/modal/BottomSheet';
+import FieldError from '@/components/common/form/FieldError';
 
 import styles from './PlanForm.module.scss';
 
 import { MdChevronRight } from 'react-icons/md';
 
-type TPlanFormProps = { routines: TRoutine[] };
+type TPlanFormProps = {
+  routines: TRoutine[];
+  onSave: (values: TPlanValues) => Promise<void>;
+};
 
 const DURATIONS = [
   {
@@ -42,8 +48,10 @@ const WEEKDAYS = [
   { day: 0, label: '일요일' },
 ];
 
-export default function PlanForm({ routines }: TPlanFormProps) {
+export default function PlanForm({ routines, onSave }: TPlanFormProps) {
   const today = useTodayDate();
+  const [isSaving, setIsSaving] = useState(false);
+  const [formError, setFormError] = useState('');
   const [editingDay, setEditingDay] = useState<(typeof WEEKDAYS)[number] | null>(null);
   const [duration, setDuration] = useState<number | null>(null);
   const [assignments, setAssignments] = useState<Record<number, string>>({});
@@ -59,9 +67,36 @@ export default function PlanForm({ routines }: TPlanFormProps) {
           selectedDays.map(({ day }) => day),
         );
 
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (isSaving) return;
+    setFormError('');
+    if (duration === null || selectedDays.length === 0) {
+      setFormError('기간을 선택하고 최소 하루에 루틴을 배정해 주세요.');
+      return;
+    }
+    if (
+      Object.values(assignments).some((id) => id && !routines.some((routine) => routine.id === id))
+    ) {
+      setFormError('선택한 루틴이 삭제되었어요. 주간 운동표에서 다시 선택해 주세요.');
+      return;
+    }
+    setIsSaving(true);
+    try {
+      await onSave({
+        startDate: today,
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        duration,
+        assignments: selectedDays.map(({ day }) => ({ weekday: day, routineId: assignments[day] })),
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
   return (
-    <form className={styles['plan-form']} onSubmit={(event) => event.preventDefault()}>
-      <fieldset>
+    <form className={styles['plan-form']} onSubmit={handleSubmit}>
+      <fieldset disabled={isSaving}>
         <legend>플랜 기간</legend>
         <p className={styles['hint']}>오늘 시작해요. 나에게 맞는 기간을 선택해 주세요.</p>
         <div className={styles['period-options']}>
@@ -90,7 +125,7 @@ export default function PlanForm({ routines }: TPlanFormProps) {
         </div>
       </fieldset>
 
-      <fieldset>
+      <fieldset disabled={isSaving}>
         <legend>주간 운동표</legend>
         <p className={styles['hint']}>
           운동할 요일에 루틴을 배정해 주세요. 같은 루틴을 여러 날 선택할 수 있어요.
@@ -166,13 +201,10 @@ export default function PlanForm({ routines }: TPlanFormProps) {
       {selectedDays.length === 0 && (
         <p className={styles['hint']}>최소 하루에 루틴을 배정해 주세요.</p>
       )}
-      <p id="plan-start-notice" className={styles['hint']}>
-        지금은 설정 내용을 확인할 수 있어요. 플랜 시작은 아직 준비 중이에요.
-      </p>
-
+      <FieldError id="plan-form-error" message={formError} />
       <div className={styles['actions']}>
-        <Button type="submit" disabled aria-describedby="plan-start-notice">
-          플랜 시작
+        <Button type="submit" disabled={isSaving || duration === null || selectedDays.length === 0}>
+          {isSaving ? '시작 중…' : '플랜 시작'}
         </Button>
       </div>
 

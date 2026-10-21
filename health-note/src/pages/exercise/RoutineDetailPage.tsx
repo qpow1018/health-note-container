@@ -34,7 +34,11 @@ function RoutineDetail({ routineId }: { routineId: string | undefined }) {
     if (!routine || isSaving) return;
     setIsDeleteConfirmOpen(false);
     try {
-      await deleteRoutine(routine.id);
+      const result = await deleteRoutine(routine.id);
+      if (result === 'in-use') {
+        toast.error('진행 중인 플랜에서 사용하는 루틴이에요.');
+        return;
+      }
     } catch {
       toast.error('삭제하지 못했어요. 인터넷 연결을 확인하고 다시 시도해 주세요.', {
         isShowCloseButton: true,

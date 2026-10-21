@@ -1,7 +1,7 @@
 # Health Note
 
 내 방식대로 운동 이름과 운동량·세트를 정하고, 유튜브 링크와 메모를 함께 관리하는 모바일 웹앱입니다.
-운동 등록·목록·상세·수정·삭제와 순서 변경을 지원합니다. 루틴에 운동을 묶고 순서를 관리할 수 있습니다. 일정·활성화와 홈의 오늘 루틴은 플랜 연결 전까지 제거했으며 기존 기록은 보존합니다.
+운동 등록·목록·상세·수정·삭제와 순서 변경을 지원합니다. 루틴에 운동을 묶고 순서를 관리할 수 있습니다. 플랜에서 14·30·100일과 요일별 루틴을 설정·저장하고 진행 중인 플랜을 조회할 수 있습니다. 운동 완료·성장 처리는 아직 연결하지 않았으며 홈의 오늘 루틴 대신 기존 안내를 유지합니다. 과거 기록은 보존합니다.
 
 React 19, TypeScript, Vite, React Router, SCSS Modules를 사용합니다.
 
@@ -86,7 +86,7 @@ VITE_SUPABASE_PUBLISHABLE_KEY=your_local_publishable_key
 
 개발 모드에서 클라우드 주소를 사용하거나 운영 모드에서 로컬 주소를 사용하면 Vite 설정이 오류를 표시합니다. 미리보기 배포는 Docker의 localhost에 접근할 수 없으므로, DB 연동 테스트가 필요해지면 별도 클라우드 개발 프로젝트를 연결합니다. 운영 프로젝트를 미리보기용으로 공유하지 않습니다.
 
-`supabase/migrations/`의 운동·루틴·완료 기록 테이블과 RLS·원자적 저장·순서 변경 함수가 실제 적용 대상입니다. `npm run db:migrate`는 로컬 DB에만 적용합니다. `supabase/schema.sql`은 미적용 설계 초안이며 실제 스키마의 기준이 아닙니다. 운영 적용 전에는 대상과 마이그레이션 이력을 확인합니다. 이후 변경은 새 마이그레이션으로 추가하고 환경별 적용 상태를 확인합니다.
+`supabase/migrations/`의 운동·루틴·완료 기록 테이블과 RLS·원자적 저장·순서 변경 함수가 실제 적용 대상입니다. `npm run db:migrate`는 로컬 DB에만 적용합니다. `supabase/schema.sql`은 미적용 설계 초안이며 실제 스키마의 기준이 아닙니다. 운영 적용 전에는 대상과 마이그레이션 이력을 확인합니다. 플랜 저장을 사용하려면 `20261021063214_create_plans.sql`도 대상 DB에 적용해야 합니다. 운영에는 자동 적용하지 않습니다. 이후 변경은 새 마이그레이션으로 추가하고 환경별 적용 상태를 확인합니다.
 
 공식 참고: [Supabase 로컬 개발](https://supabase.com/docs/guides/local-development), [로컬 비밀 설정](https://supabase.com/docs/guides/local-development/managing-config), [Vite 환경 파일](https://vite.dev/guide/env-and-mode).
 

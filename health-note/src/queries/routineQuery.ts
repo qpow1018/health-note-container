@@ -3,6 +3,7 @@ import type { QueryClient } from '@tanstack/react-query';
 
 import * as api from '@/api/routine';
 import type { TRoutineValues } from '@/api/routine/type';
+import { PLAN_QUERY_KEY } from './planQuery';
 import { getUserKey } from '@/lib/auth/currentUser';
 
 export const ROUTINES_QUERY_KEY = ['routines'] as const;
@@ -43,7 +44,10 @@ const routineQuery = {
       }) => api.updateRoutine(id, values, expectedVersion),
       onSuccess: (result) => {
         if (result === 'conflict') return;
-        return invalidateRoutines(queryClient);
+        return Promise.all([
+          invalidateRoutines(queryClient),
+          queryClient.invalidateQueries({ queryKey: PLAN_QUERY_KEY }),
+        ]);
       },
     });
   },
@@ -52,7 +56,8 @@ const routineQuery = {
     const queryClient = useQueryClient();
     return useMutation({
       mutationFn: api.deleteRoutine,
-      onSuccess: () => {
+      onSuccess: (result) => {
+        if (result === 'in-use') return;
         return invalidateRoutines(queryClient);
       },
     });

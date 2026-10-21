@@ -26,4 +26,72 @@
     font-weight: 500;
     text-decoration: none;
   }
+
+  .active-plan {
+    h2 {
+      margin-bottom: 20px;
+      font-size: $font-size-title;
+    }
+
+    h3 {
+      margin-top: 32px;
+      font-size: $font-size-body;
+      font-weight: 500;
+    }
+
+    > p {
+      margin-top: 24px;
+      color: $text-secondary;
+      font-size: $font-size-caption;
+    }
+  }
+
+  .summary {
+    margin: 0;
+    padding: 20px;
+    border: 1px solid $border-soft;
+    border-radius: $border-radius;
+
+    > div {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 4px 12px;
+      margin-bottom: 12px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    dt {
+      color: $text-secondary;
+      font-size: $font-size-caption;
+    }
+
+    dd {
+      margin: 0;
+    }
+  }
+
+  .weekdays {
+    padding: 0;
+    margin: 8px 0 0;
+    list-style: none;
+
+    li {
+      display: flex;
+      gap: 20px;
+      padding-block: 16px;
+      border-bottom: 1px solid $border-soft;
+
+      span:first-child {
+        flex-shrink: 0;
+      }
+
+      span:last-child {
+        overflow-wrap: anywhere;
+      }
+    }
+  }
 }

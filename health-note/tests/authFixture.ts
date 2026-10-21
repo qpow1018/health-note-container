@@ -4,6 +4,7 @@ import type { Page } from '@playwright/test';
 import { mockExerciseApi } from './exerciseApiFixture';
 import { mockRoutineApi } from './routineApiFixture';
 import { mockProgressApi } from './progressApiFixture';
+import { mockPlanApi } from './planApiFixture';
 
 export const AUTH_STORAGE_KEY = 'sb-127-auth-token';
 export const TEST_USER_ID = 'test-user';
@@ -35,6 +36,7 @@ export async function mockAuth(page: Page) {
   await mockExerciseApi(page);
   await mockRoutineApi(page);
   await mockProgressApi(page);
+  await mockPlanApi(page);
   await page.route('http://127.0.0.1:55321/auth/v1/**', async (route) => {
     const url = new URL(route.request().url());
     if (url.pathname.endsWith('/settings')) {
