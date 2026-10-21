@@ -6,7 +6,7 @@
 
 React 19·TypeScript·Vite 기반 모바일 웹앱이며 React Router와 SCSS Modules를 사용한다.
 
-- [App.tsx](../src/app/App.tsx): 공유 QueryProvider, BrowserRouter, 인증 경계와 라우트를 조립한다. 홈·운동 관리·마이페이지에는 하단 내비게이션을 제공한다. 운동 관리는 `/exercise`의 루틴 목록을 기본으로 하며, `?tab=exercises`에서 등록한 운동을 관리한다. 루틴 목록 진입점도 `/exercise`로 통합한다.
+- [App.tsx](../src/app/App.tsx): 공유 QueryProvider, BrowserRouter, 인증 경계와 라우트를 조립한다. 홈·플랜·운동 관리·마이페이지에는 하단 내비게이션을 제공한다. 운동 관리는 `/exercise`의 루틴 목록을 기본으로 하며, `?tab=exercises`에서 등록한 운동을 관리한다. 루틴 목록 진입점도 `/exercise`로 통합한다.
 - [AuthBoundary.tsx](../src/app/AuthBoundary.tsx): 세션 복원 중에는 대기 화면, 비로그인 상태에서는 로그인 화면을 표시한다. 로그인한 사용자 ID를 key로 하위 화면을 재마운트하고 AuthUserContext로 원본 사용자 정보와 표시용 닉네임을 함께 전달한다. 표시용 닉네임은 저장된 값이 비어 있지 않은 문자열이면 사용하고, 아니면 `회원`으로 계산하며 계정에 별도로 저장하지 않는다. 마이페이지는 이 정보를 표시하며 별도 인증 구독이나 사용자 조회를 만들지 않는다.
 - [useAuthSession.ts](../src/features/auth/useAuthSession.ts): 세션 복원과 인증 이벤트 구독을 처리한다. 사용자 변경 시 현재 사용자 정보를 갱신하고 공유 QueryClient의 캐시를 비운다.
 - [QueryProvider.tsx](../src/lib/query/QueryProvider.tsx): 캐시 초기화에 사용하는 것과 동일한 QueryClient를 제공한다.
@@ -95,3 +95,9 @@ DB 제약·RLS·RPC는 로컬 Supabase의 DB 테스트로 확인한다. 모의 A
 루틴은 일정 없는 운동 묶음으로 전환했다. 플랜 연결 전까지 홈의 기존 오늘 루틴·완료 조작은 제거했다. `save_routine_bundle` RPC는 기존 원자적 저장·RLS·버전 충돌 검사를 재사용하고 일정 입력을 받지 않는다. DB의 과거 일정·활성화 열과 완료 기록은 보존한다. 모든 feature의 작성·배치 기준은 [프론트엔드 스킬](../.agents/skills/following-health-note-frontend-style/SKILL.md)을 따른다. 날짜 갱신은 도메인과 무관한 `hooks/useTodayDate`를 홈·활동 화면이 사용한다.
 
 운동 목록은 상단에 운동 추가 링크를 제공하고, 상세 링크와 별도 드래그 핸들을 각 행에 표시한다. 드롭 시 기존 순서 충돌 검사 API로 즉시 저장하며 저장 중에는 핸들을 잠근다. 실패하면 임시 순서를 제거하고, 충돌하면 최신 목록을 재조회한다. 드래그 중의 목록과 저장 응답 대기 중의 순서만 로컬 상태로 보관하며 평소에는 Query 목록을 표시한다. 별도 운동·루틴 정렬 페이지는 제거했다. 루틴 목록도 같은 방식으로 추가·상세 진입·즉시 정렬을 제공한다.
+
+## 플랜 설정 화면
+
+하단 메뉴의 `/plan`은 루틴 조회 상태에 따라 플랜 만들기 또는 루틴 만들기를 안내한다. `/plan/new`은 헤더와 조회 상태를 조립하고, `features/plan/PlanForm.tsx`가 기간·요일별 배정 초안과 요약을 관리한다. 루틴 조회는 기존 `routineQuery.useGetRoutines()`를 재사용한다. `utils/planSchedule.ts`는 시작일을 포함한 기간의 운동일 수와 목표 경험치를 계산한다.
+
+루틴 생성은 진입 경로 구분 없이 `/routine/new`를 사용한다. 저장 성공 후 `navigate(-1)`로 진입했던 화면으로 돌아오고, 헤더는 공통 뒤로가기 동작을 사용한다. 플랜 입력은 화면 내부 초안이며 이동·새로고침 시 초기화한다. 아직 플랜 API·저장·진행 중 조회는 제공하지 않는다. 관련 검증: [플랜 화면](../tests/plan.spec.ts).

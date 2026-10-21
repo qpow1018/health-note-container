@@ -1,0 +1,39 @@
+.plan-page {
+  .content {
+    padding: 32px $page-padding;
+
+    > h2 {
+      margin-bottom: 16px;
+      font-size: $font-size-title;
+    }
+
+    > p,
+    > div p {
+      margin-bottom: 16px;
+      color: $text-secondary;
+    }
+
+    > div button {
+      min-height: $control-height;
+      padding-inline: 16px;
+      border: 1px solid $border;
+      border-radius: $border-radius;
+      background: $bg;
+      color: $text-primary;
+    }
+  }
+
+  .primary-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: $control-height;
+    margin-top: 32px;
+    padding: 12px;
+    border-radius: $border-radius;
+    background: $mint;
+    color: $white;
+    font-weight: 500;
+    text-decoration: none;
+  }
+}

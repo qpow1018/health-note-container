@@ -8,6 +8,8 @@ import AuthBoundary from './AuthBoundary';
 
 import ActivityPage from '@/pages/activity/ActivityPage';
 import HomePage from '@/pages/home/HomePage';
+import PlanPage from '@/pages/plan/PlanPage';
+import PlanCreatePage from '@/pages/plan/PlanCreatePage';
 import PlaygroundPage from '@/pages/playground/PlaygroundPage';
 import MyPage from '@/pages/my/MyPage';
 import NotFoundPage from '@/pages/notFound/NotFoundPage';
@@ -30,12 +32,14 @@ export default function App() {
             <Routes>
               <Route element={<BottomNavigationLayout />}>
                 <Route path="/" element={<HomePage />} />
+                <Route path="/plan" element={<PlanPage />} />
                 <Route path="/exercise" element={<ExercisePage />} />
                 <Route path="/playground" element={<PlaygroundPage />} />
                 <Route path="/my" element={<MyPage />} />
               </Route>
 
               <Route path="/activity" element={<ActivityPage />} />
+              <Route path="/plan/new" element={<PlanCreatePage />} />
 
               <Route path="/routine/new" element={<RoutineCreatePage />} />
               <Route path="/routine/:routineId" element={<RoutineDetailPage />} />

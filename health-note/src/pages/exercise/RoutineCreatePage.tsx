@@ -10,8 +10,9 @@ import RoutineForm from '@/features/exercise/RoutineForm';
 import styles from './RoutineCreatePage.module.scss';
 
 export default function RoutineCreatePage() {
-  const { mutateAsync: createRoutine } = routineQuery.useCreateRoutine();
   const navigate = useNavigate();
+
+  const { mutateAsync: createRoutine } = routineQuery.useCreateRoutine();
 
   async function handleSave(values: TRoutineValues): Promise<void> {
     try {
@@ -24,12 +25,12 @@ export default function RoutineCreatePage() {
       return;
     }
     toast.success('루틴을 등록했어요.');
-    navigate('/exercise');
+    navigate(-1);
   }
 
   return (
     <section className={styles['routine-create-page']}>
-      <Header title="루틴 생성" fallbackTo="/exercise" />
+      <Header title="루틴 생성" />
       <div className={styles['content']}>
         <RoutineForm onSave={handleSave} />
       </div>

@@ -1,0 +1,133 @@
+.plan-form {
+  padding-bottom: env(safe-area-inset-bottom);
+
+  fieldset {
+    min-width: 0;
+    padding: 0;
+    margin: 0 0 32px;
+    border: 0;
+
+    legend {
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+  }
+
+  .hint {
+    margin: 8px 0 16px;
+    color: $text-secondary;
+    font-size: $font-size-caption;
+  }
+
+  .period-options {
+    display: flex;
+    gap: 12px;
+
+    label {
+      position: relative;
+      flex: 1;
+    }
+
+    input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+
+      &:checked + span {
+        border-color: $mint-accent;
+        background: $mint-tint;
+        color: $mint-accent;
+      }
+
+      &:focus-visible + span {
+        outline: 2px solid $mint-accent;
+        outline-offset: 3px;
+      }
+    }
+
+    span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: $control-height;
+      border: 1px solid $border;
+      border-radius: $border-radius;
+      cursor: pointer;
+    }
+  }
+
+  .weekday {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-block: 8px;
+    border-bottom: 1px solid $border-soft;
+
+    label {
+      flex-shrink: 0;
+    }
+
+    select {
+      flex: 1;
+      min-width: 0;
+      min-height: $control-height;
+      padding: 8px 12px;
+      border: 1px solid $border;
+      border-radius: $border-radius;
+      background: $bg;
+      color: $text-primary;
+      font: inherit;
+    }
+  }
+
+  .summary {
+    padding: 20px;
+    margin-bottom: 24px;
+    border: 1px solid $border-soft;
+    border-radius: $border-radius;
+
+    h2 {
+      margin-bottom: 16px;
+      font-size: $font-size-body;
+      font-weight: 500;
+    }
+
+    dl {
+      margin: 0;
+
+      > div {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 4px 12px;
+        margin-bottom: 12px;
+      }
+    }
+
+    dt,
+    p {
+      color: $text-secondary;
+      font-size: $font-size-caption;
+    }
+
+    dd {
+      margin: 0;
+    }
+
+    p {
+      margin-top: 20px;
+    }
+  }
+
+  > button {
+    width: 100%;
+    min-height: $control-height;
+    border: 0;
+    border-radius: $border-radius;
+    background: $bg-light;
+    color: $text-secondary;
+    font: inherit;
+    cursor: not-allowed;
+  }
+}
