@@ -20,9 +20,9 @@ export default function BottomNavigationLayout() {
           <MdFitnessCenter size={22} aria-hidden="true" />
           <span>운동</span>
         </Link>
-        <NavLink to="/character">
+        <NavLink to="/playground">
           <MdPets size={22} aria-hidden="true" />
-          <span>운동이</span>
+          <span>운동장</span>
         </NavLink>
         <NavLink to="/my">
           <MdPerson size={22} aria-hidden="true" />

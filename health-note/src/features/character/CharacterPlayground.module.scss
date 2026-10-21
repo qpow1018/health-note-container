@@ -1,0 +1,256 @@
+.playground {
+  width: 100%;
+
+  .heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+
+    h2 {
+      font-size: 18px;
+    }
+    p {
+      margin-top: 4px;
+      font-size: 12px;
+      color: $text-secondary;
+    }
+
+    button {
+      flex-shrink: 0;
+      min-height: 40px;
+      padding: 8px 12px;
+      border: 1px solid $border-soft;
+      border-radius: 12px;
+      background: $bg;
+      color: $text-secondary;
+      cursor: pointer;
+
+      &:focus-visible {
+        outline: 2px solid $mint-accent;
+        outline-offset: 2px;
+      }
+    }
+  }
+
+  .scene {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 360 / 430;
+    overflow: hidden;
+    border-radius: 24px;
+    isolation: isolate;
+
+    &[data-active='false'] * {
+      animation-play-state: paused !important;
+    }
+  }
+
+  .landscape {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .residents {
+    position: absolute;
+    inset: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .resident {
+    position: absolute;
+    width: 25%;
+    aspect-ratio: 1;
+
+    .motion {
+      position: absolute;
+      inset: 0;
+      transform-origin: center 92%;
+    }
+    .shadow {
+      position: absolute;
+      left: 24%;
+      bottom: 3%;
+      width: 52%;
+      height: 7%;
+      border-radius: 50%;
+      background: #70835430;
+      filter: blur(2px);
+    }
+    .label {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      color: #52654a;
+      font-size: 10px;
+      line-height: 1.5;
+    }
+
+    &[data-action='stretch'] {
+      left: 9%;
+      top: 22%;
+      .motion {
+        animation: playground-stretch 3.4s ease-in-out infinite;
+      }
+    }
+    &[data-action='rope'] {
+      left: 64%;
+      top: 29%;
+      width: 26%;
+      .motion {
+        animation: playground-jump 1s ease-in-out infinite;
+      }
+      .shadow {
+        animation: playground-shadow 1s ease-in-out infinite;
+      }
+    }
+    &[data-action='walk'] {
+      left: 8%;
+      top: 53%;
+      width: 22%;
+      z-index: 1;
+      animation: playground-route 18s linear infinite;
+      .motion {
+        animation: playground-facing 18s steps(1) infinite;
+      }
+    }
+    &[data-action='ball'] {
+      left: 13%;
+      top: 73%;
+      width: 23%;
+      z-index: 2;
+      .motion {
+        animation: playground-play 2s ease-in-out infinite;
+      }
+      .ball {
+        position: absolute;
+        right: -24%;
+        bottom: 1%;
+        width: 26%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: radial-gradient(circle at 30% 25%, #ffdfaa, #e9a56f 75%);
+        box-shadow: inset -2px -3px 0 #b77f5030;
+        animation: playground-ball 2s ease-in-out infinite;
+      }
+    }
+    &[data-action='hop'] {
+      left: 66%;
+      top: 70%;
+      width: 25%;
+      z-index: 2;
+      .motion {
+        animation: playground-hop 2.6s ease-in-out -0.5s infinite;
+      }
+      .shadow {
+        animation: playground-shadow 2.6s ease-in-out -0.5s infinite;
+      }
+    }
+  }
+
+  .caption {
+    color: $text-secondary;
+    margin-top: 12px;
+    text-align: center;
+    font-size: 12px;
+  }
+}
+
+@keyframes playground-stretch {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.98, 1.03);
+  }
+}
+@keyframes playground-jump {
+  0%,
+  100% {
+    transform: translateY(0) scale(1.03, 0.96);
+  }
+  50% {
+    transform: translateY(-15px) scale(0.98, 1.02);
+  }
+}
+@keyframes playground-shadow {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.75);
+    opacity: 0.5;
+  }
+}
+@keyframes playground-route {
+  0%,
+  100% {
+    left: 8%;
+  }
+  49%,
+  50% {
+    left: 68%;
+  }
+  99% {
+    left: 8%;
+  }
+}
+
+@keyframes playground-facing {
+  0%,
+  49% {
+    transform: scaleX(1);
+  }
+  50%,
+  100% {
+    transform: scaleX(-1);
+  }
+}
+
+@keyframes playground-play {
+  0%,
+  100% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(5deg) translateX(4px);
+  }
+}
+@keyframes playground-ball {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(18px, -22px) rotate(90deg);
+  }
+}
+@keyframes playground-hop {
+  0%,
+  30%,
+  70%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+  45% {
+    transform: translateY(-13px) rotate(-8deg);
+  }
+  60% {
+    transform: translateY(-8px) rotate(7deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .playground .scene * {
+    animation: none !important;
+  }
+}

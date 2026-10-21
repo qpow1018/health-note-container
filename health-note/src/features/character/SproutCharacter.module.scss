@@ -1,0 +1,218 @@
+.character {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  pointer-events: none;
+
+  [data-part='left-arm'] {
+    transform-origin: 34px 90px;
+  }
+  [data-part='right-arm'] {
+    transform-origin: 126px 90px;
+  }
+  [data-part='left-foot'] {
+    transform-origin: 53px 140px;
+  }
+  [data-part='right-foot'] {
+    transform-origin: 107px 140px;
+  }
+  [data-part='eyes'] {
+    transform-origin: 80px 88px;
+    animation: svg-blink 4.6s infinite;
+  }
+  [data-part='surprise'] {
+    display: none;
+  }
+
+  &[data-action='idle'] [data-part='body'] {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: sprout-breathe 2.6s ease-in-out infinite;
+  }
+
+  &[data-reacting='true'] {
+    [data-part='smile'] {
+      display: none;
+    }
+    [data-part='surprise'] {
+      display: inline;
+    }
+    [data-part='left-arm'] {
+      transform: rotate(30deg);
+    }
+    [data-part='right-arm'] {
+      transform: rotate(-30deg);
+    }
+    * {
+      animation-play-state: paused;
+    }
+  }
+
+  &[data-active='false'] * {
+    animation-play-state: paused;
+  }
+
+  &:not([data-action='idle']) [data-part='leaves'] {
+    transform-origin: 80px 45px;
+    animation: sprout-leaves 3s ease-in-out infinite;
+  }
+
+  &[data-action='stretch'] {
+    [data-part='left-arm'] {
+      animation: svg-stretch-left 3.4s ease-in-out infinite;
+    }
+    [data-part='right-arm'] {
+      animation: svg-stretch-right 3.4s ease-in-out infinite;
+    }
+  }
+  &[data-action='rope'] {
+    .rope {
+      transform-origin: 80px 108px;
+      animation: svg-rope 1s linear infinite;
+    }
+  }
+  &[data-action='walk'] {
+    [data-part='left-foot'] {
+      animation: svg-step 0.7s ease-in-out infinite;
+    }
+    [data-part='right-foot'] {
+      animation: svg-step 0.7s ease-in-out -0.35s infinite;
+    }
+    [data-part='left-arm'] {
+      animation: svg-swing 0.7s ease-in-out -0.35s infinite;
+    }
+    [data-part='right-arm'] {
+      animation: svg-swing 0.7s ease-in-out infinite;
+    }
+  }
+  &[data-action='ball'] {
+    [data-part='right-arm'] {
+      animation: svg-ball-arm 2s ease-in-out infinite;
+    }
+  }
+  &[data-action='hop'] {
+    [data-part='left-arm'] {
+      animation: svg-cheer-left 2.6s ease-in-out -0.5s infinite;
+    }
+    [data-part='right-arm'] {
+      animation: svg-cheer-right 2.6s ease-in-out -0.5s infinite;
+    }
+  }
+}
+
+@keyframes svg-stretch-left {
+  0%,
+  20%,
+  100% {
+    transform: rotate(0);
+  }
+  45%,
+  70% {
+    transform: rotate(145deg);
+  }
+}
+@keyframes svg-stretch-right {
+  0%,
+  20%,
+  100% {
+    transform: rotate(0);
+  }
+  45%,
+  70% {
+    transform: rotate(-145deg);
+  }
+}
+@keyframes svg-step {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+  50% {
+    transform: translateY(-6px) rotate(15deg);
+  }
+}
+@keyframes svg-swing {
+  0%,
+  100% {
+    transform: rotate(-18deg);
+  }
+  50% {
+    transform: rotate(18deg);
+  }
+}
+@keyframes svg-rope {
+  from {
+    transform: rotateX(0);
+  }
+  to {
+    transform: rotateX(360deg);
+  }
+}
+@keyframes svg-ball-arm {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  50% {
+    transform: rotate(-45deg);
+  }
+}
+@keyframes svg-cheer-left {
+  0%,
+  30%,
+  100% {
+    transform: rotate(0);
+  }
+  45%,
+  60% {
+    transform: rotate(95deg);
+  }
+}
+@keyframes svg-cheer-right {
+  0%,
+  30%,
+  100% {
+    transform: rotate(0);
+  }
+  45%,
+  60% {
+    transform: rotate(-95deg);
+  }
+}
+@keyframes svg-blink {
+  0%,
+  89%,
+  95%,
+  100% {
+    transform: scaleY(1);
+  }
+  92% {
+    transform: scaleY(0.08);
+  }
+}
+@keyframes sprout-leaves {
+  0%,
+  100% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes sprout-breathe {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.018, 0.985);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .character * {
+    animation: none !important;
+  }
+}
