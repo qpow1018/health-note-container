@@ -1,3 +1,5 @@
+const TOTAL_GROWTH_XP = 9_000;
+
 export function getPlanSchedule(startDate: string, duration: number, weekdays: number[]) {
   const start = new Date(`${startDate}T00:00:00Z`);
   let exerciseDays = 0;
@@ -10,6 +12,7 @@ export function getPlanSchedule(startDate: string, duration: number, weekdays: n
   return {
     endDate: date.toISOString().slice(0, 10),
     exerciseDays,
-    targetXp: exerciseDays * 100,
+    targetXp: TOTAL_GROWTH_XP,
+    dailyXp: exerciseDays > 0 ? TOTAL_GROWTH_XP / exerciseDays : null,
   };
 }

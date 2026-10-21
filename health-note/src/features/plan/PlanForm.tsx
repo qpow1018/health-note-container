@@ -4,10 +4,34 @@ import type { TRoutine } from '@/api/routine/type';
 import { useTodayDate } from '@/hooks/useTodayDate';
 import { getPlanSchedule } from './utils/planSchedule';
 
+import Radio from '@/components/common/form/Radio';
+import Button from '@/components/common/button/Button';
+import PlanRoutinePicker from './PlanRoutinePicker';
+import BottomSheet from '@/components/common/modal/BottomSheet';
+
 import styles from './PlanForm.module.scss';
 
+import { MdChevronRight } from 'react-icons/md';
+
 type TPlanFormProps = { routines: TRoutine[] };
-const DURATIONS = [14, 30, 100];
+
+const DURATIONS = [
+  {
+    days: 14,
+    title: '조금씩 시작해요',
+    description: '아직 운동이 낯설다면, 작은 실천부터 습관을 만들어봐요.',
+  },
+  {
+    days: 30,
+    title: '익숙해진 만큼 이어가요',
+    description: '운동이 조금 익숙해졌다면, 한 달 동안 이어가 볼까요?',
+  },
+  {
+    days: 100,
+    title: '꾸준한 일상에 도전해요',
+    description: '운동이 이미 일상이라면, 100일 플랜은 어때요?',
+  },
+];
 const WEEKDAYS = [
   { day: 1, label: '월요일' },
   { day: 2, label: '화요일' },
@@ -20,6 +44,7 @@ const WEEKDAYS = [
 
 export default function PlanForm({ routines }: TPlanFormProps) {
   const today = useTodayDate();
+  const [editingDay, setEditingDay] = useState<(typeof WEEKDAYS)[number] | null>(null);
   const [duration, setDuration] = useState<number | null>(null);
   const [assignments, setAssignments] = useState<Record<number, string>>({});
   const selectedDays = WEEKDAYS.filter(({ day }) =>
@@ -40,17 +65,27 @@ export default function PlanForm({ routines }: TPlanFormProps) {
         <legend>플랜 기간</legend>
         <p className={styles['hint']}>오늘 시작해요. 나에게 맞는 기간을 선택해 주세요.</p>
         <div className={styles['period-options']}>
-          {DURATIONS.map((days) => (
-            <label key={days}>
-              <input
-                type="radio"
-                name="duration"
-                value={days}
-                checked={duration === days}
-                onChange={() => setDuration(days)}
-              />
-              <span>{days}일</span>
-            </label>
+          {DURATIONS.map(({ days, title, description }) => (
+            <Radio
+              key={days}
+              className={styles['period-option']}
+              name="duration"
+              aria-label={`${days}일`}
+              aria-describedby={`plan-duration-${days}-description`}
+              value={days}
+              checked={duration === days}
+              onChange={() => setDuration(days)}
+            >
+              <span className={styles['period-title']}>
+                {days}일 · {title}
+              </span>
+              <span
+                id={`plan-duration-${days}-description`}
+                className={styles['period-description']}
+              >
+                {description}
+              </span>
+            </Radio>
           ))}
         </div>
       </fieldset>
@@ -60,23 +95,24 @@ export default function PlanForm({ routines }: TPlanFormProps) {
         <p className={styles['hint']}>
           운동할 요일에 루틴을 배정해 주세요. 같은 루틴을 여러 날 선택할 수 있어요.
         </p>
-        {WEEKDAYS.map(({ day, label }) => (
-          <div className={styles['weekday']} key={day}>
-            <label htmlFor={`plan-day-${day}`}>{label}</label>
-            <select
-              id={`plan-day-${day}`}
-              value={selectedDays.some((item) => item.day === day) ? assignments[day] : ''}
-              onChange={(event) => setAssignments({ ...assignments, [day]: event.target.value })}
+        {WEEKDAYS.map(({ day, label }) => {
+          const routine = routines.find((item) => item.id === assignments[day]);
+          return (
+            <button
+              className={styles['weekday']}
+              type="button"
+              key={day}
+              aria-haspopup="dialog"
+              onClick={() => setEditingDay({ day, label })}
             >
-              <option value="">휴식</option>
-              {routines.map((routine) => (
-                <option key={routine.id} value={routine.id}>
-                  {routine.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        ))}
+              <span className={styles['weekday-label']}>{label}</span>
+              <span className={`${styles['routine-name']} ${!routine ? styles['rest'] : ''}`}>
+                {routine?.name ?? '휴식'}
+              </span>
+              <MdChevronRight size={22} aria-hidden="true" />
+            </button>
+          );
+        })}
       </fieldset>
 
       <section className={styles['summary']} aria-labelledby="plan-summary-title">
@@ -114,6 +150,14 @@ export default function PlanForm({ routines }: TPlanFormProps) {
                 <dt>최종 성장 목표</dt>
                 <dd>{summary.targetXp.toLocaleString('ko-KR')} XP</dd>
               </div>
+              <div>
+                <dt>하루 전체 완료 몫</dt>
+                <dd>
+                  {summary.dailyXp === null
+                    ? '운동할 요일을 선택해 주세요'
+                    : `${Number.isInteger(summary.dailyXp) ? '' : '약 '}${summary.dailyXp.toLocaleString('ko-KR', { maximumFractionDigits: 2 })} XP`}
+                </dd>
+              </div>
             </>
           )}
         </dl>
@@ -122,12 +166,36 @@ export default function PlanForm({ routines }: TPlanFormProps) {
       {selectedDays.length === 0 && (
         <p className={styles['hint']}>최소 하루에 루틴을 배정해 주세요.</p>
       )}
-      <button type="submit" disabled aria-describedby="plan-start-notice">
-        플랜 시작
-      </button>
       <p id="plan-start-notice" className={styles['hint']}>
         지금은 설정 내용을 확인할 수 있어요. 플랜 시작은 아직 준비 중이에요.
       </p>
+
+      <div className={styles['actions']}>
+        <Button type="submit" disabled aria-describedby="plan-start-notice">
+          플랜 시작
+        </Button>
+      </div>
+
+      <BottomSheet
+        isOpen={editingDay !== null}
+        title={editingDay ? `${editingDay.label} 루틴 선택` : '루틴 선택'}
+        onClose={() => setEditingDay(null)}
+      >
+        {editingDay && (
+          <PlanRoutinePicker
+            routines={routines}
+            selectedId={
+              routines.some((routine) => routine.id === assignments[editingDay.day])
+                ? assignments[editingDay.day]
+                : ''
+            }
+            onSelect={(id) => {
+              setAssignments({ ...assignments, [editingDay.day]: id });
+              setEditingDay(null);
+            }}
+          />
+        )}
+      </BottomSheet>
     </form>
   );
 }

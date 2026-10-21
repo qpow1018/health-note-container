@@ -7,19 +7,9 @@
       font-size: $font-size-title;
     }
 
-    > p,
-    > div p {
+    > p {
       margin-bottom: 16px;
       color: $text-secondary;
-    }
-
-    > div button {
-      min-height: $control-height;
-      padding-inline: 16px;
-      border: 1px solid $border;
-      border-radius: $border-radius;
-      background: $bg;
-      color: $text-primary;
     }
   }
 

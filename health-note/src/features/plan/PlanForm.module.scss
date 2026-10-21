@@ -1,10 +1,11 @@
 .plan-form {
-  padding-bottom: env(safe-area-inset-bottom);
+  margin-top: 32px;
+  padding-bottom: calc(#{$control-height} + 48px + env(safe-area-inset-bottom));
 
   fieldset {
     min-width: 0;
     padding: 0;
-    margin: 0 0 32px;
+    margin: 0 0 24px;
     border: 0;
 
     legend {
@@ -21,63 +22,71 @@
 
   .period-options {
     display: flex;
+    flex-direction: column;
     gap: 12px;
 
-    label {
-      position: relative;
-      flex: 1;
-    }
-
-    input {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      opacity: 0;
-
-      &:checked + span {
-        border-color: $mint-accent;
-        background: $mint-tint;
-        color: $mint-accent;
-      }
-
-      &:focus-visible + span {
-        outline: 2px solid $mint-accent;
-        outline-offset: 3px;
-      }
-    }
-
-    span {
+    .period-option {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: $control-height;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px;
       border: 1px solid $border;
       border-radius: $border-radius;
       cursor: pointer;
+
+      &:has(input:checked) {
+        border-color: $mint-accent;
+        background: $mint-tint;
+      }
+    }
+
+    .period-title {
+      display: block;
+      font-weight: 500;
+    }
+
+    .period-description {
+      display: block;
+      margin-top: 6px;
+      color: $text-secondary;
+      font-size: $font-size-caption;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
     }
   }
 
   .weekday {
     display: flex;
     align-items: center;
-    gap: 20px;
-    padding-block: 8px;
+    gap: 16px;
+    width: 100%;
+    min-height: 62px;
+    padding: 12px 0;
+    border: 0;
     border-bottom: 1px solid $border-soft;
+    background: transparent;
+    color: $text-primary;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
 
-    label {
+    .weekday-label {
       flex-shrink: 0;
     }
 
-    select {
+    .routine-name {
       flex: 1;
       min-width: 0;
-      min-height: $control-height;
-      padding: 8px 12px;
-      border: 1px solid $border;
-      border-radius: $border-radius;
-      background: $bg;
-      color: $text-primary;
-      font: inherit;
+      overflow-wrap: anywhere;
+
+      &.rest {
+        color: $text-secondary;
+      }
+    }
+
+    svg {
+      flex-shrink: 0;
+      color: $text-secondary;
     }
   }
 
@@ -120,14 +129,20 @@
     }
   }
 
-  > button {
-    width: 100%;
-    min-height: $control-height;
-    border: 0;
-    border-radius: $border-radius;
-    background: $bg-light;
-    color: $text-secondary;
-    font: inherit;
-    cursor: not-allowed;
+  .actions {
+    @include app-width;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    z-index: 1;
+    transform: translateX(-50%);
+    padding: 16px max($page-padding, env(safe-area-inset-right))
+      max(16px, env(safe-area-inset-bottom)) max($page-padding, env(safe-area-inset-left));
+    border-top: 1px solid $border-soft;
+    background: $bg;
+
+    button {
+      width: 100%;
+    }
   }
 }

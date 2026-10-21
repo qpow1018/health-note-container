@@ -1,0 +1,32 @@
+.routine-picker {
+  .option {
+    display: flex;
+    width: 100%;
+    gap: 12px;
+    padding-block: 16px;
+    border-bottom: 1px solid $border-soft;
+    cursor: pointer;
+  }
+
+  .name {
+    display: block;
+    font-weight: 500;
+  }
+
+  .description {
+    display: block;
+    margin-top: 4px;
+    color: $text-secondary;
+    font-size: $font-size-caption;
+    overflow-wrap: anywhere;
+  }
+
+  .error {
+    margin-bottom: 16px;
+
+    p {
+      margin-bottom: 8px;
+      color: $error-accent;
+    }
+  }
+}

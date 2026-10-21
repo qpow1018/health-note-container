@@ -98,6 +98,8 @@ DB 제약·RLS·RPC는 로컬 Supabase의 DB 테스트로 확인한다. 모의 A
 
 ## 플랜 설정 화면
 
-하단 메뉴의 `/plan`은 루틴 조회 상태에 따라 플랜 만들기 또는 루틴 만들기를 안내한다. `/plan/new`은 헤더와 조회 상태를 조립하고, `features/plan/PlanForm.tsx`가 기간·요일별 배정 초안과 요약을 관리한다. 루틴 조회는 기존 `routineQuery.useGetRoutines()`를 재사용한다. `utils/planSchedule.ts`는 시작일을 포함한 기간의 운동일 수와 목표 경험치를 계산한다.
+생성 페이지는 `PlanCreatePage.module.scss`에서 좌우·하단 여백과 safe area를 관리한다. 폼은 운동·루틴 폼과 동일하게 시작 간격 32px, 입력 그룹 간격 24px을 사용하고 공통 Button을 하단에 고정한다. 본문에는 고정 버튼에 가리지 않도록 하단 공간을 확보한다.
+
+하단 메뉴의 `/plan`은 루틴을 조회하지 않고 플랜 안내와 생성 진입을 제공한다. 루틴 유무·로딩·오류는 생성 페이지 `/plan/new`에서 처리한다. `/plan/new`은 헤더와 조회 상태를 조립하고, `features/plan/PlanForm.tsx`가 기간·요일별 배정 초안과 요약을 관리한다. 루틴 조회는 기존 `routineQuery.useGetRoutines()`를 재사용한다. `PlanForm`은 편집 중인 요일과 배정을 관리하고, `PlanForm`은 공통 BottomSheet의 열림 상태를 제어하고, `PlanRoutinePicker`는 공통 Radio로 루틴 선택 항목을 제공한다. 선택창이 열릴 때만 마운트해 기존 운동 조회 훅으로 포함 운동을 조회하며, 선택 시 부모의 배정을 갱신하고 닫는다. `utils/planSchedule.ts`는 시작일을 포함한 기간의 운동일 수와 고정 성장 목표 9,000 XP 기준 하루 몫을 계산한다. 운동일이 없으면 하루 몫은 null이며 화면에서 선택을 안내한다. 반올림은 미리보기 표시에만 적용한다.
 
 루틴 생성은 진입 경로 구분 없이 `/routine/new`를 사용한다. 저장 성공 후 `navigate(-1)`로 진입했던 화면으로 돌아오고, 헤더는 공통 뒤로가기 동작을 사용한다. 플랜 입력은 화면 내부 초안이며 이동·새로고침 시 초기화한다. 아직 플랜 API·저장·진행 중 조회는 제공하지 않는다. 관련 검증: [플랜 화면](../tests/plan.spec.ts).

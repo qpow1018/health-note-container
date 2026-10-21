@@ -1,0 +1,35 @@
+.plan-create-page {
+  .content {
+    padding: 0 max($page-padding, env(safe-area-inset-right))
+      max($page-padding, env(safe-area-inset-bottom)) max($page-padding, env(safe-area-inset-left));
+
+    > p,
+    > div p {
+      margin-block: 24px 16px;
+      color: $text-secondary;
+    }
+
+    > div button {
+      min-height: $control-height;
+      padding-inline: 16px;
+      border: 1px solid $border;
+      border-radius: $border-radius;
+      background: $bg;
+      color: $text-primary;
+    }
+  }
+
+  .primary-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: $control-height;
+    margin-top: 32px;
+    padding: 12px;
+    border-radius: $border-radius;
+    background: $mint;
+    color: $white;
+    font-weight: 500;
+    text-decoration: none;
+  }
+}
