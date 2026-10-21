@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 import QueryProvider from '@/lib/query/QueryProvider';
 
@@ -7,7 +7,6 @@ import BottomNavigationLayout from './BottomNavigationLayout';
 import AuthBoundary from './AuthBoundary';
 
 import ActivityPage from '@/pages/activity/ActivityPage';
-import HomePage from '@/pages/home/HomePage';
 import PlanPage from '@/pages/plan/PlanPage';
 import PlanCreatePage from '@/pages/plan/PlanCreatePage';
 import PlaygroundPage from '@/pages/playground/PlaygroundPage';
@@ -31,7 +30,7 @@ export default function App() {
           <AuthBoundary>
             <Routes>
               <Route element={<BottomNavigationLayout />}>
-                <Route path="/" element={<HomePage />} />
+                <Route path="/" element={<Navigate to="/plan" replace />} />
                 <Route path="/plan" element={<PlanPage />} />
                 <Route path="/exercise" element={<ExercisePage />} />
                 <Route path="/playground" element={<PlaygroundPage />} />

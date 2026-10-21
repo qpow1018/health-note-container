@@ -2,7 +2,7 @@ import { NavLink, Outlet, Link, useLocation } from 'react-router-dom';
 
 import styles from './BottomNavigationLayout.module.scss';
 
-import { MdCalendarMonth, MdFitnessCenter, MdHome, MdPerson, MdPets } from 'react-icons/md';
+import { MdCalendarMonth, MdFitnessCenter, MdPerson, MdPets } from 'react-icons/md';
 
 export default function BottomNavigationLayout() {
   const { pathname } = useLocation();
@@ -12,10 +12,6 @@ export default function BottomNavigationLayout() {
       <Outlet />
 
       <nav className={styles['navigation']} aria-label="주요 메뉴">
-        <NavLink to="/" end>
-          <MdHome size={22} aria-hidden="true" />
-          <span>홈</span>
-        </NavLink>
         <NavLink to="/plan">
           <MdCalendarMonth size={22} aria-hidden="true" />
           <span>플랜</span>

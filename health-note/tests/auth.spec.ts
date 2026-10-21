@@ -103,7 +103,7 @@ test('OAuth 요청은 Google과 현재 origin의 복귀 주소·PKCE를 사용�
   await expect(page.getByRole('button', { name: 'Google로 계속하기' })).toBeEnabled();
 });
 
-test('PKCE 복귀 코드 교환에 성공하면 홈으로 진입한다', async ({ page }) => {
+test('PKCE 복귀 코드 교환에 성공하면 플랜으로 진입한다', async ({ page }) => {
   await page.goto('/');
   await page.evaluate(
     (key) => localStorage.setItem(`${key}-code-verifier`, JSON.stringify('test-code-verifier')),
@@ -112,6 +112,7 @@ test('PKCE 복귀 코드 교환에 성공하면 홈으로 진입한다', async (
   await page.goto('/?code=test-code');
   await expect(page.getByRole('heading', { name: '헬스노트' })).toBeVisible();
   await expect(page.getByRole('navigation', { name: '주요 메뉴' })).toBeVisible();
+  await expect(page).toHaveURL('/plan');
   expect(new URL(page.url()).searchParams.has('code')).toBe(false);
 });
 

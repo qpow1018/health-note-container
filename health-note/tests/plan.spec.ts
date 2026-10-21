@@ -5,16 +5,14 @@ const ROUTINES = [
   { id: 'b', name: 'B루틴', exerciseIds: ['squat'], memo: '' },
 ];
 
-test('홈 옆 플랜 메뉴에서 빈 상태를 안내하고 루틴 생성 후 복귀한다', async ({ page }) => {
+test('첫 화면 플랜 메뉴에서 빈 상태를 안내하고 루틴 생성 후 복귀한다', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('navigation', { name: '주요 메뉴' }).getByRole('link')).toHaveText([
-    '홈',
     '플랜',
     '운동',
     '운동장',
     '마이',
   ]);
-  await page.getByRole('link', { name: '플랜', exact: true }).click();
   await expect(page.getByRole('link', { name: '플랜', exact: true })).toHaveAttribute(
     'aria-current',
     'page',
@@ -47,8 +45,6 @@ test('홈 옆 플랜 메뉴에서 빈 상태를 안내하고 루틴 생성 후 �
   await expect(page.getByRole('link', { name: '루틴 만들기' })).toHaveCount(0);
   await page.getByRole('button', { name: '뒤로가기' }).click();
   await expect(page).toHaveURL('/plan');
-  await page.goBack();
-  await expect(page).toHaveURL('/');
 });
 
 test('요일별 루틴과 기간으로 운동일·경험치를 계산하고 휴식으로 변경한다', async ({ page }) => {

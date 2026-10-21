@@ -35,7 +35,7 @@ async function fillPlan(page: Page) {
   }
 }
 
-test('저장 중 중복 제출을 막고 새로고침 후에도 주간 운동표와 배분 기준을 조회한다', async ({
+test('저장 중 중복 제출을 막고 새로고침 후에도 플랜 요약과 오늘 운동을 조회한다', async ({
   page,
 }) => {
   let release!: () => void;
@@ -56,23 +56,13 @@ test('저장 중 중복 제출을 막고 새로고침 후에도 주간 운동표
   await page.locator('form').evaluate((form: HTMLFormElement) => form.requestSubmit());
   release();
   await expect(page).toHaveURL('/plan');
-  await expect(page.getByRole('heading', { name: '진행 중인 플랜' })).toBeVisible();
-  await expect(page.getByText('9,000 XP', { exact: true })).toBeVisible();
-  await expect(page.getByText('1,500 XP', { exact: true })).toBeVisible();
-  await expect(
-    page.getByRole('list', { name: '플랜 주간 운동표' }).getByRole('listitem'),
-  ).toHaveText([
-    '월요일A루틴',
-    '화요일휴식',
-    '수요일A루틴',
-    '목요일휴식',
-    '금요일A루틴',
-    '토요일휴식',
-    '일요일휴식',
-  ]);
+  await expect(page.getByText('진행 중인 14일 플랜', { exact: true })).toBeVisible();
+  await expect(page.getByText('10.21 ~ 11.03 · 주 3일 운동')).toBeVisible();
+  await expect(page.getByRole('heading', { name: '오늘 운동' })).toBeVisible();
+  await expect(page.getByRole('checkbox', { name: /스쿼트/ })).toBeVisible();
   await expect(page.getByRole('link', { name: '플랜 만들기' })).toHaveCount(0);
   await page.reload();
-  await expect(page.getByRole('heading', { name: '진행 중인 플랜' })).toBeVisible();
+  await expect(page.getByText('진행 중인 14일 플랜', { exact: true })).toBeVisible();
   await page.screenshot({ path: '/tmp/health-note-active-plan.png', fullPage: true });
   expect(writes).toBe(1);
   await page.goto('/plan/new');
@@ -188,6 +178,6 @@ test('저장된 응답을 잃어도 같은 요청 ID로 재시도해 중복 플�
   isLost = false;
   await page.getByRole('button', { name: '플랜 시작', exact: true }).click();
   await expect(page).toHaveURL('/plan');
-  await expect(page.getByRole('heading', { name: '진행 중인 플랜' })).toBeVisible();
+  await expect(page.getByText('진행 중인 14일 플랜', { exact: true })).toBeVisible();
   expect(await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!).length, KEY)).toBe(1);
 });
