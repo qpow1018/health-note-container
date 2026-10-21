@@ -25,16 +25,19 @@ const DURATIONS = [
   {
     days: 14,
     title: '조금씩 시작해요',
+    label: '작은 시작',
     description: '아직 운동이 낯설다면, 작은 실천부터 습관을 만들어봐요.',
   },
   {
     days: 30,
     title: '익숙해진 만큼 이어가요',
+    label: '습관 이어가기',
     description: '운동이 조금 익숙해졌다면, 한 달 동안 이어가 볼까요?',
   },
   {
     days: 100,
     title: '꾸준한 일상에 도전해요',
+    label: '꾸준한 일상',
     description: '운동이 이미 일상이라면, 100일 플랜은 어때요?',
   },
 ];
@@ -54,6 +57,7 @@ export default function PlanForm({ routines, onSave }: TPlanFormProps) {
   const [formError, setFormError] = useState('');
   const [editingDay, setEditingDay] = useState<(typeof WEEKDAYS)[number] | null>(null);
   const [duration, setDuration] = useState<number | null>(null);
+  const selectedDuration = DURATIONS.find((item) => item.days === duration);
   const [assignments, setAssignments] = useState<Record<number, string>>({});
   const selectedDays = WEEKDAYS.filter(({ day }) =>
     routines.some((routine) => routine.id === assignments[day]),
@@ -100,28 +104,35 @@ export default function PlanForm({ routines, onSave }: TPlanFormProps) {
         <legend>플랜 기간</legend>
         <p className={styles['hint']}>오늘 시작해요. 나에게 맞는 기간을 선택해 주세요.</p>
         <div className={styles['period-options']}>
-          {DURATIONS.map(({ days, title, description }) => (
+          {DURATIONS.map(({ days, title, label }) => (
             <Radio
               key={days}
               className={styles['period-option']}
               name="duration"
               aria-label={`${days}일`}
-              aria-describedby={`plan-duration-${days}-description`}
+              aria-description={title}
               value={days}
               checked={duration === days}
               onChange={() => setDuration(days)}
             >
-              <span className={styles['period-title']}>
-                {days}일 · {title}
+              <span className={styles['period-number']}>
+                {days}
+                <span className={styles['period-unit']}>일</span>
               </span>
-              <span
-                id={`plan-duration-${days}-description`}
-                className={styles['period-description']}
-              >
-                {description}
-              </span>
+              <span className={styles['period-label']}>{label}</span>
             </Radio>
           ))}
+        </div>
+        <div className={styles['period-detail']} aria-live="polite">
+          {selectedDuration && (
+            <>
+              <p className={styles['period-title']}>{selectedDuration.title}</p>
+              <p className={styles['period-description']}>{selectedDuration.description}</p>
+            </>
+          )}
+          {!selectedDuration && (
+            <p className={styles['period-description']}>함께할 기간을 선택해 주세요.</p>
+          )}
         </div>
       </fieldset>
 
@@ -137,10 +148,13 @@ export default function PlanForm({ routines, onSave }: TPlanFormProps) {
               className={styles['weekday']}
               type="button"
               key={day}
+              aria-label={`${label} ${routine?.name ?? '휴식'}`}
               aria-haspopup="dialog"
               onClick={() => setEditingDay({ day, label })}
             >
-              <span className={styles['weekday-label']}>{label}</span>
+              <span className={styles['weekday-label']} aria-hidden="true">
+                {label.slice(0, 1)}
+              </span>
               <span className={`${styles['routine-name']} ${!routine ? styles['rest'] : ''}`}>
                 {routine?.name ?? '휴식'}
               </span>
@@ -152,51 +166,52 @@ export default function PlanForm({ routines, onSave }: TPlanFormProps) {
 
       <section className={styles['summary']} aria-labelledby="plan-summary-title">
         <h2 id="plan-summary-title">시작 전 확인</h2>
-        <dl>
+        <p className={styles['summary-duration']}>
+          {duration === null ? '함께할 기간을 선택해 주세요' : `${duration}일 동안 함께해요`}
+        </p>
+        <div className={styles['summary-dates']}>
           <div>
-            <dt>시작일</dt>
-            <dd>
-              <time dateTime={today}>{today}</time> (오늘)
-            </dd>
+            <time dateTime={today}>{today}</time>
+            <span>오늘 시작</span>
           </div>
+          <span className={styles['date-arrow']} aria-hidden="true">
+            →
+          </span>
           <div>
-            <dt>기간</dt>
-            <dd>{duration === null ? '선택해 주세요' : `${duration}일`}</dd>
+            {summary && <time dateTime={summary.endDate}>{summary.endDate}</time>}
+            {!summary && <span>기간 선택 후 표시</span>}
+            <span>기간 기준 종료일</span>
           </div>
-          {summary && (
-            <div>
-              <dt>기간 기준 종료일</dt>
-              <dd>
-                <time dateTime={summary.endDate}>{summary.endDate}</time>
-              </dd>
-            </div>
-          )}
-          <div>
-            <dt>주간 운동</dt>
-            <dd>주 {selectedDays.length}일</dd>
-          </div>
-          {summary && (
-            <>
+        </div>
+        <p className={styles['schedule-count']}>
+          주 {selectedDays.length}일 운동
+          {summary && ` · 기간 내 총 ${summary.exerciseDays}일`}
+        </p>
+        {summary && (
+          <div className={styles['growth-summary']}>
+            <h3>운동이 성장</h3>
+            <dl>
               <div>
-                <dt>총 운동일</dt>
-                <dd>{summary.exerciseDays}일</dd>
-              </div>
-              <div>
-                <dt>최종 성장 목표</dt>
+                <dt>성장 목표</dt>
                 <dd>{summary.targetXp.toLocaleString('ko-KR')} XP</dd>
               </div>
               <div>
-                <dt>하루 전체 완료 몫</dt>
+                <dt>운동일마다</dt>
                 <dd>
                   {summary.dailyXp === null
-                    ? '운동할 요일을 선택해 주세요'
+                    ? '—'
                     : `${Number.isInteger(summary.dailyXp) ? '' : '약 '}${summary.dailyXp.toLocaleString('ko-KR', { maximumFractionDigits: 2 })} XP`}
                 </dd>
               </div>
-            </>
-          )}
-        </dl>
-        <p>기간은 성장과 보상의 기준이에요. 기간이 지나도 계속 이어갈 수 있어요.</p>
+            </dl>
+            <p className={styles['summary-note']}>
+              {summary.dailyXp === null
+                ? '운동할 요일을 선택해 주세요.'
+                : '예정된 운동을 모두 완료했을 때의 경험치예요.'}
+            </p>
+          </div>
+        )}
+        <p className={styles['summary-note']}>기간이 지나도 계속 이어갈 수 있어요.</p>
       </section>
       {selectedDays.length === 0 && (
         <p className={styles['hint']}>최소 하루에 루틴을 배정해 주세요.</p>

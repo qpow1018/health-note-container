@@ -17,8 +17,7 @@ test('첫 화면 플랜 메뉴에서 빈 상태를 안내하고 루틴 생성 �
     'aria-current',
     'page',
   );
-  await expect(page.getByRole('link', { name: '루틴 만들기' })).toHaveCount(0);
-  await page.getByRole('link', { name: '플랜 만들기' }).click();
+  await page.goto('/plan/new');
   await expect(page).toHaveURL('/plan/new');
   await expect(page.getByRole('radio')).toHaveCount(0);
   await page.evaluate(() =>
@@ -50,7 +49,7 @@ test('첫 화면 플랜 메뉴에서 빈 상태를 안내하고 루틴 생성 �
 test('요일별 루틴과 기간으로 운동일·경험치를 계산하고 휴식으로 변경한다', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-10-21T12:00:00+09:00'));
   await page.goto('/plan');
-  await expect(page.getByRole('link', { name: '플랜 만들기' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '안녕! 함께 운동해볼까?' })).toBeVisible();
   await page.evaluate(
     (items) => localStorage.setItem('health-note.routines.v1:test-user', JSON.stringify(items)),
     ROUTINES,
@@ -67,11 +66,11 @@ test('요일별 루틴과 기간으로 운동일·경험치를 계산하고 휴�
   for (const row of await page.locator('button[aria-haspopup="dialog"]').all())
     await expect(row).toContainText('휴식');
   await expect(page.getByText('최소 하루에 루틴을 배정해 주세요.')).toBeVisible();
-  await page.getByText('아직 운동이 낯설다면, 작은 실천부터 습관을 만들어봐요.').click();
+  await page.getByRole('radio', { name: '14일', exact: true }).check();
   await expect(page.getByRole('radio', { name: '14일', exact: true })).toBeChecked();
   const summary = page.getByRole('region', { name: '시작 전 확인' });
-  await expect(summary).toContainText('최종 성장 목표9,000 XP');
-  await expect(summary).toContainText('하루 전체 완료 몫운동할 요일을 선택해 주세요');
+  await expect(summary).toContainText('성장 목표9,000 XP');
+  await expect(summary).toContainText('운동할 요일을 선택해 주세요');
   for (const day of ['월요일', '수요일', '금요일']) {
     await page.getByRole('button', { name: new RegExp('^' + day) }).click();
     await expect(page.getByRole('dialog').getByText('스쿼트', { exact: true })).toHaveCount(2);
@@ -82,8 +81,8 @@ test('요일별 루틴과 기간으로 운동일·경험치를 계산하고 휴�
     await expect(page.getByRole('dialog')).toHaveCount(0);
     await expect(page.getByRole('button', { name: day + ' A루틴' })).toBeFocused();
   }
-  await expect(summary).toContainText('총 운동일6일');
-  await expect(summary).toContainText('하루 전체 완료 몫1,500 XP');
+  await expect(summary).toContainText('기간 내 총 6일');
+  await expect(summary).toContainText('운동일마다1,500 XP');
   for (const day of ['화요일', '목요일', '토요일']) {
     await page.getByRole('button', { name: new RegExp('^' + day) }).click();
     await page
@@ -101,18 +100,16 @@ test('요일별 루틴과 기간으로 운동일·경험치를 계산하고 휴�
   await expect(page.getByRole('button', { name: '월요일 A루틴' })).toBeVisible();
   await expect(summary).toContainText('2026-10-21');
   await expect(summary).toContainText('2026-11-03');
-  await expect(summary).toContainText('총 운동일12일');
-  await expect(summary).toContainText('최종 성장 목표9,000 XP');
-  await expect(summary).toContainText('하루 전체 완료 몫750 XP');
+  await expect(summary).toContainText('기간 내 총 12일');
+  await expect(summary).toContainText('성장 목표9,000 XP');
+  await expect(summary).toContainText('운동일마다750 XP');
   await expect(page.getByText('최소 하루에 루틴을 배정해 주세요.')).toHaveCount(0);
   const startButton = page.getByRole('button', { name: '플랜 시작', exact: true });
   const initialButtonBox = await startButton.boundingBox();
   expect(initialButtonBox!.y + initialButtonBox!.height).toBeLessThanOrEqual(
     page.viewportSize()!.height,
   );
-  const notice = summary.getByText(
-    '기간은 성장과 보상의 기준이에요. 기간이 지나도 계속 이어갈 수 있어요.',
-  );
+  const notice = summary.getByText('기간이 지나도 계속 이어갈 수 있어요.');
   await notice.scrollIntoViewIfNeeded();
   const noticeBox = await notice.boundingBox();
   const buttonBox = await startButton.boundingBox();
@@ -121,22 +118,22 @@ test('요일별 루틴과 기간으로 운동일·경험치를 계산하고 휴�
   await page.screenshot({ path: '/tmp/health-note-plan-form.png' });
   await page.getByRole('radio', { name: '30일', exact: true }).check();
   await expect(summary).toContainText('2026-11-19');
-  await expect(summary).toContainText('총 운동일26일');
-  await expect(summary).toContainText('최종 성장 목표9,000 XP');
-  await expect(summary).toContainText('하루 전체 완료 몫약 346.15 XP');
+  await expect(summary).toContainText('기간 내 총 26일');
+  await expect(summary).toContainText('성장 목표9,000 XP');
+  await expect(summary).toContainText('운동일마다약 346.15 XP');
   await page.getByRole('radio', { name: '30일', exact: true }).focus();
   await page.keyboard.press('ArrowDown');
   await expect(page.getByRole('radio', { name: '100일', exact: true })).toBeChecked();
   await expect(summary).toContainText('2027-01-28');
-  await expect(summary).toContainText('총 운동일86일');
-  await expect(summary).toContainText('최종 성장 목표9,000 XP');
-  await expect(summary).toContainText('하루 전체 완료 몫약 104.65 XP');
+  await expect(summary).toContainText('기간 내 총 86일');
+  await expect(summary).toContainText('성장 목표9,000 XP');
+  await expect(summary).toContainText('운동일마다약 104.65 XP');
   await page.getByRole('button', { name: '수요일 A루틴' }).click();
   await page.getByRole('dialog').getByRole('radio', { name: /^휴식/ }).click();
   await expect(page.getByRole('button', { name: '수요일 휴식' })).toBeVisible();
-  await expect(summary).toContainText('총 운동일71일');
-  await expect(summary).toContainText('최종 성장 목표9,000 XP');
-  await expect(summary).toContainText('하루 전체 완료 몫약 126.76 XP');
+  await expect(summary).toContainText('기간 내 총 71일');
+  await expect(summary).toContainText('성장 목표9,000 XP');
+  await expect(summary).toContainText('운동일마다약 126.76 XP');
   await expect(page.getByRole('button', { name: '플랜 시작', exact: true })).toBeEnabled();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
@@ -171,7 +168,7 @@ test('조회 실패를 빈 목록으로 표시하지 않고 재시도한다', as
 
 test('포함 운동 조회 실패 시 재시도하고 배정은 유지한다', async ({ page }) => {
   await page.goto('/plan');
-  await expect(page.getByRole('link', { name: '플랜 만들기' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '안녕! 함께 운동해볼까?' })).toBeVisible();
   await page.evaluate(
     (items) => localStorage.setItem('health-note.routines.v1:test-user', JSON.stringify(items)),
     ROUTINES,
@@ -181,7 +178,7 @@ test('포함 운동 조회 실패 시 재시도하고 배정은 유지한다', a
     if (!isFailing) return route.fallback();
     await route.fulfill({ status: 500, json: { message: 'Test failure' } });
   });
-  await page.getByRole('link', { name: '플랜 만들기' }).click();
+  await page.goto('/plan/new');
   await page.getByRole('button', { name: '월요일 휴식' }).click();
   await expect(page.getByRole('dialog').getByRole('alert')).toContainText(
     '포함 운동을 불러오지 못했어요.',

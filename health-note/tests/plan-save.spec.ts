@@ -11,7 +11,7 @@ const KEY = 'health-note.plans.v1:test-user';
 test.beforeEach(async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-10-21T12:00:00+09:00'));
   await page.goto('/plan');
-  await expect(page.getByRole('link', { name: '플랜 만들기' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '안녕! 함께 운동해볼까?' })).toBeVisible();
   await page.evaluate((routines) => {
     localStorage.setItem('health-note.routines.v1:test-user', JSON.stringify(routines));
     localStorage.setItem(
@@ -121,7 +121,7 @@ test('플랜 조회 실패를 빈 상태로 표시하지 않고 재시도로 복
   await expect(page.getByRole('link', { name: '플랜 만들기' })).toHaveCount(0);
   isFailing = false;
   await page.getByRole('button', { name: '다시 시도', exact: true }).click();
-  await expect(page.getByRole('link', { name: '플랜 만들기' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '안녕! 함께 운동해볼까?' })).toBeVisible();
 });
 
 test('진행 중 플랜의 루틴과 그 루틴에 연결된 운동은 삭제하지 않는다', async ({ page }) => {

@@ -5,6 +5,7 @@ import QueryProvider from '@/lib/query/QueryProvider';
 import ToastContainer from '@/components/common/toast/ToastContainer';
 import BottomNavigationLayout from './BottomNavigationLayout';
 import AuthBoundary from './AuthBoundary';
+import RouteScrollReset from './RouteScrollReset';
 
 import ActivityPage from '@/pages/activity/ActivityPage';
 import PlanPage from '@/pages/plan/PlanPage';
@@ -26,6 +27,7 @@ export default function App() {
   return (
     <QueryProvider>
       <BrowserRouter>
+        <RouteScrollReset />
         <main className={styles['app-shell']}>
           <AuthBoundary>
             <Routes>

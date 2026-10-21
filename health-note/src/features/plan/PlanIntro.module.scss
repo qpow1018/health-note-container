@@ -1,0 +1,77 @@
+.plan-intro {
+  padding-top: 16px;
+
+  .greeting {
+    text-align: center;
+
+    h2 {
+      margin-top: 12px;
+      font-size: $font-size-title;
+      font-weight: 700;
+    }
+  }
+
+  .character {
+    width: 112px;
+    margin-inline: auto;
+  }
+
+  .description {
+    margin-top: 12px;
+    color: $text-secondary;
+  }
+
+  .steps {
+    margin-top: 32px;
+    padding: 0;
+    list-style: none;
+
+    > li {
+      display: flex;
+      gap: 16px;
+      padding-block: 24px;
+      border-top: 1px solid $border-soft;
+
+      &[aria-current='step'] .marker {
+        color: $mint-accent;
+        border-color: $mint-accent;
+      }
+    }
+  }
+
+  .marker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border: 1px solid $border-soft;
+    border-radius: 50%;
+    color: $text-secondary;
+  }
+
+  .step-content {
+    flex: 1;
+    min-width: 0;
+
+    h3 {
+      font-size: $font-size-body;
+      font-weight: 500;
+    }
+    p {
+      margin-top: 6px;
+      color: $text-secondary;
+      font-size: $font-size-caption;
+    }
+    a {
+      margin-top: 16px;
+    }
+  }
+
+  .complete {
+    margin-left: 8px;
+    color: $mint-accent;
+    font-size: $font-size-caption;
+  }
+}

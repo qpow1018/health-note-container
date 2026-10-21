@@ -1,11 +1,8 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 
-import planQuery from '@/queries/planQuery';
 import routineQuery from '@/queries/routineQuery';
 import exerciseQuery from '@/queries/exerciseQuery';
 import type { TPlan } from '@/api/plan/type';
-import { useTodayDate } from '@/hooks/useTodayDate';
 import { getPlanSchedule } from '@/features/plan/utils/planSchedule';
 
 import SproutCharacter from '@/features/character/SproutCharacter';
@@ -15,33 +12,11 @@ import Button from '@/components/common/button/Button';
 
 import styles from './HomePlanPreview.module.scss';
 
-export default function HomePlanPreview() {
-  const today = useTodayDate();
-  const { data: plan, isPending, isError, refetch } = planQuery.useGetActivePlan();
-
+export default function HomePlanPreview({ plan, today }: { plan: TPlan; today: string }) {
   return (
     <div className={styles['home-preview']}>
       <p className={styles['preview-notice']}>미리보기 · 완료 체크와 성장은 저장되지 않아요.</p>
-      {isPending && <BoxLoading />}
-      {isError && (
-        <div role="alert">
-          <p>플랜을 불러오지 못했어요.</p>
-          <Button color="gray" fill="outline" onClick={() => void refetch()}>
-            다시 시도
-          </Button>
-        </div>
-      )}
-      {plan && <ActiveHomePlan key={plan.id + today} plan={plan} today={today} />}
-      {!isPending && !isError && !plan && (
-        <>
-          <CharacterPreview xp={0} />
-          <div className={styles['empty-plan']}>
-            <h2>운동이와 함께할 플랜을 만들어보세요.</h2>
-            <p>내 생활에 맞는 기간과 운동 일정을 정해요.</p>
-            <Link to="/plan/new">플랜 만들기</Link>
-          </div>
-        </>
-      )}
+      <ActiveHomePlan key={plan.id + today} plan={plan} today={today} />
     </div>
   );
 }
@@ -185,7 +160,7 @@ function CharacterPreview({ xp }: { xp: number }) {
     <section className={styles['character-preview']} aria-label="운동이">
       <div className={styles['character-layout']}>
         <div className={styles['artwork']}>
-          <SproutCharacter isActive={false} />
+          <SproutCharacter />
         </div>
         <div className={styles['character-info']}>
           <div className={styles['greeting']}>

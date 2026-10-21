@@ -1,8 +1,17 @@
+import planQuery from '@/queries/planQuery';
+import { useTodayDate } from '@/hooks/useTodayDate';
+
+import PlanIntro from '@/features/plan/PlanIntro';
+import BoxLoading from '@/components/common/loading/BoxLoading';
+import Button from '@/components/common/button/Button';
 import HomePlanPreview from '@/features/home/HomePlanPreview';
 
 import styles from './PlanPage.module.scss';
 
 export default function PlanPage() {
+  const today = useTodayDate();
+  const { data: plan, isPending, isError, refetch } = planQuery.useGetActivePlan();
+
   return (
     <section className={styles['plan-page']}>
       <header className={styles['header']}>
@@ -13,7 +22,18 @@ export default function PlanPage() {
       </header>
 
       <div className={styles['content']}>
-        <HomePlanPreview />
+        {isPending && <BoxLoading />}
+        {isError && (
+          <div role="alert">
+            <p>플랜을 불러오지 못했어요.</p>
+            <Button color="gray" fill="outline" onClick={() => void refetch()}>
+              다시 시도
+            </Button>
+          </div>
+        )}
+
+        {!isPending && !isError && !plan && <PlanIntro />}
+        {plan && <HomePlanPreview plan={plan} today={today} />}
       </div>
     </section>
   );

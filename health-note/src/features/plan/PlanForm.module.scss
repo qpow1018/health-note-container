@@ -21,15 +21,18 @@
   }
 
   .period-options {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
 
     .period-option {
       display: flex;
-      align-items: flex-start;
+      flex-direction: column;
+      align-items: center;
       gap: 12px;
-      padding: 16px;
+      padding: 16px 4px;
+      min-width: 0;
+      text-align: center;
       border: 1px solid $border;
       border-radius: $border-radius;
       cursor: pointer;
@@ -39,14 +42,37 @@
         background: $mint-tint;
       }
     }
+  }
+
+  .period-number {
+    display: block;
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  .period-unit {
+    margin-left: 3px;
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  .period-label {
+    display: block;
+    margin-top: 8px;
+    color: $text-secondary;
+    font-size: $font-size-caption;
+    word-break: keep-all;
+  }
+
+  .period-detail {
+    margin-top: 16px;
+    min-height: 88px;
 
     .period-title {
-      display: block;
       font-weight: 500;
     }
 
     .period-description {
-      display: block;
       margin-top: 6px;
       color: $text-secondary;
       font-size: $font-size-caption;
@@ -71,7 +97,15 @@
     cursor: pointer;
 
     .weekday-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
       flex-shrink: 0;
+      border-radius: $border-radius;
+      background: $bg-light;
+      font-weight: 500;
     }
 
     .routine-name {
@@ -96,37 +130,96 @@
     border: 1px solid $border-soft;
     border-radius: $border-radius;
 
-    h2 {
-      margin-bottom: 16px;
+    h2,
+    h3 {
       font-size: $font-size-body;
       font-weight: 500;
     }
+  }
+
+  .summary-duration {
+    margin-top: 20px;
+    font-size: $font-size-title;
+    font-weight: 700;
+  }
+
+  .summary-dates {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 12px;
+    margin-top: 16px;
+
+    > div {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      > span {
+        color: $text-secondary;
+        font-size: $font-size-caption;
+      }
+    }
+
+    time {
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .date-arrow {
+      color: $text-secondary;
+    }
+
+    @media (max-width: 380px) {
+      flex-direction: column;
+      gap: 8px;
+
+      .date-arrow {
+        transform: rotate(90deg);
+      }
+    }
+  }
+
+  .schedule-count {
+    margin-top: 20px;
+    color: $mint-accent;
+    font-size: $font-size-caption;
+  }
+
+  .growth-summary {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid $border-soft;
 
     dl {
-      margin: 0;
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
 
       > div {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
         gap: 4px 12px;
-        margin-bottom: 12px;
       }
     }
 
-    dt,
-    p {
+    dt {
       color: $text-secondary;
       font-size: $font-size-caption;
     }
 
     dd {
       margin: 0;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
     }
+  }
 
-    p {
-      margin-top: 20px;
-    }
+  .summary-note {
+    margin-top: 12px;
+    color: $text-secondary;
+    font-size: $font-size-caption;
   }
 
   .actions {

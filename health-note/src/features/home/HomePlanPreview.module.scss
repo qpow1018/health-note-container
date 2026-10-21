@@ -168,8 +168,7 @@
     margin-top: 16px;
   }
 
-  .rest,
-  .empty-plan {
+  .rest {
     margin-top: 20px;
     h2,
     h3 {
@@ -179,13 +178,6 @@
     p {
       margin-top: 8px;
       color: $text-secondary;
-    }
-    a {
-      display: inline-flex;
-      align-items: center;
-      min-height: $control-height;
-      margin-top: 12px;
-      color: $mint-accent;
     }
   }
 }
