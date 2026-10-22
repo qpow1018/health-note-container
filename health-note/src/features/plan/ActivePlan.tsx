@@ -80,13 +80,16 @@ export default function ActivePlan({ plan, today }: { plan: TPlan; today: string
             })}
           </time>
         </div>
+
         {!assignment && (
           <div className={styles['rest']}>
             <h3>오늘은 쉬는 날이에요.</h3>
             <p>운동이의 성장은 그대로 남아요. 준비되면 이어가세요.</p>
           </div>
         )}
+
         {assignment && isLoading && <BoxLoading height={160} />}
+
         {assignment && isError && (
           <div role="alert">
             <p>오늘 운동을 불러오지 못했어요.</p>
