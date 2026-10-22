@@ -25,7 +25,9 @@ export default function ActivePlan({ plan, today }: { plan: TPlan; today: string
     isError: isExercisesError,
     refetch: refetchExercises,
   } = exerciseQuery.useGetExercises();
+
   const [checkedIds, setCheckedIds] = useState<string[]>([]);
+
   const weekday = new Date(`${today}T00:00:00Z`).getUTCDay();
   const assignment = plan.assignments.find((item) => item.weekday === weekday);
   const routine = routines?.find((item) => item.id === assignment?.routineId);
@@ -51,7 +53,6 @@ export default function ActivePlan({ plan, today }: { plan: TPlan; today: string
 
   return (
     <div className={styles['active-plan']}>
-      <p className={styles['save-notice']}>미리보기 · 완료 체크와 성장은 저장되지 않아요.</p>
       <PlanCharacter xp={xp} />
 
       <div className={styles['plan-summary']}>
