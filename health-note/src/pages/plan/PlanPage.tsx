@@ -4,7 +4,7 @@ import { useTodayDate } from '@/hooks/useTodayDate';
 import PlanIntro from '@/features/plan/PlanIntro';
 import BoxLoading from '@/components/common/loading/BoxLoading';
 import Button from '@/components/common/button/Button';
-import HomePlanPreview from '@/features/home/HomePlanPreview';
+import ActivePlan from '@/features/plan/ActivePlan';
 
 import styles from './PlanPage.module.scss';
 
@@ -23,6 +23,7 @@ export default function PlanPage() {
 
       <div className={styles['content']}>
         {isPending && <BoxLoading />}
+
         {isError && (
           <div role="alert">
             <p>플랜을 불러오지 못했어요.</p>
@@ -33,7 +34,7 @@ export default function PlanPage() {
         )}
 
         {!isPending && !isError && !plan && <PlanIntro />}
-        {plan && <HomePlanPreview plan={plan} today={today} />}
+        {plan && <ActivePlan key={plan.id + today} plan={plan} today={today} />}
       </div>
     </section>
   );

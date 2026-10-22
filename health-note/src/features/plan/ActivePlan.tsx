@@ -3,25 +3,16 @@ import { useState } from 'react';
 import routineQuery from '@/queries/routineQuery';
 import exerciseQuery from '@/queries/exerciseQuery';
 import type { TPlan } from '@/api/plan/type';
-import { getPlanSchedule } from '@/features/plan/utils/planSchedule';
+import { getPlanSchedule } from './utils/planSchedule';
 
 import SproutCharacter from '@/features/character/SproutCharacter';
 import Checkbox from '@/components/common/form/Checkbox';
 import BoxLoading from '@/components/common/loading/BoxLoading';
 import Button from '@/components/common/button/Button';
 
-import styles from './HomePlanPreview.module.scss';
+import styles from './ActivePlan.module.scss';
 
-export default function HomePlanPreview({ plan, today }: { plan: TPlan; today: string }) {
-  return (
-    <div className={styles['home-preview']}>
-      <p className={styles['preview-notice']}>미리보기 · 완료 체크와 성장은 저장되지 않아요.</p>
-      <ActiveHomePlan key={plan.id + today} plan={plan} today={today} />
-    </div>
-  );
-}
-
-function ActiveHomePlan({ plan, today }: { plan: TPlan; today: string }) {
+export default function ActivePlan({ plan, today }: { plan: TPlan; today: string }) {
   const {
     data: routines,
     isPending: isRoutinesPending,
@@ -59,8 +50,9 @@ function ActiveHomePlan({ plan, today }: { plan: TPlan; today: string }) {
   }
 
   return (
-    <>
-      <CharacterPreview xp={xp} />
+    <div className={styles['active-plan']}>
+      <p className={styles['save-notice']}>미리보기 · 완료 체크와 성장은 저장되지 않아요.</p>
+      <PlanCharacter xp={xp} />
 
       <div className={styles['plan-summary']}>
         <span className={styles['plan-info']}>
@@ -72,9 +64,9 @@ function ActiveHomePlan({ plan, today }: { plan: TPlan; today: string }) {
         </span>
       </div>
 
-      <section className={styles['today']} aria-labelledby="home-today-title">
+      <section className={styles['today']} aria-labelledby="plan-today-title">
         <div className={styles['section-heading']}>
-          <h2 id="home-today-title">오늘 운동</h2>
+          <h2 id="plan-today-title">오늘 운동</h2>
           <time dateTime={today}>
             {new Date(`${today}T00:00:00`).toLocaleDateString('ko-KR', {
               month: 'long',
@@ -148,16 +140,16 @@ function ActiveHomePlan({ plan, today }: { plan: TPlan; today: string }) {
           </>
         )}
       </section>
-    </>
+    </div>
   );
 }
 
-function CharacterPreview({ xp }: { xp: number }) {
+function PlanCharacter({ xp }: { xp: number }) {
   const level = Math.min(10, Math.floor(xp / 1000) + 1);
   const levelXp = level === 10 ? 1000 : xp % 1000;
 
   return (
-    <section className={styles['character-preview']} aria-label="운동이">
+    <section className={styles['plan-character']} aria-label="운동이">
       <div className={styles['character-layout']}>
         <div className={styles['artwork']}>
           <SproutCharacter />
