@@ -9,6 +9,7 @@ import RouteScrollReset from './RouteScrollReset';
 
 import ActivityPage from '@/pages/activity/ActivityPage';
 import PlanPage from '@/pages/plan/PlanPage';
+import PlanDetailPage from '@/pages/plan/PlanDetailPage';
 import PlanCreatePage from '@/pages/plan/PlanCreatePage';
 import PlaygroundPage from '@/pages/playground/PlaygroundPage';
 import MyPage from '@/pages/my/MyPage';
@@ -40,6 +41,7 @@ export default function App() {
               </Route>
 
               <Route path="/activity" element={<ActivityPage />} />
+              <Route path="/plan/detail" element={<PlanDetailPage />} />
               <Route path="/plan/new" element={<PlanCreatePage />} />
 
               <Route path="/routine/new" element={<RoutineCreatePage />} />

@@ -1,0 +1,135 @@
+.plan-detail-page {
+  .content {
+    padding: 32px $page-padding;
+  }
+
+  .details {
+    display: grid;
+    gap: 32px;
+
+    h2 {
+      font-size: $font-size-body;
+      font-weight: 500;
+    }
+  }
+
+  .schedule {
+    .status {
+      color: $mint-accent;
+      font-size: $font-size-caption;
+    }
+
+    h2 {
+      margin-top: 8px;
+      font-size: $font-size-title;
+      font-weight: 700;
+    }
+  }
+
+  .dates {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-top: 20px;
+
+    > div {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      span {
+        color: $text-secondary;
+        font-size: $font-size-caption;
+      }
+    }
+
+    time {
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .date-arrow {
+      color: $text-secondary;
+    }
+
+    @media (max-width: 380px) {
+      flex-direction: column;
+      gap: 8px;
+
+      .date-arrow {
+        transform: rotate(90deg);
+      }
+    }
+  }
+
+  .exercise-days {
+    margin-top: 20px;
+    color: $text-secondary;
+    font-size: $font-size-caption;
+  }
+
+  .weekdays {
+    padding: 0;
+    margin-top: 12px;
+    list-style: none;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding-block: 12px;
+      border-bottom: 1px solid $border-soft;
+      overflow-wrap: anywhere;
+    }
+
+    .weekday-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+      border-radius: $border-radius;
+      background: $bg-light;
+      font-weight: 500;
+    }
+
+    .rest {
+      color: $text-secondary;
+    }
+  }
+
+  .growth {
+    padding-top: 24px;
+    border-top: 1px solid $border-soft;
+
+    dl {
+      display: grid;
+      gap: 12px;
+      margin-block: 20px;
+
+      > div {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 4px 12px;
+      }
+    }
+
+    dt,
+    p {
+      color: $text-secondary;
+      font-size: $font-size-caption;
+    }
+
+    dd {
+      margin: 0;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    p + p {
+      margin-top: 8px;
+    }
+  }
+}

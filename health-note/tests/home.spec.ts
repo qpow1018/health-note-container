@@ -71,7 +71,21 @@ test('작은 운동이 영역과 오늘 운동을 표시하며 체크는 서버�
     ),
   ).toEqual([record]);
   await expect(page.getByText('진행 중인 14일 플랜', { exact: true })).toBeVisible();
-  await expect(page.getByRole('link', { name: /진행 중인 14일 플랜/ })).toHaveCount(0);
+  await page.getByRole('link', { name: /진행 중인 14일 플랜/ }).click();
+  await expect(page).toHaveURL('/plan/detail');
+  await expect(page.getByRole('heading', { name: '플랜 상세' })).toBeVisible();
+  await expect(
+    page.getByRole('list', { name: '플랜 주간 운동표' }).getByRole('listitem'),
+  ).toHaveCount(7);
+  await expect(page.getByText('9,000 XP', { exact: true })).toBeVisible();
+  await expect(page.getByText('1,500 XP', { exact: true })).toBeVisible();
+  await page.reload();
+  await expect(page.getByRole('heading', { name: '14일 플랜', exact: true })).toBeVisible();
+  await page.screenshot({ path: '/tmp/health-note-plan-detail.png', fullPage: true });
+  await page.setViewportSize({ width: 320, height: 700 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.getByRole('button', { name: '뒤로가기' }).click();
+  await expect(page).toHaveURL('/plan');
 });
 
 test('플랜이 없으면 생성 안내, 운동일이 아니면 휴식 안내를 표시한다', async ({ page }) => {
@@ -171,4 +185,22 @@ test('Intro 준비 상태 조회 실패는 미완료로 표시하지 않고 재�
   ).toHaveCount(3);
   await page.setViewportSize({ width: 320, height: 844 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
+test('플랜 상세 직접 진입 시 빈 상태와 조회 실패를 구분한다', async ({ page }) => {
+  await page.goto('/plan/detail');
+  await expect(page.getByText('진행 중인 플랜이 없어요.')).toBeVisible();
+  await page.getByRole('button', { name: '뒤로가기' }).click();
+  await expect(page).toHaveURL('/plan');
+  let isFailing = true;
+  await page.route('**/rest/v1/plans?*', async (route) => {
+    if (isFailing) await route.fulfill({ status: 503, json: { message: 'Test failure' } });
+    else await route.fallback();
+  });
+  await page.goto('/plan/detail');
+  await expect(page.getByRole('alert')).toContainText('플랜을 불러오지 못했어요.');
+  await expect(page.getByText('진행 중인 플랜이 없어요.')).toHaveCount(0);
+  isFailing = false;
+  await page.getByRole('button', { name: '다시 시도' }).click();
+  await expect(page.getByText('진행 중인 플랜이 없어요.')).toBeVisible();
 });

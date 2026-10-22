@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import routineQuery from '@/queries/routineQuery';
 import exerciseQuery from '@/queries/exerciseQuery';
@@ -11,6 +12,8 @@ import BoxLoading from '@/components/common/loading/BoxLoading';
 import Button from '@/components/common/button/Button';
 
 import styles from './ActivePlan.module.scss';
+
+import { MdChevronRight } from 'react-icons/md';
 
 export default function ActivePlan({ plan, today }: { plan: TPlan; today: string }) {
   const {
@@ -53,9 +56,7 @@ export default function ActivePlan({ plan, today }: { plan: TPlan; today: string
 
   return (
     <div className={styles['active-plan']}>
-      <PlanCharacter xp={xp} />
-
-      <div className={styles['plan-summary']}>
+      <Link to="/plan/detail" className={styles['plan-summary']}>
         <span className={styles['plan-info']}>
           <strong>진행 중인 {plan.duration}일 플랜</strong>
           <span>
@@ -63,7 +64,10 @@ export default function ActivePlan({ plan, today }: { plan: TPlan; today: string
             {plan.assignments.length}일 운동
           </span>
         </span>
-      </div>
+        <MdChevronRight size={22} aria-hidden="true" />
+      </Link>
+
+      <PlanCharacter xp={xp} />
 
       <section className={styles['today']} aria-labelledby="plan-today-title">
         <div className={styles['section-heading']}>
@@ -150,7 +154,7 @@ function PlanCharacter({ xp }: { xp: number }) {
   const levelXp = level === 10 ? 1000 : xp % 1000;
 
   return (
-    <section className={styles['plan-character']} aria-label="운동이">
+    <section aria-label="운동이">
       <div className={styles['character-layout']}>
         <div className={styles['artwork']}>
           <SproutCharacter />
